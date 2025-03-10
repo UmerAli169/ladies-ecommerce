@@ -1,0 +1,47 @@
+{
+    "brand": {
+      "name": "Bloom Beauty",
+      "description": "Discover nature's beauty with our natural care products",
+      "contact": {
+        "phone": "+1 (213) 123 45 67",
+        "email": "bloom@gmail.com",
+        "location": "Kiev, Ukraine"
+      }
+    },
+    "sections": [
+      {
+        "title": "HELP",
+        "links": [
+          { "label": "Contact us", "href": "/contact" },
+          { "label": "FAQ", "href": "/faq" },
+          { "label": "Shipping & Returns", "href": "/shipping" }
+        ]
+      },
+      {
+        "title": "MY ACCOUNT",
+        "links": [
+          { "label": "Addresses", "href": "/addresses" },
+          { "label": "Order Status", "href": "/order-status" },
+          { "label": "Wishlist", "href": "/wishlist" }
+        ]
+      },
+      {
+        "title": "CUSTOMER CARE",
+        "links": [
+          { "label": "About us", "href": "/about" },
+          { "label": "Blog", "href": "/blog" }
+        ]
+      }
+    ],
+    "newsletter": {
+      "title": "SIGN UP FOR EMAILS",
+      "description": "Stay informed, subscribe to our newsletter now!"
+    },
+    "bottom": {
+      "copyright": "© 2023 Bloom Beauty",
+      "policies": [
+        { "label": "Terms and Conditions", "href": "/terms" }
+      ]
+    }
+  }
+  
