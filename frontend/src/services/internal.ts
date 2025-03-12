@@ -49,3 +49,21 @@ export const resetPassword = async (token: string, password: string) => {
   });
   return response.data;
 };
+
+
+export const googleLogin = async () => {
+  try {
+    window.location.href = "http://localhost:5000/api/auth/google"; 
+  } catch (error) {
+    console.error("Google login error:", error);
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const response = await api.get("/api/auth/me");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

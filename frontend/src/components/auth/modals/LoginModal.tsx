@@ -9,8 +9,8 @@ import { AuthButton } from '../common/AuthButton';
 import { GoogleButton } from '../common/GoogleButton';
 import { OrDivider } from '../common/OrDivider';
 import { useAuthStore } from '@/store/authStore';
-import { login } from '@/services/internal';
-interface LoginModalProps {
+import { login,getUser } from '@/services/internal';
+interface LoginModalProps { 
   isOpen: boolean;
   onClose: () => void;
   onRecoverPassword: () => void;
@@ -24,15 +24,18 @@ export const LoginModal = ({ isOpen, onClose, onRecoverPassword, onCreateAccount
   const handleLogin = async (values: Record<string, string>, { setSubmitting }: any) => {
     setSubmitting(true);
     try {
-      const userData = await login(values); 
-      setUser(userData); 
-      onClose();
+      await login(values); 
+      const userData = await getUser(); 
+      console.log(userData,'userDatauserData');
+      setUser(userData);
+      onClose(); 
     } catch (error: any) {
       setLoginError(error.response?.data?.message || "Login failed");
     } finally {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <AuthModal isOpen={isOpen} onClose={onClose} title="Log In" heading="Please enter your e-mail and password:">

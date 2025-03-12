@@ -5,42 +5,37 @@ import { User } from "../models/userModel";
 import { validationResult } from "express-validator";
 import sendEmail from "../utils/sendEmail";
 import * as crypto from "crypto";
+import { generateToken } from "../utils/generateToken";
 
-export const registerUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const registerUser = async (req: any, res: any) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
-
     const { firstName, lastName, email, password } = req.body;
 
-    let user = await User.findOne({ email });
-    if (user) {
-      res.status(400).json({ message: "User already exists" });
-      return;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = new User({ firstName, lastName, email, password: hashedPassword });
-
-    await user.save();
-
-    const token = jwt.sign({ userId: user._id }, "umeralikhan", {
-      expiresIn: "7d",
+    const newUser: any = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
     });
 
-    res.status(201).json({
-      message: "User registered successfully",
-      token,
-      user,
-    });
+    const token = generateToken(newUser._id);
+
+    res
+      .cookie("token", token, {
+        httpOnly: true, // Secure & prevents client-side access
+        secure: process.env.NODE_ENV === "production", // Enable in production
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      })
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
-    console.error("Register error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -65,7 +60,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       expiresIn: "7d",
     });
 
-    res.json({ message: "Login successful", user, token });
+    res
+      .cookie("token", token, {
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === "production", 
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, 
+      })
+      .json({ message: "Login successful", user, token });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -150,27 +152,5 @@ export const resetPassword = async (
   } catch (error) {
     console.error("Error resetting password:", error);
     return res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-
-export const saveGoogleUser = async (req: Request, res: Response) : Promise<void | any>=> {
-  try {
-    const { firstName, lastName, email } = req.body;
-
-    if (!firstName || !email) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = new User({ firstName, lastName, email });
-      await user.save();
-    }
-
-    res.status(201).json({ message: "UserGoogle saved", user });
-  } catch (error) {
-    console.error("Error saving user:", error);
-    res.status(500).json({ message: "Server error" });
   }
 };

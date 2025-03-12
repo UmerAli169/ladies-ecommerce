@@ -6,7 +6,7 @@ import { AuthInput } from "../../shared/Input";
 import { AuthButton } from "../common/AuthButton";
 import { GoogleButton } from "../common/GoogleButton";
 import { OrDivider } from "../common/OrDivider";
-import { register } from "../../../services/internal";
+import { register ,getUser} from "../../../services/internal";
 import { useAuthStore } from "../../../store/authStore";
 import Checkbox from "@/components/shared/Checkbox";
 
@@ -23,17 +23,18 @@ export const RegisterModal = ({ isOpen, onClose, onLoginClick }: RegisterModalPr
   const handleRegister = async (values: Record<string, string>, { setSubmitting, resetForm }: any) => {
     setSubmitting(true);
     try {
-      const userData = await register(values);
-      console.log(userData,'umerlai')
-      setUser(userData);
+      await register(values); 
+      const userData = await getUser();
+      setUser(userData); 
       resetForm();
-      onClose();
+      onClose(); 
     } catch (error: any) {
       setRegisterError(error.response?.data?.message || "Registration failed");
     } finally {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <AuthModal isOpen={isOpen} onClose={onClose} title="Register" heading="Please fill in the fields below:">
