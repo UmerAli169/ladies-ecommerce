@@ -22,18 +22,20 @@ export const ResetPasswordModal = ({ isOpen, onClose, token }: ResetPasswordModa
     { setSubmitting, resetForm }: any
   ) => {
     setSubmitting(true);
-
+  
     try {
+      console.log("Sending reset request with token:", token, "and password:", values.password);
       const userData = await resetPassword(token, values.password);
-      setUser(userData); // Store updated user data in Zustand
+      setUser(userData);
       setSuccessMessage(true);
       resetForm();
     } catch (error: any) {
-      console.error("Password reset failed:", error.response?.data?.message || error.message);
+      console.error("Password reset failed:", error); 
     } finally {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <AuthModal isOpen={isOpen} onClose={onClose} title="Reset Password" heading="Enter a new password for your account:">

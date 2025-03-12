@@ -27,16 +27,8 @@ export const register = async (data: any) => {
 
 export const login = async (data: any) => {
   try {
-    const response = await api.post("login", data);
+    const response = await api.post("/api/auth/login", data);
     return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const logout = async () => {
-  try {
-    await api.post("logout");
   } catch (error) {
     throw error;
   }
@@ -44,13 +36,16 @@ export const logout = async () => {
 
 export const recoverPassword = async (email: string) => {
   try {
-    const response = await api.post("recover-password", { email });
+    const response = await api.post("/api/auth/recover-password", { email });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
 export const resetPassword = async (token: string, password: string) => {
-  const response = await api.post("reset-password", { token, password });
+  const response = await api.post(`/api/auth/reset-password/${token}`, {
+    password,
+  });
   return response.data;
 };

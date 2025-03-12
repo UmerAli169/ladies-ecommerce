@@ -1,11 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
+require("dotenv").config();
+const cors = require("cors");
 import  connectDB  from "./config/db";
 import authRoutes from "./routes/authRoutes";
 
 dotenv.config({
-    path: '../.env'
+  path: 'backend/.env'
 });
 const app = express();
 

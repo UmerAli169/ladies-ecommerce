@@ -49,7 +49,7 @@ export const LoginModal = ({ isOpen, onClose, onRecoverPassword, onCreateAccount
         <AuthInput type="password" name="password" placeholder="Password" required />
         <AuthButton type="submit">Log In</AuthButton>
         <OrDivider />
-        <GoogleButton />
+        <GoogleButton  />
       </AuthForm>
       <div className='text-center  py-[20px] md:text-[16px] text-[14px] text-[#697586] font-medium'>
           <button type='button' onClick={onRecoverPassword}>

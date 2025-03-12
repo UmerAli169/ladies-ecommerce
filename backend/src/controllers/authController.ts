@@ -30,14 +30,13 @@ export const registerUser = async (
 
     await user.save();
 
-    // Generate JWT token for new user
-    const token = jwt.sign({ userId: user._id }, " process.env.JWT_SECRET!", {
+    const token = jwt.sign({ userId: user._id }, "umeralikhan", {
       expiresIn: "7d",
     });
 
     res.status(201).json({
       message: "User registered successfully",
-      token, // Send token
+      token,
       user,
     });
   } catch (error) {
@@ -62,8 +61,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Generate a new token upon login
-    const token = jwt.sign({ userId: user._id }, " process.env.JWT_SECRET!", {
+    const token = jwt.sign({ userId: user._id }, "umeralikhan", {
       expiresIn: "7d",
     });
 
@@ -72,60 +70,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-export const resetPassword = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const { token } = req.params;
-    const { password } = req.body;
-
-    if (!token) {
-      res.status(400).json({ message: "Invalid or expired token" });
-      return;
-    }
-
-    const decoded: any = jwt.verify(
-      token,
-      " process.env.JWT_SECRET!" as string
-    );
-    if (!decoded) {
-      res.status(401).json({ message: "Invalid or expired token" });
-      return;
-    }
-
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    user.password = hashedPassword;
-    await user.save();
-
-    const newToken = jwt.sign(
-      { userId: user._id },
-      " process.env.JWT_SECRET!",
-      {
-        expiresIn: "7d",
-      }
-    );
-
-    res.status(200).json({
-      message: "Password reset successful",
-      token: newToken,
-      user,
-    });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
 export const recoverPassword = async (
   req: Request,
   res: Response
@@ -152,14 +96,13 @@ export const recoverPassword = async (
     user.resetPasswordExpires = resetTokenExpiry;
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+    const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
     const message = `
       <h2>Password Reset Request</h2>
       <p>Click the link below to reset your password:</p>
       <a href="${resetUrl}" target="_blank">Reset Password</a>
       <p>This link is valid for 1 hour.</p>
     `;
-
     await sendEmail(user.email, "Password Reset Request", message);
 
     res
@@ -168,5 +111,66 @@ export const recoverPassword = async (
   } catch (error) {
     console.error("Recover password error:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<void | any> => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ message: "Token is required" });
+    }
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(token as string)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+export const saveGoogleUser = async (req: Request, res: Response) : Promise<void | any>=> {
+  try {
+    const { firstName, lastName, email } = req.body;
+
+    if (!firstName || !email) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = new User({ firstName, lastName, email });
+      await user.save();
+    }
+
+    res.status(201).json({ message: "UserGoogle saved", user });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

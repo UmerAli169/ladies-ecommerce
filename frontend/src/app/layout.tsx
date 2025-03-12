@@ -1,8 +1,9 @@
+"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer"; 
-import "../globals.css"; 
+import Footer from "@/components/layout/Footer";
+import "../globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -16,11 +17,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Ladies E-Commerce",
-  description: "A modern shopping experience.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,10 +28,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen max-w-[2440px] mx-auto w-full font-[poppins] bg-[#F9FAFC]`}
       >
         <Header />
-        <main className="flex-grow">{children}</main> 
+        <main className="flex-grow">
+            {children}
+        </main>
         <Footer />
       </body>
     </html>
   );
 }
-
