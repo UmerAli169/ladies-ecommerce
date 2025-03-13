@@ -6,8 +6,7 @@ import { AuthInput } from "../../shared/Input";
 import { AuthButton } from "../common/AuthButton";
 import { GoogleButton } from "../common/GoogleButton";
 import { OrDivider } from "../common/OrDivider";
-import { register ,getUser} from "../../../services/internal";
-import { useAuthStore } from "../../../store/authStore";
+import { register } from "../../../services/internal";
 import Checkbox from "@/components/shared/Checkbox";
 
 interface RegisterModalProps {
@@ -18,14 +17,11 @@ interface RegisterModalProps {
 
 export const RegisterModal = ({ isOpen, onClose, onLoginClick }: RegisterModalProps) => {
   const [registerError, setRegisterError] = useState("");
-  const setUser = useAuthStore((state) => state.setUser);
 
   const handleRegister = async (values: Record<string, string>, { setSubmitting, resetForm }: any) => {
     setSubmitting(true);
     try {
       await register(values); 
-      const userData = await getUser();
-      setUser(userData); 
       resetForm();
       onClose(); 
     } catch (error: any) {

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface IUser extends Document {
   firstName?: string;
@@ -6,10 +6,10 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   googleId?: string;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  resetPasswordToken?: string | null;
+  resetPasswordExpires?: Date | null;
+  cart: Types.ObjectId[];
+  products: Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -26,8 +26,11 @@ const UserSchema = new Schema<IUser>(
     googleId: { type: String },
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Date, default: null },
+    cart: [{ type: Schema.Types.ObjectId, ref: "Cart" }],
+    products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   },
-  { timestamps: true }
+  { timestamps: true } 
 );
 
-export const User = mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.model<IUser>("User", UserSchema);
+export default User;

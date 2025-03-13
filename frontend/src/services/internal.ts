@@ -16,6 +16,7 @@ api.interceptors.response.use(
   }
 );
 
+// ✅ Register
 export const register = async (data: any) => {
   try {
     const response = await api.post("/api/auth/register", data);
@@ -25,6 +26,7 @@ export const register = async (data: any) => {
   }
 };
 
+// ✅ Login
 export const login = async (data: any) => {
   try {
     const response = await api.post("/api/auth/login", data);
@@ -34,6 +36,7 @@ export const login = async (data: any) => {
   }
 };
 
+// ✅ Recover Password
 export const recoverPassword = async (email: string) => {
   try {
     const response = await api.post("/api/auth/recover-password", { email });
@@ -43,25 +46,69 @@ export const recoverPassword = async (email: string) => {
   }
 };
 
+// ✅ Reset Password
 export const resetPassword = async (token: string, password: string) => {
-  const response = await api.post(`/api/auth/reset-password/${token}`, {
-    password,
-  });
-  return response.data;
+  try {
+    const response = await api.post(`/api/auth/reset-password/${token}`, { password });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-
+// ✅ Google Login
 export const googleLogin = async () => {
   try {
-    window.location.href = "http://localhost:5000/api/auth/google"; 
+    window.location.href = "http://localhost:5000/api/auth/google";
   } catch (error) {
     console.error("Google login error:", error);
   }
 };
 
+// ✅ Get User Info
 export const getUser = async () => {
   try {
     const response = await api.get("/api/auth/me");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Get All Products (Fixed Method: GET)
+export const getAllProducts = async () => {
+  try {
+    const response = await api.get("/api/products/getAllProducts");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Like Product (Fixed Endpoint & Method)
+export const likeProduct = async (productId: string) => {
+  try {
+    const response = await api.put(`/api/products/like/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Dislike Product (Fixed Endpoint & Method)
+export const dislikeProduct = async (productId: string) => {
+  try {
+    const response = await api.put(`/api/products/dislike/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Add to Cart (Fixed Endpoint)
+export const addToCart = async (productId: string, quantity: number) => {
+  try {
+    const response = await api.post("/cart", { productId, quantity });
     return response.data;
   } catch (error) {
     throw error;
