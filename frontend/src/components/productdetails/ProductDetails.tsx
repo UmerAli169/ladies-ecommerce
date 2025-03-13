@@ -1,19 +1,32 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../shared/Button";
-import data from "../../Data/blogDetails/details.json";
 import Wrapper from "@/app/wrapper";
 import AboutSection from "../about/AboutSection";
 import Accordion from "../about/Accordion";
 import { CartModal } from "../model/RightModal";
+import { useProductStore } from "@/store/productStore";
+import { useSearchParams } from "next/navigation";
 
 const ProductDetails = () => {
-  const product = data.products[0];
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("id"); 
+  const { product, fetchProduct } = useProductStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cartItems, setCartItems]: any = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  useEffect(() => {
+    if (productId) {
+      fetchProduct(productId);
+    }
+  }, [productId]);
+
+  if (!product) {
+    return <p className="text-center">Loading product...</p>;
+  }
+  
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
@@ -27,10 +40,12 @@ const ProductDetails = () => {
       });
     }
   };
+
   const addToCart = () => {
     setCartItems([...cartItems, product]);
     setIsCartOpen(true);
   };
+
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row gap-[123px]">
@@ -57,14 +72,14 @@ const ProductDetails = () => {
               ref={scrollRef}
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
             >
-              {product.thumbnailImages.map((thumb, index) => (
+              {/* {product.thumbnailImages.map((thumb, index) => (
                 <img
                   key={index}
                   src={thumb}
                   alt="thumbnail"
                   className="w-26 h-[124px] object-cover cursor-pointer"
                 />
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -122,13 +137,8 @@ const ProductDetails = () => {
             cartItems={cartItems}
           />
 
-          {data.shipping.items.map((item, index) => (
-            <Accordion
-              key={index}
-              question={item.question}
-              answer={item.answer}
-            />
-          ))}
+          {/* Accordion Section */}
+          <Accordion question="Shipping Info" answer="Delivered in 3-5 days." />
         </div>
       </div>
     </Wrapper>

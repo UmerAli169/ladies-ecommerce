@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "framer-motion/client";
 
 const api = axios.create({
   baseURL: "http://localhost:5000/",
@@ -105,6 +106,17 @@ export const dislikeProduct = async (productId: string) => {
   }
 };
 
+
+export const getProductById = async (productId: string) => {
+  try {
+    console.log(productId)
+    const response = await api.put(`/api/products/getProductById/${productId}`);
+    console.log(response.data,'productIdproductId')
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 // ✅ Add to Cart (Fixed Endpoint)
 export const addToCart = async (productId: string, quantity: number) => {
   try {

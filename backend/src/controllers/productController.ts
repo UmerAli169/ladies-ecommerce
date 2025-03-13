@@ -1,6 +1,7 @@
 import Product from "../models/Product";
 import Cart from "../models/Cart";
 import User from "../models/UserModel";
+const mongoose = require("mongoose");
 
 export const createProduct = async (req: any, res: any) => {
   try {
@@ -79,8 +80,6 @@ export const dislikeProduct = async (req: any, res: any) => {
   }
 };
 
-
-
 export const addToCart = async (req: any, res: any) => {
   try {
     const { productId, quantity } = req.body;
@@ -100,7 +99,7 @@ export const addToCart = async (req: any, res: any) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    const cartItem:any = new Cart({
+    const cartItem: any = new Cart({
       userId,
       productId,
       name: product.name,
@@ -122,3 +121,21 @@ export const addToCart = async (req: any, res: any) => {
   }
 };
 
+// Get Product by ID
+export const getProductById = async (req: any, res: any) => {
+  try {
+    const productId = req.params.id?.trim();
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: "Invalid product ID" });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
