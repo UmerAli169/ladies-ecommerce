@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import "../globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { AuthGuard } from "@/components/auth/protected/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex-grow">
-            {children}
+          <AuthGuard>{children}</AuthGuard>
         </main>
         <Footer />
       </body>

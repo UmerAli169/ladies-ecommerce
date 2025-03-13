@@ -11,9 +11,15 @@ interface ResetPasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
   token: string;
+  setToken: (value: string | null) => void;
 }
 
-export const ResetPasswordModal = ({ isOpen, onClose, token }: ResetPasswordModalProps) => {
+export const ResetPasswordModal = ({
+  isOpen,
+  onClose,
+  token,
+  setToken,
+}: ResetPasswordModalProps) => {
   const [successMessage, setSuccessMessage] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -24,13 +30,20 @@ export const ResetPasswordModal = ({ isOpen, onClose, token }: ResetPasswordModa
     setSubmitting(true);
   
     try {
-      console.log("Sending reset request with token:", token, "and password:", values.password);
+      console.log(
+        "Sending reset request with token:",
+        token,
+        "and password:",
+        values.password
+      );
       const userData = await resetPassword(token, values.password);
       setUser(userData);
       setSuccessMessage(true);
       resetForm();
+      setToken(null); 
+  
     } catch (error: any) {
-      console.error("Password reset failed:", error); 
+      console.error("Password reset failed:", error);
     } finally {
       setSubmitting(false);
     }
@@ -38,14 +51,29 @@ export const ResetPasswordModal = ({ isOpen, onClose, token }: ResetPasswordModa
   
 
   return (
-    <AuthModal isOpen={isOpen} onClose={onClose} title="Reset Password" heading="Enter a new password for your account:">
+    <AuthModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Reset Password"
+      heading="Enter a new password for your account:"
+    >
       {successMessage ? (
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="p-4 bg-[#E9F6EE] text-[#1E4620] rounded-[4px]">
             <img src="/check.svg" alt="Success" className="w-6 mb-2 mx-auto" />
-            <p className="text-[16px] font-medium">Your password has been successfully changed.</p>
+            <p className="text-[16px] font-medium">
+              Your password has been successfully changed.
+            </p>
           </div>
-          <AuthButton type="button" onClick={onClose}>Close</AuthButton>
+          <AuthButton
+            type="button"
+            onClick={() => {
+              setToken(null);
+              onClose();
+            }}
+          >
+            Close
+          </AuthButton>
         </div>
       ) : (
         <Formik
@@ -62,8 +90,18 @@ export const ResetPasswordModal = ({ isOpen, onClose, token }: ResetPasswordModa
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
-              <AuthInput name="password" type="password" placeholder="Enter new password" required />
-              <AuthInput name="confirmPassword" type="password" placeholder="Confirm new password" required />
+              <AuthInput
+                name="password"
+                type="password"
+                placeholder="Enter new password"
+                required
+              />
+              <AuthInput
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm new password"
+                required
+              />
 
               <AuthButton type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Resetting..." : "Reset Password"}

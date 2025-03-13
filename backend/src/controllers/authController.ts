@@ -28,10 +28,10 @@ export const registerUser = async (req: any, res: any) => {
 
     res
       .cookie("token", token, {
-        httpOnly: true, // Secure & prevents client-side access
-        secure: process.env.NODE_ENV === "production", // Enable in production
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", 
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
@@ -98,7 +98,7 @@ export const recoverPassword = async (
     user.resetPasswordExpires = resetTokenExpiry;
     await user.save();
 
-    const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+    const resetUrl = `http://localhost:3000/?token=${resetToken}`;
     const message = `
       <h2>Password Reset Request</h2>
       <p>Click the link below to reset your password:</p>

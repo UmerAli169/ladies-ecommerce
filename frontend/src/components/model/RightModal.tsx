@@ -22,14 +22,13 @@ export const CartModal: React.FC<CartModalProps> = ({
   onClose,
   cartItems,
 }) => {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // Function to handle checkout navigation
   const handleCheckout = () => {
-    onClose(); // Close the cart modal
-    router.push("/Checkout"); // Navigate to checkout page
+    onClose(); 
+    router.push("/Checkout"); 
   };
 
   return (
