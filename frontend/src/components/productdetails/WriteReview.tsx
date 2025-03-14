@@ -1,6 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
-import { FormikHelpers } from "formik";
+import { Formik, Field, FormikHelpers } from "formik";
 import { Modal } from "../model/Modal";
 import { AuthInput } from "../shared/Input";
 import { AuthButton } from "@/components/auth/common/AuthButton";
@@ -8,11 +8,13 @@ import { AuthForm } from "@/components/auth/formick/AuthForm";
 import { GoogleButton } from "@/components/auth/common/GoogleButton";
 import { OrDivider } from "@/components/auth/common/OrDivider";
 import reviewsData from "../../Data/reviews/review.json";
-import { Field, Formik } from "formik";
+import { createReview } from "@/services/internal";
 
 interface ReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userId: string;
+  productId: string;
 }
 
 interface ReviewFormValues {
@@ -23,11 +25,25 @@ interface ReviewFormValues {
   photos: FileList | null;
 }
 
-export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
-  const handleReviewSubmit = (values: ReviewFormValues, actions: FormikHelpers<ReviewFormValues>) => {
-    console.log("Review Submitted:", values);
-    actions.setSubmitting(false);
-    onClose();
+export const ReviewModal = ({ isOpen, onClose, userId, productId }: ReviewModalProps) => {
+  const handleReviewSubmit = async (values: ReviewFormValues, actions: FormikHelpers<ReviewFormValues>) => {
+    try {
+      const reviewData = {
+        userId,
+        productId,
+        rating: 5,
+        title: values.title,
+        text: values.text,
+        images: values.photos ? Array.from(values.photos).map((file) => file.name) : [],
+      };
+
+      await createReview(reviewData);
+      console.log("Review Submitted:", reviewData);
+      actions.setSubmitting(false);
+      onClose();
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
   };
 
   const review = reviewsData.reviews[0];
@@ -46,19 +62,12 @@ export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
 
           <div>
             <div className="flex items-center gap-2">
-              <p className="font-medium text-[16px] leading-[20px]">
-                {review.name}
-              </p>
+              <p className="font-medium text-[16px] leading-[20px]">{review.name}</p>
             </div>
 
             <div className="flex gap-1 mt-1">
               {[...Array(5)].map((_, i) => (
-                <img
-                  key={i}
-                  src="/svgs/Review/emptyStar.svg"
-                  alt="star"
-                  className="w-[28px]"
-                />
+                <img key={i} src="/svgs/Review/emptyStar.svg" alt="star" className="w-[28px]" />
               ))}
             </div>
           </div>
@@ -132,3 +141,5 @@ export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
     </Modal>
   );
 };
+
+       

@@ -125,3 +125,55 @@ export const addToCart = async (productId: string, quantity: number) => {
     throw error;
   }
 };
+
+
+
+// ✅ Create a Review
+export const createReview = async (data: {
+  userId: string;
+  productId: string;
+  rating: number;
+  title: string;
+  text: string;
+  images?: string[];
+}) => {
+  try {
+    console.log(data,'datadatadatadata')
+
+    const response = await api.post("/api/reviews", data);
+    console.log(createReview,'createReviewcreateReview')
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Get All Reviews for a Product
+export const getReviewsByProduct = async (productId: string) => {
+  try {
+    const response = await api.get(`/api/reviews/${productId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Get All Reviews by a User
+export const getReviewsByUser = async (userId: string) => {
+  try {
+    const response = await api.get(`/api/reviews/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ✅ Delete a Review
+export const deleteReview = async (reviewId: string) => {
+  try {
+    const response = await api.delete(`/api/reviews/${reviewId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

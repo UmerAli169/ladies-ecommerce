@@ -1,21 +1,23 @@
-"use client"
+"use client";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import ProductSection from "@/components/main/ProductSection";
 import ProductDetails from "@/components/productdetails/ProductDetails";
 import ReviewSection from "@/components/productdetails/ReviewSection";
 import { useProductStore } from "@/store/productStore";
-import { useEffect } from "react";
 
 function Page() {
-  const { productdetails, fetchProducts }:any = useProductStore();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("id");
+  const { productdetails, fetchProducts }: any = useProductStore();
 
   useEffect(() => {
-    fetchProducts()
+    fetchProducts();
   }, []);
-
   return (
     <div className="py-[40px]">
       <ProductDetails />
-      {/* <ReviewSection /> */}
+      <ReviewSection productId={productId as string} />
       <ProductSection products={productdetails} cardWidth={289} />
     </div>
   );

@@ -8,6 +8,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRoutes";
 import path from "path";
+import reviewRoutes from "./routes/reviewRoutes";
 dotenv.config();
 
 const app = express();
@@ -38,6 +39,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products",productRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 
 const PORT = process.env.PORT || 5000;

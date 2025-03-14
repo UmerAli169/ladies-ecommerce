@@ -1,12 +1,26 @@
 "use client";
-import React, { useState } from "react";
-import reviewsData from "../../Data/reviews/review.json";
+import React, { useState, useEffect } from "react";
+import { getReviewsByProduct } from "../../services/internal"; 
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import { ReviewModal } from "./WriteReview";
 
-const ReviewSection = () => {
+const ReviewSection = ({ productId }: { productId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const data = await getReviewsByProduct(productId);
+        setReviews(data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [productId]);
 
   return (
     <Wrapper>
@@ -30,7 +44,7 @@ const ReviewSection = () => {
             See All
           </p>
 
-          <div className=" flex flex-col gap-[20px] text-center mt-2">
+          <div className="flex flex-col gap-[20px] text-center mt-2">
             <div className="flex items-center justify-center gap-2">
               <div className="flex gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -42,13 +56,11 @@ const ReviewSection = () => {
                   />
                 ))}
               </div>
-              <p className="text-sm text-gray-500">
-                {reviewsData.reviews.length} reviews
-              </p>
+              <p className="text-sm text-gray-500">{reviews.length} reviews</p>
             </div>
             <div>
               <Button
-                className="lg:p-[10px] max-w-[246px]  w-full px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+                className="lg:p-[10px] max-w-[246px] w-full px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
                 onClick={() => setIsModalOpen(true)}
               >
                 Write a Review
@@ -57,74 +69,65 @@ const ReviewSection = () => {
           </div>
         </div>
 
-        <div className="mt-[40px] space-y-[30px] ">
-          {reviewsData.reviews.map((review, index:any) => (
-            <>
-              <div key={index._id || '4252'} className="rounded-lg ">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold">
-                    <img src="/reviews/reviewpic.png" alt="" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium font-[14px] leading-[20px]">
-                        {review.name}
+        <div className="mt-[40px] space-y-[30px]">
+          {reviews.map((review: any, index) => (
+            <div key={review._id || index} className="rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold">
+                  <img src={review.userProfile || "/reviews/reviewpic.png"} alt="" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium font-[14px] leading-[20px]">
+                      {review.name}
+                    </p>
+                    {review.verified && (
+                      <p className="font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
+                        Verified Reviewer
                       </p>
-                      {review.verified && (
-                        <p className="font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
-                          Verified Reviewer
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex gap-1 mt-1">
-                      {[...Array(5)].map((_, i) => (
-                        <img
-                          key={i}
-                          src={
-                            i < review.rating
-                              ? "/svgs/Shared/reviews/starts.svg"
-                              : "/svgs/Shared/reviews/starts.svg"
-                          }
-                          alt="star"
-                          className="w-4"
-                        />
-                      ))}
-                    </div>
+                    )}
                   </div>
-                  <span className="ml-auto font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
-                    {review.date}
-                  </span>
+
+                  <div className="flex gap-1 mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <img
+                        key={i}
+                        src={
+                          i < review.rating
+                            ? "/svgs/Shared/reviews/starts.svg"
+                            : "/svgs/Shared/reviews/starts.svg"
+                        }
+                        alt="star"
+                        className="w-4"
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className="mt-[20px] ">
-                  <p className="font-medium font-[16px]  leading-[20px] ml-[50px] ml-[50px]">
-                    {review.title}
-                  </p>
-                  <p className="font-nomral font-[14px]  leading-[22px] text-[#697586]  font-[Montserrat]ml-[50px] ml-[50px]  ml-[50px]">
-                    {review.text}
-                  </p>
-                  {review.images.length > 0 && (
-                    <div className="flex gap-2 mt-2 ml-[50px]">
-                      {review.images.map((img, i) => (
-                        <img
-                          key={i}
-                          src={img}
-                          alt="review"
-                          className="w-16 h-16 rounded-lg"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <span className="ml-auto font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
+                  {review.date}
+                </span>
               </div>
-              <div className="flex   justify-center ">
-                <img
-                  src="/svgs/Review/flower.svg"
-                  alt=""
-                  className="max-w-[2600px] w-full"
-                />
+              <div className="mt-[20px]">
+                <p className="font-medium font-[16px] leading-[20px] ml-[50px]">
+                  {review.title}
+                </p>
+                <p className="font-normal font-[14px] leading-[22px] text-[#697586] ml-[50px]">
+                  {review.text}
+                </p>
+                {review.images?.length > 0 && (
+                  <div className="flex gap-2 mt-2 ml-[50px]">
+                    {review.images.map((img: string, i: number) => (
+                      <img
+                        key={i}
+                        src={img}
+                        alt="review"
+                        className="w-16 h-16 rounded-lg"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>
@@ -132,8 +135,7 @@ const ReviewSection = () => {
       {isModalOpen && (
         <ReviewModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
+          onClose={() => setIsModalOpen(false)} userId={""} productId={""}        />
       )}
     </Wrapper>
   );
