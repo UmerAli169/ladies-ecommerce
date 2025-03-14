@@ -81,6 +81,7 @@ export const getAllProducts = async () => {
   try {
     const response = await api.get("/api/products/getAllProducts");
     return response.data;
+    
   } catch (error) {
     throw error;
   }
@@ -109,9 +110,7 @@ export const dislikeProduct = async (productId: string) => {
 
 export const getProductById = async (productId: string) => {
   try {
-    console.log(productId)
     const response = await api.put(`/api/products/getProductById/${productId}`);
-    console.log(response.data,'productIdproductId')
     return response.data;
   } catch (error) {
     throw error;

@@ -1,17 +1,24 @@
-import multer from "multer";
+import multer, { StorageEngine } from "multer";
 import path from "path";
+import fs from "fs";
+import { Request } from "express";
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: (req: any, file: any, cb: (arg0: null, arg1: string) => void) => {
-    cb(null, "uploads/"); 
+const uploadDir = "uploads/";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure Multer storage
+const storage: StorageEngine = multer.diskStorage({
+  destination: (req: Request, file, cb) => {
+    cb(null, uploadDir);
   },
-  filename: (req: any, file: { originalname: any; }, cb: (arg0: null, arg1: string) => void) => {
-    cb(null, `${Date.now()}-${file.originalname}`); 
+  filename: (req: Request, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
-const fileFilter = (req: any, file: any, cb: any) => {
+const fileFilter :any= (req: Request, file: Express.Multer.File, cb: (error: Error | null, acceptFile: boolean) => void) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {

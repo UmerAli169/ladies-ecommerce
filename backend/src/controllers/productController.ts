@@ -2,29 +2,34 @@ import Product from "../models/Product";
 import Cart from "../models/Cart";
 import User from "../models/UserModel";
 const mongoose = require("mongoose");
-
 export const createProduct = async (req: any, res: any) => {
   try {
-    const { name, description, price, discount, category, stock } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    const { name, description, price, discount, category, stock, size, recommendedFor } = req.body;
 
     if (!req.userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
     }
 
-    const user: any = await User.findById(req.userId);
+    const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const product = new Product({
+    const imagePaths = req.files
+      ? (req.files as Express.Multer.File[]).map((file) => `/uploads/${file.filename}`)
+      : [];
+
+    const product: any = new Product({
       name,
       description,
       price,
-      image,
+      image: imagePaths.length > 0 ? imagePaths[0] : "",
+      thumbnailImages: imagePaths,
       discount,
       category,
       stock,
+      size: size ? size.split(",") : [], 
+      recommendedFor,
     });
 
     await product.save();
@@ -38,6 +43,8 @@ export const createProduct = async (req: any, res: any) => {
     res.status(500).json({ error: "Failed to add product" });
   }
 };
+
+
 
 export const getAllProducts = async (req: any, res: any) => {
   try {

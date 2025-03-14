@@ -8,10 +8,11 @@ import Accordion from "../about/Accordion";
 import { CartModal } from "../model/RightModal";
 import { useProductStore } from "@/store/productStore";
 import { useSearchParams } from "next/navigation";
+import aboutData from "../../Data/productDetails/details.json";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
-  const productId = searchParams.get("id"); 
+  const productId = searchParams.get("id");
   const { product, fetchProduct } = useProductStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cartItems, setCartItems]: any = useState([]);
@@ -26,7 +27,7 @@ const ProductDetails = () => {
   if (!product) {
     return <p className="text-center">Loading product...</p>;
   }
-  
+
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
@@ -57,7 +58,7 @@ const ProductDetails = () => {
             <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="left" />
           </button>
           <img
-            src={product.imageUrl}
+            src={`${process.env.NEXT_PUBLIC_API_URL}${product.image}`}
             alt={product.name}
             className="w-full object-cover"
           />
@@ -72,14 +73,14 @@ const ProductDetails = () => {
               ref={scrollRef}
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
             >
-              {/* {product.thumbnailImages.map((thumb, index) => (
+              {product.thumbnailImages.map((thumb, index) => (
                 <img
                   key={index}
-                  src={thumb}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${thumb}`}
                   alt="thumbnail"
                   className="w-26 h-[124px] object-cover cursor-pointer"
                 />
-              ))} */}
+              ))}
             </div>
           </div>
         </div>
@@ -120,8 +121,6 @@ const ProductDetails = () => {
               </span>
             </div>
           </div>
-
-          {/* Add to Cart & Wishlist */}
           <div className="flex items-center gap-[10px]">
             <Button
               className="max-w-[246px] w-full py-[10px] px-[80px] text-[14px] font-bold text-[#383838] lg:leading-[21px] leading-[18px]"
@@ -137,8 +136,17 @@ const ProductDetails = () => {
             cartItems={cartItems}
           />
 
-          {/* Accordion Section */}
-          <Accordion question="Shipping Info" answer="Delivered in 3-5 days." />
+          {aboutData.sections.map((section, sectionIndex) => (
+            <div key={sectionIndex}>
+              {section.items.map((item, itemIndex) => (
+                <Accordion
+                  key={itemIndex}
+                  question={item.question}
+                  answer={item.answer}
+                />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </Wrapper>

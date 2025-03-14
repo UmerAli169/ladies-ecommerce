@@ -6,7 +6,7 @@ import { useProductStore } from "@/store/productStore";
 import { useEffect } from "react";
 
 function Page() {
-  const { products, fetchProducts }:any = useProductStore();
+  const { productdetails, fetchProducts }:any = useProductStore();
 
   useEffect(() => {
     fetchProducts()
@@ -16,7 +16,7 @@ function Page() {
     <div className="py-[40px]">
       <ProductDetails />
       {/* <ReviewSection /> */}
-      <ProductSection title="All Products" products={products} cardWidth={289} />
+      <ProductSection products={productdetails} cardWidth={289} />
     </div>
   );
 }

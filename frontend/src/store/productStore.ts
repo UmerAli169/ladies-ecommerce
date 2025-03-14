@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
+  image: any;
+  category: string;
   _id: string;
   name: string;
   price: number;
@@ -12,10 +14,15 @@ interface Product {
   reviews: number;
   size: string;
   recommendedFor: string;
+  Blog: string;
 }
 
 interface ProductState {
+  blogs: Product[];
   products: Product[];
+  bestSellers: Product[];
+  newArrivals: Product[];
+  productdetails: Product[];
   product: Product | null;
   fetchProducts: () => Promise<void>;
   fetchProduct: (id: string) => Promise<void>;
@@ -23,12 +30,29 @@ interface ProductState {
 
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
+  bestSellers: [],
+  newArrivals: [],
+  blogs: [],
+  productdetails: [],
   product: null,
-  
+
   fetchProducts: async () => {
     try {
       const response = await getAllProducts();
-      set({ products: response });
+
+      const bestSellers = response.filter((product: Product) => product.category === "BEST SELLERS");
+      const newArrivals = response.filter((product: Product) => product.category === "New Arrivals");
+      const productdetails = response.filter((product: Product) => product.category === "Recently Viewed Products");
+
+      const blogs = response.filter((product: Product) => product.category === "On the Blog");
+
+      set({
+        products: response,
+        bestSellers,
+        newArrivals,
+        blogs, 
+         productdetails,
+      });
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -37,7 +61,6 @@ export const useProductStore = create<ProductState>((set) => ({
   fetchProduct: async (id) => {
     try {
       const response = await getProductById(id);
-      console.log(response,'responesse')
 
       set({ product: response });
     } catch (error) {
@@ -45,3 +68,5 @@ export const useProductStore = create<ProductState>((set) => ({
     }
   },
 }));
+
+export default useProductStore;

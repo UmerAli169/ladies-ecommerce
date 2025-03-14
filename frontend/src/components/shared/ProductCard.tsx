@@ -20,7 +20,10 @@ interface ProductCardProps {
   addToCart: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart }:any) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  addToCart,
+}: any) => {
   const [isHovered, setIsHovered] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -29,7 +32,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart }:any) => 
   const handleRedirect = () => {
     router.push(`/ProductDetails?id=${product._id}`);
   };
-  
 
   return (
     <CustomCard
@@ -65,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart }:any) => 
           />
         </div>
         <img
-          src={product.image}
+          src={`${process.env.NEXT_PUBLIC_API_URL}${product.image}`}
           alt={product.name}
           className="w-full h-full object-cover rounded-[6px]"
         />
@@ -84,7 +86,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, addToCart }:any) => 
                   key={i}
                   src="/svgs/Shared/ProductSection/cardStar.svg"
                   alt="star"
-                  className={`w-4 h-4 ${i < product.rating ? "opacity-100" : "opacity-50"}`}
+                  className={`w-4 h-4 ${
+                    i < product.rating ? "opacity-100" : "opacity-50"
+                  }`}
                 />
               ))}
               <span className="text-[14px] text-[#383838] font-medium">

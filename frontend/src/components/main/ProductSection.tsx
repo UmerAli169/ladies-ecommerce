@@ -6,6 +6,7 @@ import ProductCard from "../shared/ProductCard";
 import { CartModal } from "../model/RightModal";
 
 interface Product {
+  category: any;
   id: string;
   name: string;
   price: number;
@@ -13,20 +14,18 @@ interface Product {
 }
 
 interface ProductSectionProps {
-  title: string;
   products: Product[];
   cardWidth: number;
 }
 
 const ProductSection: React.FC<ProductSectionProps> = ({
-  title,
   products,
   cardWidth,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems]:any = useState<Product[]>([]);
+  const [cartItems, setCartItems]: any = useState<Product[]>([]);
 
   const scrollAmount = cardWidth * 4;
 
@@ -59,8 +58,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
   const totalDots = useMemo(() => Math.ceil(products.length / 4), [products]);
 
-  const addToCart:any = useCallback((product: Product) => {
-    setCartItems((prev:any) => [...prev, product]);
+  const addToCart: any = useCallback((product: Product) => {
+    setCartItems((prev: any) => [...prev, product]);
     setIsCartOpen(true);
   }, []);
 
@@ -70,9 +69,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({
         <div className="text-center">
           <div className="flex gap-[10px] items-center">
             <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
-            <p className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {title}
-            </p>
+            <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold text-[#383838]">
+              {[...new Set(products.map((item: any) => item.category))].map(
+                (category) => (
+                  <p key={category}>{category}</p>
+                )
+              )}
+            </div>
+
             <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="" />
           </div>
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
@@ -95,7 +99,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               ref={scrollRef}
               className="flex gap-[10px] overflow-x-scroll scrollbar-hide flex-nowrap relative"
             >
-              {products.map((product:any, index) => (
+              {products.map((product: any, index) => (
                 <div
                   key={`${product.id}-${index}`}
                   style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
@@ -123,25 +127,29 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             </button>
           </div>
         )}
-
         {products.length > 4 && (
           <div className="flex mt-4 gap-2">
-            {Array.from({ length: totalDots }).map((_, index) => (
-              <button
-                key={index}
-                className={`w-[10px] h-[10px] rounded-full ${
-                  index === currentIndex ? "bg-[#B0A6BD]" : "bg-[#DFE1E3]"
-                }`}
-                onClick={() => {
-                  if (scrollRef.current) {
-                    scrollRef.current.scrollTo({
-                      left: index * scrollAmount,
-                      behavior: "smooth",
-                    });
-                  }
-                }}
-              />
-            ))}
+            {Array.from({ length: Math.min(totalDots, 4) }).map((_, index) => {
+              let startIndex = Math.min(currentIndex, totalDots - 4);
+              let dotIndex = startIndex + index;
+
+              return (
+                <button
+                  key={dotIndex}
+                  className={`w-[10px] h-[10px] rounded-full ${
+                    dotIndex === currentIndex ? "bg-[#B0A6BD]" : "bg-[#DFE1E3]"
+                  }`}
+                  onClick={() => {
+                    if (scrollRef.current) {
+                      scrollRef.current.scrollTo({
+                        left: dotIndex * scrollAmount,
+                        behavior: "smooth",
+                      });
+                    }
+                  }}
+                />
+              );
+            })}
           </div>
         )}
       </div>

@@ -58,9 +58,9 @@ const ReviewSection = () => {
         </div>
 
         <div className="mt-[40px] space-y-[30px] ">
-          {reviewsData.reviews.map((review, index) => (
+          {reviewsData.reviews.map((review, index:any) => (
             <>
-              <div key={index} className="rounded-lg ">
+              <div key={index._id || '4252'} className="rounded-lg ">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold">
                     <img src="/reviews/reviewpic.png" alt="" />
