@@ -6,6 +6,7 @@ export const createProduct = async (req: any, res: any) => {
   try {
     const { name, description, price, discount, category, stock, size, recommendedFor } = req.body;
 
+     console.log("")
     if (!req.userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
     }

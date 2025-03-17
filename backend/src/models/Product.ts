@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 interface IProduct extends Document {
   name: string;
@@ -13,6 +13,7 @@ interface IProduct extends Document {
   category: string;
   size: string[]; 
   recommendedFor: string;
+  reviews: Types.ObjectId[];
 }
 
 const ProductSchema: Schema = new Schema(
@@ -29,6 +30,8 @@ const ProductSchema: Schema = new Schema(
     category: { type: String, required: true },
     size: { type: [String], default: [] }, 
     recommendedFor: { type: String, required: true }, 
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+
   },
   { timestamps: true }
 );

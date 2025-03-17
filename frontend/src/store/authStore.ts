@@ -13,7 +13,10 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      setUser: (user) => set({ user, isAuthenticated: true }),
+      setUser: (user) => {
+        console.log("Setting user in Zustand:", user); // Debugging
+        set({ user, isAuthenticated: true });
+      },
       logout: () => set({ user: null, isAuthenticated: false }),
     }),
     {

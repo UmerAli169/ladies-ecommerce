@@ -10,6 +10,8 @@ export interface IUser extends Document {
   resetPasswordExpires?: Date | null;
   cart: Types.ObjectId[];
   products: Types.ObjectId[];
+  reviews: Types.ObjectId[];
+
 }
 
 const UserSchema = new Schema<IUser>(
@@ -28,6 +30,7 @@ const UserSchema = new Schema<IUser>(
     resetPasswordExpires: { type: Date, default: null },
     cart: [{ type: Schema.Types.ObjectId, ref: "Cart" }],
     products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+
   },
   { timestamps: true } 
 );

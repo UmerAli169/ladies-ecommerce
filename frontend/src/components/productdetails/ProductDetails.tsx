@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import AboutSection from "../about/AboutSection";
-import Accordion from "../about/Accordion";
+import Accordion from "../about/Accordion"; 
 import { CartModal } from "../model/RightModal";
 import { useProductStore } from "@/store/productStore";
 import { useSearchParams } from "next/navigation";
@@ -74,6 +74,7 @@ const ProductDetails = () => {
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
             >
               {product.thumbnailImages.map((thumb, index) => (
+                
                 <img
                   key={index}
                   src={`${process.env.NEXT_PUBLIC_API_URL}${thumb}`}

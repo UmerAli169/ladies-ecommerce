@@ -129,24 +129,17 @@ export const addToCart = async (productId: string, quantity: number) => {
 
 
 // ✅ Create a Review
-export const createReview = async (data: {
-  userId: string;
-  productId: string;
-  rating: number;
-  title: string;
-  text: string;
-  images?: string[];
-}) => {
+export const createReview = async (formData: FormData) => {
   try {
-    console.log(data,'datadatadatadata')
-
-    const response = await api.post("/api/reviews", data);
-    console.log(createReview,'createReviewcreateReview')
+    const response = await api.post("/api/reviews", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
 
 // ✅ Get All Reviews for a Product
 export const getReviewsByProduct = async (productId: string) => {

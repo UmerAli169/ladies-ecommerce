@@ -1,13 +1,11 @@
 import React from "react";
 import * as Yup from "yup";
-import { Formik, Field, FormikHelpers } from "formik";
+import { Field, Formik, FormikHelpers } from "formik";
 import { Modal } from "../model/Modal";
 import { AuthInput } from "../shared/Input";
 import { AuthButton } from "@/components/auth/common/AuthButton";
-import { AuthForm } from "@/components/auth/formick/AuthForm";
 import { GoogleButton } from "@/components/auth/common/GoogleButton";
 import { OrDivider } from "@/components/auth/common/OrDivider";
-import reviewsData from "../../Data/reviews/review.json";
 import { createReview } from "@/services/internal";
 
 interface ReviewModalProps {
@@ -23,30 +21,43 @@ interface ReviewFormValues {
   name: string;
   email: string;
   photos: FileList | null;
+  rating: number;
 }
 
-export const ReviewModal = ({ isOpen, onClose, userId, productId }: ReviewModalProps) => {
-  const handleReviewSubmit = async (values: ReviewFormValues, actions: FormikHelpers<ReviewFormValues>) => {
+export const ReviewModal = ({
+  isOpen,
+  onClose,
+  userId,
+  productId,
+}: ReviewModalProps) => {
+  const handleReviewSubmit = async (
+    values: ReviewFormValues,
+    actions: FormikHelpers<ReviewFormValues>
+  ) => {
     try {
-      const reviewData = {
-        userId,
-        productId,
-        rating: 5,
-        title: values.title,
-        text: values.text,
-        images: values.photos ? Array.from(values.photos).map((file) => file.name) : [],
-      };
-
-      await createReview(reviewData);
-      console.log("Review Submitted:", reviewData);
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("productId", productId);
+      formData.append("rating", values.rating.toString());
+      formData.append("title", values.title);
+      formData.append("text", values.text);
+  
+      if (values.photos && values.photos.length > 0) {
+        Array.from(values.photos).forEach((file) => {
+          formData.append("images", file);
+        });
+      }
+  
+  
+      await createReview(formData);
+  
       actions.setSubmitting(false);
       onClose();
     } catch (error) {
-      console.error("Error submitting review:", error);
+      console.error("❌ Error submitting review:", error);
     }
   };
-
-  const review = reviewsData.reviews[0];
+  
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -54,92 +65,111 @@ export const ReviewModal = ({ isOpen, onClose, userId, productId }: ReviewModalP
         Write a Review
       </h2>
 
-      <div>
-        <div className="flex items-start gap-3 mb-[30px]">
-          <div className="max-w-[80px] w-full rounded-full flex items-center">
-            <img src="/reviews/reviewsection.png" alt="Reviewer" />
-          </div>
-
-          <div>
-            <div className="flex items-center gap-2">
-              <p className="font-medium text-[16px] leading-[20px]">{review.name}</p>
+      <Formik
+        initialValues={{
+          title: "",
+          text: "",
+          name: "",
+          email: "",
+          photos: null,
+          rating: 0,
+        }}
+        validationSchema={Yup.object({
+          title: Yup.string().required("Title is required"),
+          text: Yup.string().required("Review is required"),
+          name: Yup.string().required("Name is required"),
+          email: Yup.string()
+            .email("Invalid email")
+            .required("Email is required"),
+          rating: Yup.number()
+            .min(1, "Please select a rating")
+            .required("Rating is required"),
+        })}
+        onSubmit={handleReviewSubmit}
+      >
+        {({ setFieldValue, handleSubmit, values }) => (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="max-w-[80px] w-full rounded-full flex gap-[10px] items-center">
+              <img src="/reviews/reviewsection.png" alt="Reviewer" />
+              <div className="flex gap-2 ">
+                {[...Array(5)].map((_, i) => (
+                  <img
+                    key={i}
+                    src={
+                      values.rating > i
+                        ? "/svgs/Review/fullStar.svg"
+                        : "/svgs/Review/emptyStar.svg"
+                    }
+                    alt="star"
+                    className="w-[40px] cursor-pointer"
+                    onClick={() => setFieldValue("rating", i + 1)}
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className="flex gap-1 mt-1">
-              {[...Array(5)].map((_, i) => (
-                <img key={i} src="/svgs/Review/emptyStar.svg" alt="star" className="w-[28px]" />
-              ))}
-            </div>
-          </div>
-        </div>
+            <AuthInput
+              type="text"
+              name="title"
+              placeholder="Review Title"
+              required
+            />
+            <Field
+              as="textarea"
+              name="text"
+              placeholder="What did you think about this product?"
+              className="border rounded-md w-full p-2 min-h-[100px] outline-none"
+              required
+            />
 
-        <Formik
-          initialValues={{ title: "", text: "", name: "", email: "", photos: null }}
-          validationSchema={Yup.object({
-            title: Yup.string().required("Title is required"),
-            text: Yup.string().required("Review is required"),
-            name: Yup.string().required("Name is required"),
-            email: Yup.string().email("Invalid email").required("Email is required"),
-          })}
-          onSubmit={handleReviewSubmit}
-        >
-          {({ setFieldValue }) => (
-            <AuthForm initialValues={{ title: "", text: "", name: "", email: "", photos: null }}
-              validationSchema={Yup.object({
-                title: Yup.string().required("Title is required"),
-                text: Yup.string().required("Review is required"),
-                name: Yup.string().required("Name is required"),
-                email: Yup.string().email("Invalid email").required("Email is required"),
-              })}
-              onSubmit={handleReviewSubmit}
-            >
-              <AuthInput type="text" name="title" placeholder="Review Title" required />
+            <label className="border p-2 rounded-md w-full flex items-center gap-2 cursor-pointer outline-none">
+              <input
+                type="file"
+                name="photos"
+                className="hidden"
+                onChange={(event) => {
+                  const files = event.currentTarget.files;
+                  if (files && files.length > 0) {
+                    setFieldValue("photos", files);
+                  }
+                }}
+                multiple
+              />
+              <img
+                src="/svgs/Review/file.svg"
+                alt="Upload"
+                className="w-5 h-5"
+              />
+              Add Photos
+            </label>
 
-              <Field
-                as="textarea"
-                name="text"
-                placeholder="What did you think about Floral Essence Masks Sets"
-                className="border rounded-md w-full p-2 min-h-[100px] outline-none "
+            <div className="mt-4 flex flex-col gap-[20px]">
+              <p className="font-medium">Your Profile</p>
+              <AuthInput type="text" name="name" placeholder="Name" required />
+              <AuthInput
+                type="email"
+                name="email"
+                placeholder="Email Address"
                 required
               />
-
-              <label className="border p-2 rounded-md w-full flex items-center gap-2 cursor-pointer outline-none">
-                <input
-                  type="file"
-                  name="photos"
-                  className="hidden outline-none"
-                  onChange={(event) => {
-                    setFieldValue("photos", event.currentTarget.files);
-                  }}
-                  multiple
-                />
-                <img src="/svgs/Review/file.svg" alt="Upload" className="w-5 h-5" />
-                Add Photos
-              </label>
-
-              <div className="mt-4 flex flex-col gap-[20px]">
-                <p className="font-medium">Your Profile</p>
-                <AuthInput type="text" name="name" placeholder="Name" required />
-                <AuthInput type="email" name="email" placeholder="Email Address" required />
-         
-
               <OrDivider />
-              <AuthButton   type="button">Sign In</AuthButton>
+              <AuthButton type="button">Sign In</AuthButton>
               <GoogleButton />
-              </div>
-              <p className="text-center text-sm mt-4">
-                By continuing you agree to our{" "}
-                <a href="#" className="underline">Privacy Policy</a>
-              </p>
-              <AuthButton type="submit" className="w-full bg-pink-500 mt-2">
-                Agree & Submit
-              </AuthButton>
-            </AuthForm>
-          )}
-        </Formik>
-      </div>
+            </div>
+
+            <p className="text-center text-sm mt-4">
+              By continuing you agree to our{" "}
+              <a href="#" className="underline">
+                Privacy Policy
+              </a>
+            </p>
+
+            <AuthButton type="submit" className="w-full bg-pink-500 mt-2">
+              Agree & Submit
+            </AuthButton>
+          </form>
+        )}
+      </Formik>
     </Modal>
   );
 };
-
-       

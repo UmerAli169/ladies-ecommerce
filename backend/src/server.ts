@@ -36,6 +36,9 @@ app.use(
 app.use(express.json());
 
 connectDB();
+app.get("/", async (req: any, res: any) => {
+  res.status(200).json({message:"runniung"})
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products",productRoutes);

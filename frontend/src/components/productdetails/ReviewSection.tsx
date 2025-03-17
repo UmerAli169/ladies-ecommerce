@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getReviewsByProduct } from "../../services/internal"; 
+import { getReviewsByProduct } from "../../services/internal";
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import { ReviewModal } from "./WriteReview";
-
+import { useAuthStore } from "@/store/authStore";
 const ReviewSection = ({ productId }: { productId: string }) => {
+  const UserId = useAuthStore((state: any) => state.user.user._id);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
 
@@ -21,6 +22,13 @@ const ReviewSection = ({ productId }: { productId: string }) => {
 
     fetchReviews();
   }, [productId]);
+  const averageRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((sum, review: any) => sum + review.rating, 0) /
+          reviews.length
+        ).toFixed(1)
+      : "0.0";
 
   return (
     <Wrapper>
@@ -50,14 +58,19 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                 {[...Array(5)].map((_, i) => (
                   <img
                     key={i}
-                    src="/svgs/Shared/reviews/starts.svg"
+                    src={
+                      i < Math.round(Number(averageRating))
+                        ? "/svgs/Shared/reviews/starts.svg"
+                        : "/svgs/Shared/reviews/gray-star.svg"
+                    }
                     alt="star"
                     className="w-4"
                   />
                 ))}
               </div>
-              <p className="text-sm text-gray-500">{reviews.length} reviews</p>
+              <p className="text-sm text-gray-500">{averageRating} /5</p>
             </div>
+
             <div>
               <Button
                 className="lg:p-[10px] max-w-[246px] w-full px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
@@ -74,7 +87,10 @@ const ReviewSection = ({ productId }: { productId: string }) => {
             <div key={review._id || index} className="rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold">
-                  <img src={review.userProfile || "/reviews/reviewpic.png"} alt="" />
+                  <img
+                    src={review.userProfile || "/reviews/reviewpic.png"}
+                    alt=""
+                  />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -95,7 +111,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                         src={
                           i < review.rating
                             ? "/svgs/Shared/reviews/starts.svg"
-                            : "/svgs/Shared/reviews/starts.svg"
+                            : "/svgs/Shared/reviews/unfilledstar.svg"
                         }
                         alt="star"
                         className="w-4"
@@ -104,7 +120,11 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   </div>
                 </div>
                 <span className="ml-auto font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
-                  {review.date}
+                  {new Date(review.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
                 </span>
               </div>
               <div className="mt-[20px]">
@@ -119,7 +139,8 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                     {review.images.map((img: string, i: number) => (
                       <img
                         key={i}
-                        src={img}
+                        src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${img}`}
+
                         alt="review"
                         className="w-16 h-16 rounded-lg"
                       />
@@ -135,7 +156,10 @@ const ReviewSection = ({ productId }: { productId: string }) => {
       {isModalOpen && (
         <ReviewModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)} userId={""} productId={""}        />
+          onClose={() => setIsModalOpen(false)}
+          userId={UserId}
+          productId={productId}
+        />
       )}
     </Wrapper>
   );

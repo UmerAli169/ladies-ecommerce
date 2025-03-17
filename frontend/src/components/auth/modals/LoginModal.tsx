@@ -24,7 +24,6 @@ export const LoginModal = ({
 }: LoginModalProps) => {
   const [loginError, setLoginError] = useState("");
   const setUser = useAuthStore((state) => state.setUser);
-
   const handleLogin = async (
     values: Record<string, string>,
     { setSubmitting }: any
@@ -33,9 +32,7 @@ export const LoginModal = ({
     setLoginError("");
 
     try {
-      await login(values);
-
-      const userData = await getUser();
+      const userData = await login(values);
 
       setUser(userData);
 
