@@ -7,6 +7,7 @@ import "../globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { AuthGuard } from "@/components/auth/protected/AuthGuard";
+import ToastProvider from "@/components/notificiton/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen max-w-[2440px] mx-auto w-full font-[poppins] bg-[#F9FAFC]`}
       >
+        <ToastProvider />
         <Header />
         <main className="flex-grow">
           <AuthGuard>{children}</AuthGuard>

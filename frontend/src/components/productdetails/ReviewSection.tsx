@@ -9,7 +9,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
   const UserId = useAuthStore((state: any) => state.user.user._id);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
-
+console.log(reviews,'from revires')
   useEffect(() => {
     const fetchReviews = async () => {
       try {

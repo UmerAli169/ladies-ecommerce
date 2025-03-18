@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/UserModel";
+import User from "../models/User";
 import { validationResult } from "express-validator";
 import sendEmail from "../utils/sendEmail";
 import * as crypto from "crypto";

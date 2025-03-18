@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../models/UserModel";
+import User from "../models/User";
 import authenticateUser from "../utils/authMiddleware";
 import {
   registerUser,

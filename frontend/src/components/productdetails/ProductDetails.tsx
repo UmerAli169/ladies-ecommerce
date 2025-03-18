@@ -17,7 +17,6 @@ const ProductDetails = ({ productId }: ProductProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cartItems, setCartItems]: any = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-
   useEffect(() => {
     if (productId) {
       fetchProduct(productId as string);

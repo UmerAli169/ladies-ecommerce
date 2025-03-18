@@ -10,14 +10,15 @@ import SearchBar from "../navbar/SearchBar";
 import DesktopMenu from "../navbar/DesktopMenu";
 import IconSection from "../navbar/IconSection";
 import MobileMenu from "../navbar/MobileMenu";
+import { useAuthStore } from "@/store/authStore";
 
 const Header = () => {
   const router = useRouter();
-  const [menuItems, setMenuItems]: any = useState([]);
-  const [icons, setIcons]: any = useState([]);
-  const [mobileMenu, setMobileMenu]: any = useState(null);
+  const [menuItems, setMenuItems] = useState<any[]>([]);
+  const [icons, setIcons] = useState<any[]>([]);
+  const [mobileMenu, setMobileMenu] = useState<any>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeModal, setActiveModal] = useState(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,20 +30,28 @@ const Header = () => {
     setMobileMenu(navbar.mobileMenu);
   }, []);
 
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  useEffect(() => {
+    setIsLoggedIn(isAuthenticated);
+  }, [isAuthenticated]);
+
   const closeModal = () => setActiveModal(null);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleAccountClick = () => {
-    isLoggedIn
-      ? router.push("/Account/changepassword")
-      : setActiveModal("login");
+    if (isLoggedIn) {
+      router.push("/Account/changepassword");
+    } else {
+      setActiveModal("login");
+    }
   };
 
   return (
     <>
       <nav className="bg-[#FFFFFF] relative">
         <Wrapper>
-          {isSearchActive ? (
+          {isSearchActive && isAuthenticated ? (
             <SearchBar
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
@@ -67,8 +76,8 @@ const Header = () => {
               </div>
 
               <Link
+                href="/"
                 className="text-[#383838] flex justify-center items-center text-[24px] font-medium leading-[25px]"
-                href={"/"}
               >
                 <span className="text-[#F5A3B7]">Bloom </span>Beauty
               </Link>
@@ -84,24 +93,28 @@ const Header = () => {
           )}
         </Wrapper>
       </nav>
-
-      <MobileMenu
-        isMenuOpen={isMenuOpen}
-        toggleMenu={toggleMenu}
-        mobileMenu={mobileMenu}
-        menuItems={menuItems}
-        icons={icons}
-      />
-      <CartModal
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={[]}
-      />
       <ModalManager
-        activeModal={activeModal}
-        closeModal={closeModal}
-        setActiveModal={setActiveModal}
-      />
+            activeModal={activeModal}
+            closeModal={closeModal}
+            setActiveModal={setActiveModal}
+          />
+      {isAuthenticated && (
+        <>
+          <MobileMenu
+            isMenuOpen={isMenuOpen}
+            toggleMenu={toggleMenu}
+            mobileMenu={mobileMenu}
+            menuItems={menuItems}
+            icons={icons}
+          />
+          <CartModal
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cartItems={[]}
+          />
+          
+        </>
+      )}
     </>
   );
 };

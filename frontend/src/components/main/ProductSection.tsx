@@ -62,7 +62,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
     setCartItems((prev: any) => [...prev, product]);
     setIsCartOpen(true);
   }, []);
-
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] relative">
@@ -70,7 +69,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           <div className="flex gap-[10px] items-center">
             <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold text-[#383838]">
-              {[...new Set(products.map((item: any) => item.category))].map(
+              {[...new Set(products?.map((item: any) => item.category))].map(
                 (category) => (
                   <p key={category}>{category}</p>
                 )

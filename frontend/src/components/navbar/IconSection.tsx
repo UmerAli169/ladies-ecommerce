@@ -11,7 +11,7 @@ const IconSection = ({
             key={label}
             className={`group flex flex-col items-center cursor-pointer ${
               label.toLowerCase() !== "cart" ? "hidden lg:flex" : ""
-            }`}
+            }`} 
             onClick={() => {
               if (label.toLowerCase() === "account") {
                 handleAccountClick();

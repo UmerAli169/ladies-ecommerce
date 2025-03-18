@@ -40,18 +40,26 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getAllProducts();
 
-      const bestSellers = response.filter((product: Product) => product.category === "BEST SELLERS");
-      const newArrivals = response.filter((product: Product) => product.category === "New Arrivals");
-      const productdetails = response.filter((product: Product) => product.category === "Recently Viewed Products");
+      const bestSellers = response.filter(
+        (product: Product) => product.category === "BEST SELLERS"
+      );
+      const newArrivals = response.filter(
+        (product: Product) => product.category === "New Arrivals"
+      );
+      const productdetails = response.filter(
+        (product: Product) => product.category === "Recently Viewed Products"
+      );
 
-      const blogs = response.filter((product: Product) => product.category === "On the Blog");
+      const blogs = response.filter(
+        (product: Product) => product.category === "On the Blog"
+      );
 
       set({
         products: response,
         bestSellers,
         newArrivals,
-        blogs, 
-         productdetails,
+        blogs,
+        productdetails,
       });
     } catch (error) {
       console.error("Error fetching products:", error);

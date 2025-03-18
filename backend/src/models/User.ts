@@ -19,7 +19,7 @@ const UserSchema = new Schema<IUser>(
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
-    password: {
+    password: { 
       type: String,
       required: function (this: IUser) {
         return !this.googleId;
