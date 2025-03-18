@@ -4,15 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import AboutSection from "../about/AboutSection";
-import Accordion from "../about/Accordion"; 
+import Accordion from "../about/Accordion";
 import { CartModal } from "../model/RightModal";
 import { useProductStore } from "@/store/productStore";
-import { useSearchParams } from "next/navigation";
 import aboutData from "../../Data/productDetails/details.json";
 
-const ProductDetails = () => {
-  const searchParams = useSearchParams();
-  const productId = searchParams.get("id");
+interface ProductProps {
+  productId: string | number;
+}
+const ProductDetails = ({ productId }: ProductProps) => {
   const { product, fetchProduct } = useProductStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cartItems, setCartItems]: any = useState([]);
@@ -20,13 +20,22 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (productId) {
-      fetchProduct(productId);
+      fetchProduct(productId as string);
     }
   }, [productId]);
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
   }
+  const reviewsArray = Array.isArray(product.reviews) ? product.reviews : [];
+
+  const averageRating =
+    reviewsArray.length > 0
+      ? reviewsArray.reduce(
+          (sum: number, review: any) => sum + (review.rating || 0),
+          0
+        ) / reviewsArray.length
+      : 0;
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -74,7 +83,6 @@ const ProductDetails = () => {
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
             >
               {product.thumbnailImages.map((thumb, index) => (
-                
                 <img
                   key={index}
                   src={`${process.env.NEXT_PUBLIC_API_URL}${thumb}`}
@@ -95,7 +103,7 @@ const ProductDetails = () => {
               <img
                 key={i}
                 src={
-                  i < Math.round(product.rating)
+                  i < Math.round(averageRating)
                     ? "/svgs/Shared/ProductSection/productDetials.svg"
                     : "/svgs/Shared/ProductSection/cardStar.svg"
                 }
@@ -104,7 +112,7 @@ const ProductDetails = () => {
               />
             ))}
             <span className="lg:text-[14px] ml-[8px] text-[12px] font-medium font-[Montserrat] font-normal text-[#697586] lg:leading-[22px] leading-[20px]">
-              {product.reviews} reviews
+              {product.reviews.length} reviews
             </span>
           </div>
           <p className="lg:text-[16px] text-[14px] font-medium text-[#383838] lg:leading-[27px] leading-[24px]">

@@ -1,20 +1,17 @@
 import { Request, Response } from "express";
 import { Review, IReview } from "../models/Review";
 
-// ✅ Create a new review
-import Product from "../models/Product"; // Import your Product model
+import Product from "../models/Product";
 
 export const createReview = async (req: any, res: any) => {
   try {
     const { userId, productId, rating, title, text } = req.body;
 
-    // Extract uploaded images
     const images =
       req.files && req.files.length > 0
         ? req.files.map((file: Express.Multer.File) => `/${file.filename}`)
         : [];
 
-    // Create a new review
     const newReview: any = new Review({
       userId,
       productId,
@@ -27,7 +24,6 @@ export const createReview = async (req: any, res: any) => {
 
     await newReview.save();
 
-    // ✅ Update the product by pushing the new review ID
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -44,7 +40,6 @@ export const createReview = async (req: any, res: any) => {
   }
 };
 
-// ✅ Get all reviews for a product
 export const getReviewsByProduct = async (req: Request, res: Response) => {
   try {
     const reviews = await Review.find({
@@ -56,7 +51,6 @@ export const getReviewsByProduct = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Get all reviews by a user
 export const getReviewsByUser = async (req: Request, res: Response) => {
   try {
     const reviews = await Review.find({ userId: req.params.userId }).populate(
@@ -69,7 +63,6 @@ export const getReviewsByUser = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete a review
 export const deleteReview = async (req: Request, res: Response) => {
   try {
     await Review.findByIdAndDelete(req.params.id);

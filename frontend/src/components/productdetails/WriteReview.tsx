@@ -97,7 +97,7 @@ export const ReviewModal = ({
                     key={i}
                     src={
                       values.rating > i
-                        ? "/svgs/Review/fullStar.svg"
+                        ? "/svgs/Shared/reviews/starts.svg"
                         : "/svgs/Review/emptyStar.svg"
                     }
                     alt="star"

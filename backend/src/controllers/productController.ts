@@ -6,7 +6,6 @@ export const createProduct = async (req: any, res: any) => {
   try {
     const { name, description, price, discount, category, stock, size, recommendedFor } = req.body;
 
-     console.log("")
     if (!req.userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
     }
@@ -129,7 +128,6 @@ export const addToCart = async (req: any, res: any) => {
   }
 };
 
-// Get Product by ID
 export const getProductById = async (req: any, res: any) => {
   try {
     const productId = req.params.id?.trim();
@@ -137,7 +135,7 @@ export const getProductById = async (req: any, res: any) => {
       return res.status(400).json({ error: "Invalid product ID" });
     }
 
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate('reviews','rating');
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }

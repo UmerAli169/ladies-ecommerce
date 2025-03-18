@@ -61,7 +61,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                     src={
                       i < Math.round(Number(averageRating))
                         ? "/svgs/Shared/reviews/starts.svg"
-                        : "/svgs/Shared/reviews/gray-star.svg"
+                        : "/svgs/Shared/ProductSection/cardStar.svg"
                     }
                     alt="star"
                     className="w-4"
@@ -111,7 +111,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                         src={
                           i < review.rating
                             ? "/svgs/Shared/reviews/starts.svg"
-                            : "/svgs/Shared/reviews/unfilledstar.svg"
+                            : "/svgs/Shared/ProductSection/cardStar.svg"
                         }
                         alt="star"
                         className="w-4"

@@ -16,7 +16,7 @@ function Page() {
   }, []);
   return (
     <div className="py-[40px]">
-      <ProductDetails />
+      <ProductDetails productId={productId as string} />
       <ReviewSection productId={productId as string} />
       <ProductSection products={productdetails} cardWidth={289} />
     </div>
