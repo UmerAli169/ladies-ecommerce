@@ -11,8 +11,9 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  rating: number;
   discount?: number;
+  reviews: { rating: number }[];
+
 }
 
 interface ProductCardProps {
@@ -25,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   addToCart,
 }: any) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(true);
 
   const router = useRouter();
 
@@ -33,6 +34,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
     router.push(`/ProductDetails?id=${product._id}`);
   };
 
+  const averageRating = product.reviews.length
+  ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) / product.reviews.length
+  : 0;
   return (
     <CustomCard
       className="w-full rounded-[6px] cursor-pointer pointer-events-auto relative"
@@ -79,22 +83,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {product.name}
           </p>
 
-          {product.rating !== undefined && (
+          {product.reviews.length > 0 && (
             <div className="flex items-center gap-1 mb-2">
-              {[...Array(5)].map((_, i) => (
-                <img
-                  key={i}
-                  src="/svgs/Shared/ProductSection/cardStar.svg"
-                  alt="star"
-                  className={`w-4 h-4 ${
-                    i < product.rating ? "opacity-100" : "opacity-50"
-                  }`}
-                />
-              ))}
-              <span className="text-[14px] text-[#383838] font-medium">
-                ({product.rating})
-              </span>
-            </div>
+            {[...Array(5)].map((_, i) => (
+              <img
+                key={i}
+                src={
+                  i < Math.round(averageRating)
+                    ? "/svgs/Shared/reviews/starts.svg"
+                    : "/svgs/Shared/ProductSection/cardStar.svg"
+                }
+                alt="star"
+                className="w-4 h-4"
+              />
+            ))}
+            <span className="text-[14px] text-[#383838] font-medium">
+              ({averageRating.toFixed(1)})
+            </span>
+          </div>
           )}
 
           <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px]">

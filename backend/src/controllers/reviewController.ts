@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Review, IReview } from "../models/Review";
 
 import Product from "../models/Product";
+import mongoose from "mongoose";
 
 export const createReview = async (req: any, res: any) => {
   try {
@@ -40,11 +41,17 @@ export const createReview = async (req: any, res: any) => {
   }
 };
 
-export const getReviewsByProduct = async (req: Request, res: Response) => {
+export const getReviewsByProduct = async (req: any, res: any) => {
   try {
-    const reviews = await Review.find({
-      productId: req.params.productId,
-    }).populate("userId", "name");
+    const productId = req.params.productId.trim();
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: "Invalid Product ID" });
+    }
+
+    const reviews = await Review.find({ productId }).populate("userId","firstName" );
+
+
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
-
+ 
 interface IProduct extends Document {
   name: string;
   description: string;
@@ -36,5 +36,5 @@ const ProductSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const Product = mongoose.model<IProduct>("Product", ProductSchema);
+const  Product = mongoose.model<IProduct>("Product", ProductSchema);
 export default Product;

@@ -103,7 +103,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                   key={`${product.id}-${index}`}
                   style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
                   className="shrink-0"
-                >
+                > 
                   <ProductCard product={product} addToCart={addToCart} />
                 </div>
               ))}

@@ -14,6 +14,7 @@ function MainPage() {
   useEffect(() => {
     fetchProducts();
   }, []);
+  console.log(newArrivals,'newArrivals')
   return (
     <div>
       <Dashboard />

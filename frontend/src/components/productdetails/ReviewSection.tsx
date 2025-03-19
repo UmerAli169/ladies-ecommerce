@@ -9,7 +9,6 @@ const ReviewSection = ({ productId }: { productId: string }) => {
   const UserId = useAuthStore((state: any) => state.user.user._id);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
-console.log(reviews,'from revires')
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -22,6 +21,8 @@ console.log(reviews,'from revires')
 
     fetchReviews();
   }, [productId]);
+
+
   const averageRating =
     reviews.length > 0
       ? (
@@ -95,7 +96,7 @@ console.log(reviews,'from revires')
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-medium font-[14px] leading-[20px]">
-                      {review.name}
+                      {review.userId.firstName}
                     </p>
                     {review.verified && (
                       <p className="font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
@@ -140,7 +141,6 @@ console.log(reviews,'from revires')
                       <img
                         key={i}
                         src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${img}`}
-
                         alt="review"
                         className="w-16 h-16 rounded-lg"
                       />
