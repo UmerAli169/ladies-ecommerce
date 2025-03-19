@@ -1,10 +1,21 @@
 import Product from "../models/Product";
 import Cart from "../models/Cart";
 import User from "../models/User";
+import Wishlist from "../models/Wishlist";
+
 const mongoose = require("mongoose");
 export const createProduct = async (req: any, res: any) => {
   try {
-    const { name, description, price, discount, category, stock, size, recommendedFor } = req.body;
+    const {
+      name,
+      description,
+      price,
+      discount,
+      category,
+      stock,
+      size,
+      recommendedFor,
+    } = req.body;
 
     if (!req.userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
@@ -16,7 +27,9 @@ export const createProduct = async (req: any, res: any) => {
     }
 
     const imagePaths = req.files
-      ? (req.files as Express.Multer.File[]).map((file) => `/uploads/${file.filename}`)
+      ? (req.files as Express.Multer.File[]).map(
+          (file) => `/uploads/${file.filename}`
+        )
       : [];
 
     const product: any = new Product({
@@ -28,7 +41,7 @@ export const createProduct = async (req: any, res: any) => {
       discount,
       category,
       stock,
-      size: size ? size.split(",") : [], 
+      size: size ? size.split(",") : [],
       recommendedFor,
     });
 
@@ -44,47 +57,50 @@ export const createProduct = async (req: any, res: any) => {
   }
 };
 
-
-
 export const getAllProducts = async (req: any, res: any) => {
   try {
-    const products = await Product.find().populate('reviews', 'rating'); 
-    res.json(products); 
+    const products = await Product.find().populate("reviews", "rating");
+    res.json(products);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
-
-export const likeProduct = async (req: any, res: any) => {
+export const addToWishlist = async (req:any, res:any) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { likes: 1 } },
-      { new: true }
-    );
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    const { productId } = req.params.id;
+    const userId = req.userId; 
+    let wishlist = await Wishlist.findOne({ userId });
+
+    if (!wishlist) {
+      wishlist = new Wishlist({ userId, products: [productId] });
+    } else {
+      if (!wishlist.products.includes(productId)) {
+        wishlist.products.push(productId);
+      } else {
+        return res.status(400).json({ message: "Product already in wishlist" });
+      }
     }
-    res.json(product);
+
+    await wishlist.save();
+    res.status(200).json({ message: "Product added to wishlist", wishlist });
   } catch (error) {
-    res.status(500).json({ error: "Failed to like product" });
+    res.status(500).json({ message: "Server error", error });
   }
 };
 
-export const dislikeProduct = async (req: any, res: any) => {
+export const getWishlist = async (req:any, res:any) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { dislikes: 1 } },
-      { new: true }
-    );
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    const userId = req.userId; 
+    const wishlist = await Wishlist.findOne({ userId }).populate("products");
+
+    if (!wishlist) {
+      return res.status(200).json({ products: [] });
     }
-    res.json(product);
+
+    res.status(200).json({ products: wishlist.products });
   } catch (error) {
-    res.status(500).json({ error: "Failed to dislike product" });
+    res.status(500).json({ message: "Server error", error });
   }
 };
 
@@ -136,7 +152,10 @@ export const getProductById = async (req: any, res: any) => {
       return res.status(400).json({ error: "Invalid product ID" });
     }
 
-    const product = await Product.findById(productId).populate('reviews','rating');
+    const product = await Product.findById(productId).populate(
+      "reviews",
+      "rating"
+    );
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }

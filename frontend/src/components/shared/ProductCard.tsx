@@ -11,69 +11,80 @@ interface Product {
   name: string;
   description: string;
   price: number;
+  rating: number;
   discount?: number;
   reviews: { rating: number }[];
-
 }
 
 interface ProductCardProps {
   product: Product;
   addToCart: (product: Product) => void;
+  toggleWishlist: (productId: number) => void;
+  isInWishlist: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   addToCart,
-}: any) => {
+  toggleWishlist,
+  isInWishlist,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [liked, setLiked] = useState(true);
-
   const router = useRouter();
 
   const handleRedirect = () => {
-    router.push(`/ProductDetails?id=${product._id}`);
+    router.push(`/ProductDetails?id=${product.id}`);
   };
 
   const averageRating = product.reviews.length
-  ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) / product.reviews.length
-  : 0;
+    ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
+      product.reviews.length
+    : 0;
   return (
     <CustomCard
-      className="w-full rounded-[6px] cursor-pointer pointer-events-auto relative"
+      className="w-full rounded-[6px] cursor-pointer relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleRedirect}
     >
       {product.discount && (
-        <div className="absolute top-[30px] left-[1px] bg-[#F5A3B7] rounded-r-full text-white text-[12px] font-bold px-3 py-1 flex items-center justify-center min-w-[60px] z-10">
+        <div className="absolute top-[30px] left-[1px] bg-[#F5A3B7] rounded-r-full text-white text-[12px] font-bold px-3 py-1">
           -{product.discount}%
         </div>
       )}
 
-      <div className="relative">
-        <div
-          className={`absolute top-[20px] right-[23px] transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setLiked(!liked);
-          }}
-        >
-          <img
-            src={
-              liked
-                ? "/svgs/Shared/ProductSection/heart-filled.svg"
-                : "/svgs/Shared/ProductSection/heart.svg"
-            }
-            alt="wishlist"
-            className="w-[18px] h-[19px] cursor-pointer"
-          />
-        </div>
+      <div
+        className="relative"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {isHovered && (
+          <div
+            className="absolute top-[20px] right-[23px] cursor-pointer transition-opacity duration-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist(product.id);
+            }}
+          >
+            <img
+              src={
+                isInWishlist
+                  ? "/svgs/Shared/ProductSection/heart-filled.svg"
+                  : "/svgs/Shared/ProductSection/heart.svg"
+              }
+              alt="wishlist"
+              onClick={(e) => {
+                addToCart(product);
+              }}
+              className="w-[18px] h-[19px]"
+            />
+          </div>
+        )}
+
         <img
           src={`${process.env.NEXT_PUBLIC_API_URL}${product.image}`}
           alt={product.name}
-          className="w-full h-full object-cover rounded-[6px]"
+          className="w-full h-full max-h-[220px] object-cover rounded-[6px] "
         />
       </div>
 
@@ -83,8 +94,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {product.name}
           </p>
 
-          {product.reviews.length > 0 && (
-            <div className="flex items-center gap-1 mb-2">
+          <div className="flex items-center gap-1 mb-2">
             {[...Array(5)].map((_, i) => (
               <img
                 key={i}
@@ -101,7 +111,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
               ({averageRating.toFixed(1)})
             </span>
           </div>
-          )}
 
           <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px]">
             {product.description}

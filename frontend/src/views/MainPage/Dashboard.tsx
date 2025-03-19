@@ -9,17 +9,28 @@ import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
 
 function MainPage() {
-  const { bestSellers, newArrivals, fetchProducts ,blogs}:any = useProductStore();
+  const { bestSellers, newArrivals, fetchProducts, blogs, addToCart, toggleWishlist, isInWishlist } = useProductStore(); 
 
   useEffect(() => {
     fetchProducts();
   }, []);
-  console.log(newArrivals,'newArrivals')
   return (
     <div>
       <Dashboard />
-      <ProductSection products={newArrivals} cardWidth={289} />
-      <ProductSection products={bestSellers} cardWidth={289} />
+        <ProductSection
+          products={newArrivals}
+          cardWidth={289}
+          addToCart={addToCart}
+          toggleWishlist={toggleWishlist}
+          isInWishlist={isInWishlist}
+        />
+      <ProductSection
+        products={bestSellers}
+        cardWidth={289}
+        addToCart={addToCart}
+        toggleWishlist={toggleWishlist}
+        isInWishlist={isInWishlist}
+      />
       <Frame />
       <BlogSection products={blogs} cardWidth={320} />
       <SkinQuiz />

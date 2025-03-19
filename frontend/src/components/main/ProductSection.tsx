@@ -1,12 +1,11 @@
 "use client";
-
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
 import { CartModal } from "../model/RightModal";
 
 interface Product {
-  category: any;
+  category: string;
   id: string;
   name: string;
   price: number;
@@ -14,6 +13,9 @@ interface Product {
 }
 
 interface ProductSectionProps {
+  addToCart: (product: Product) => void;
+  toggleWishlist: (id: string) => void;
+  isInWishlist: (id: string) => boolean;
   products: Product[];
   cardWidth: number;
 }
@@ -21,11 +23,15 @@ interface ProductSectionProps {
 const ProductSection: React.FC<ProductSectionProps> = ({
   products,
   cardWidth,
+  toggleWishlist,
+  isInWishlist,
+  addToCart, // ✅ ADDED THIS PROP
 }) => {
+  
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems]: any = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<Product[]>([]);
 
   const scrollAmount = cardWidth * 4;
 
@@ -40,6 +46,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
     },
     [scrollAmount]
   );
+
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
@@ -57,25 +64,19 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   }, [scrollAmount]);
 
   const totalDots = useMemo(() => Math.ceil(products.length / 4), [products]);
-
-  const addToCart: any = useCallback((product: Product) => {
-    setCartItems((prev: any) => [...prev, product]);
-    setIsCartOpen(true);
-  }, []);
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] relative">
         <div className="text-center">
           <div className="flex gap-[10px] items-center">
-            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
-            <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold text-[#383838]">
-              {[...new Set(products?.map((item: any) => item.category))].map(
+            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt=""/>
+            <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
+              {[...new Set(products?.map((item) => item.category))].map(
                 (category) => (
                   <p key={category}>{category}</p>
                 )
               )}
             </div>
-
             <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="" />
           </div>
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
@@ -98,22 +99,31 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               ref={scrollRef}
               className="flex gap-[10px] overflow-x-scroll scrollbar-hide flex-nowrap relative"
             >
-              {products.map((product: any, index) => (
+              {products.map((product, index) => (
                 <div
                   key={`${product.id}-${index}`}
                   style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
                   className="shrink-0"
-                > 
-                  <ProductCard product={product} addToCart={addToCart} />
+                >
+                  <ProductCard
+                    product={product}
+                    addToCart={() => addToCart(product)}
+                    toggleWishlist={() => toggleWishlist(product.id)}
+                    isInWishlist={
+                      typeof isInWishlist === "function"
+                        ? isInWishlist(product.id)
+                        : false
+                    }
+                  />
                 </div>
               ))}
             </div>
 
-            <CartModal
+            {/* <CartModal
               isOpen={isCartOpen}
               onClose={() => setIsCartOpen(false)}
               cartItems={cartItems}
-            />
+            /> */}
 
             <button
               className="absolute right-[-20px] top-1/2 -translate-y-1/2 rounded-full hidden lg:flex z-[20]"
@@ -126,6 +136,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             </button>
           </div>
         )}
+
         {products.length > 4 && (
           <div className="flex mt-4 gap-2">
             {Array.from({ length: Math.min(totalDots, 4) }).map((_, index) => {

@@ -84,20 +84,21 @@ export const getAllProducts = async () => {
   }
 };
 
-export const likeProduct = async (productId: any) => {
+export const getWishlist = async () => {
   try {
-    const response = await api.put(`/api/products/like/${productId}`);
-    toast.success("Product liked!");
+    const response = await api.get(`/api/products/getWishlist`);
+    toast.success("Product getWishlist!");
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const dislikeProduct = async (productId:any) => {
+export const addToWishlist = async (id: any) => {
   try {
-    const response = await api.put(`/api/products/dislike/${productId}`);
-    toast.success("Product disliked!");
+    const response = await api.post(`/api/products/addToWishlist/${id}`);
+    console.log(response.data,'formdata')
+    toast.success("Product addToWishlist!");
     return response.data;
   } catch (error) {
     throw error;
