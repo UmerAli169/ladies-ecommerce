@@ -22,7 +22,7 @@ function MainPage() {
       <Dashboard />
         <ProductSection
           products={newArrivals}
-          cardWidth={289}
+          cardWidth={289} 
           addToCart={addToCart}
           toggleWishlist={toggleWishlist}
           isInWishlist={isInWishlist}

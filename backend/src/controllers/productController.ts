@@ -67,7 +67,7 @@ export const getAllProducts = async (req: any, res: any) => {
 
 export const toggleWishlist = async (req: any, res: any) => {
   try {
-    const { productId } = req.params;
+    const  productId  = req.params.id;
     const userId = req.userId;
     let wishlist = await Wishlist.findOne({ userId });
 

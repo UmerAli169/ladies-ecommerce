@@ -25,7 +25,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
   toggleWishlist: async (id: string) => {
     try {
       const { wishlist } = get();
-
+console.log(id,'wishlist')
       await toggleWishlist(id);
 
       set({

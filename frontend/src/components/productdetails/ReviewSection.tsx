@@ -22,7 +22,6 @@ const ReviewSection = ({ productId }: { productId: string }) => {
     fetchReviews();
   }, [productId]);
 
-
   const averageRating =
     reviews.length > 0
       ? (
@@ -140,7 +139,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                     {review.images.map((img: string, i: number) => (
                       <img
                         key={i}
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${img}`}
+                        src={img}
                         alt="review"
                         className="w-16 h-16 rounded-lg"
                       />

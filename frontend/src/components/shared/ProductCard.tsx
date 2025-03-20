@@ -35,7 +35,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleRedirect = () => {
     router.push(`/ProductDetails?id=${product.id}`);
   };
-
   const averageRating = product.reviews?.length
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
@@ -45,7 +44,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
       className="w-full rounded-[6px] cursor-pointer relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleRedirect}
     >
       {product.discount && (
         <div className="absolute top-[30px] left-[1px] bg-[#F5A3B7] rounded-r-full text-white text-[12px] font-bold px-3 py-1">
@@ -73,9 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   : "/svgs/Shared/ProductSection/heart.svg"
               }
               alt="wishlist"
-              onClick={(e) => {
-                addToCart(product);
-              }}
+             
               className="w-[18px] h-[19px]"
             />
           </div>
@@ -84,6 +80,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <img
           src={product.image}
           alt={product.name}
+          onClick={handleRedirect}
+
           className="w-full h-full max-h-[220px] object-cover rounded-[6px]"
         />
       </div>
@@ -124,10 +122,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="mt-[20px]">
           <Button
             className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
-            onClick={(e) => {
-              e.stopPropagation();
-              addToCart(product);
-            }}
+            onClick={() => 
+               
+              addToCart(product)}
+
           >
             Add To Bag
           </Button>

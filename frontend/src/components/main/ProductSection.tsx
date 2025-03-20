@@ -28,7 +28,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   cardWidth,
   toggleWishlist,
   isInWishlist,
-  addToCart, // ✅ ADDED THIS PROP
+  addToCart, 
 }) => {
   
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -65,7 +65,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
       return () => scrollContainer.removeEventListener("scroll", handleScroll);
     }
   }, [scrollAmount]);
-
   const totalDots = useMemo(() => Math.ceil(products.length / 4), [products]);
   return (
     <Wrapper>

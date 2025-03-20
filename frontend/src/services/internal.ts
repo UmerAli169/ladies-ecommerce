@@ -93,11 +93,12 @@ export const getWishlist = async () => {
     throw error;
   }
 };
+
 export const toggleWishlist = async (id: string) => {
   try {
+    console.log(id,'id')
     const response = await api.post(`/api/products/addToWishlist/${id}`);
-    console.log(response.data, "formdata");
-
+    
     // Check response message to determine action
     if (response.data.message.includes("removed")) {
       toast.success(response.data.message);
@@ -114,7 +115,9 @@ export const toggleWishlist = async (id: string) => {
 
 export const getProductById = async (productId:any) => {
   try {
+
     const response = await api.put(`/api/products/getProductById/${productId}`);
+
     return response.data;
   } catch (error) {
     throw error;

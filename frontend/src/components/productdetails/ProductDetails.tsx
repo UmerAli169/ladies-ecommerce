@@ -11,20 +11,15 @@ import { useWishlistStore } from "../../store/useWishlistStore";
 import aboutData from "../../Data/productDetails/details.json";
 
 interface ProductProps {
-  productId: string | number;
+  productInfo: string | number;
 }
 
-const ProductDetails = ({ productId }: ProductProps) => {
+const ProductDetails = ({ productInfo }: ProductProps) => {
   const { product, fetchProduct, addToCart, cart } = useProductStore();
   const { wishlist, toggleWishlist, isInWishlist } = useWishlistStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
 
-  useEffect(() => {
-    if (productId) {
-      fetchProduct(productId as string);
-    }
-  }, [productId]);
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
@@ -57,7 +52,6 @@ const ProductDetails = ({ productId }: ProductProps) => {
     addToCart(product);
     setIsCartOpen(true);
   };
-
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row gap-[123px]">
@@ -142,13 +136,13 @@ const ProductDetails = ({ productId }: ProductProps) => {
             </Button>
             <img
               src={
-                isInWishlist(product.id)
+                isInWishlist(product._id)
                   ? "/svgs/Shared/ProductSection/heart-filled.svg"
                   : "/svgs/Shared/ProductSection/heart.svg"
               }
               alt="wishlist"
               className="cursor-pointer"
-              onClick={() => toggleWishlist(product.id)}
+              onClick={() => toggleWishlist(product._id)}
             />
           </div>
           <CartModal

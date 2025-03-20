@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { getAllProducts, getProductById } from "../services/internal";
+import { addToCart, getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   image: string;
@@ -65,6 +65,8 @@ export const useProductStore = create<ProductState>((set) => ({
         productdetails: formattedProducts.filter((p: any) => p.category === "Recently Viewed Products"),
         blogs: formattedProducts.filter((p: any) => p.category === "On the Blog"),
       });
+      return response
+
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -74,12 +76,16 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
+      return response
     } catch (error) {
       console.error("Error fetching product:", error);
     }
   },
 
-  addToCart: (product) => {
+  addToCart: async(product) => {
+    console.log(product,'fromstate')
+    const response = await addToCart(product);
+
     set((state) => ({ cart: [...state.cart, product] }));
   },
 }));
