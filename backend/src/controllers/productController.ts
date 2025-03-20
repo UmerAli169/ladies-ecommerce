@@ -2,8 +2,8 @@ import Product from "../models/Product";
 import Cart from "../models/Cart";
 import User from "../models/User";
 import Wishlist from "../models/Wishlist";
-
 const mongoose = require("mongoose");
+
 export const createProduct = async (req: any, res: any) => {
   try {
     const {
@@ -27,11 +27,10 @@ export const createProduct = async (req: any, res: any) => {
     }
 
     const imagePaths = req.files
-      ? (req.files as Express.Multer.File[]).map(
-          (file) => `/uploads/${file.filename}`
-        )
-      : [];
-
+    ? (req.files as Express.Multer.File[]).map((file: any) => file.path) 
+    : [];
+  
+  
     const product: any = new Product({
       name,
       description,
@@ -66,22 +65,25 @@ export const getAllProducts = async (req: any, res: any) => {
   }
 };
 
-export const addToWishlist = async (req:any, res:any) => {
+export const toggleWishlist = async (req: any, res: any) => {
   try {
-    const { productId } = req.params.id;
-    const userId = req.userId; 
+    const { productId } = req.params;
+    const userId = req.userId;
     let wishlist = await Wishlist.findOne({ userId });
 
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [productId] });
-    } else {
-      if (!wishlist.products.includes(productId)) {
-        wishlist.products.push(productId);
-      } else {
-        return res.status(400).json({ message: "Product already in wishlist" });
-      }
+      await wishlist.save();
+      return res.status(200).json({ message: "Product added to wishlist", wishlist });
     }
 
+    if (wishlist.products.includes(productId)) {
+      wishlist.products = wishlist.products.filter((id) => id && id !== productId); 
+      await wishlist.save();
+      return res.status(200).json({ message: "Product removed from wishlist", wishlist });
+    }
+
+    wishlist.products.push(productId);
     await wishlist.save();
     res.status(200).json({ message: "Product added to wishlist", wishlist });
   } catch (error) {

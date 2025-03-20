@@ -1,22 +1,25 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import AboutSection from "../about/AboutSection";
 import Accordion from "../about/Accordion";
 import { CartModal } from "../model/RightModal";
 import { useProductStore } from "@/store/productStore";
+import { useWishlistStore } from "../../store/useWishlistStore";
 import aboutData from "../../Data/productDetails/details.json";
 
 interface ProductProps {
   productId: string | number;
 }
+
 const ProductDetails = ({ productId }: ProductProps) => {
-  const { product, fetchProduct } = useProductStore();
+  const { product, fetchProduct, addToCart, cart } = useProductStore();
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlistStore();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [cartItems, setCartItems]: any = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = React.useState(false);
+
   useEffect(() => {
     if (productId) {
       fetchProduct(productId as string);
@@ -26,8 +29,8 @@ const ProductDetails = ({ productId }: ProductProps) => {
   if (!product) {
     return <p className="text-center">Loading product...</p>;
   }
-  const reviewsArray = Array.isArray(product.reviews) ? product.reviews : [];
 
+  const reviewsArray = Array.isArray(product.reviews) ? product.reviews : [];
   const averageRating =
     reviewsArray.length > 0
       ? reviewsArray.reduce(
@@ -50,8 +53,8 @@ const ProductDetails = ({ productId }: ProductProps) => {
     }
   };
 
-  const addToCart = () => {
-    setCartItems([...cartItems, product]);
+  const handleAddToCart = () => {
+    addToCart(product);
     setIsCartOpen(true);
   };
 
@@ -66,10 +69,11 @@ const ProductDetails = ({ productId }: ProductProps) => {
             <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="left" />
           </button>
           <img
-            src={`${process.env.NEXT_PUBLIC_API_URL}${product.image}`}
+            src={product.image}
             alt={product.name}
             className="w-full object-cover"
           />
+
           <button
             className="absolute right-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
             onClick={() => scroll("right")}
@@ -83,8 +87,8 @@ const ProductDetails = ({ productId }: ProductProps) => {
             >
               {product.thumbnailImages.map((thumb, index) => (
                 <img
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_API_URL}${thumb}`}
+                  key={`${thumb}-${index}`}
+                  src={thumb}
                   alt="thumbnail"
                   className="w-26 h-[124px] object-cover cursor-pointer"
                 />
@@ -119,7 +123,7 @@ const ProductDetails = ({ productId }: ProductProps) => {
           </p>
           <div className="lg:text-[14px] text-[12px] font-normal font-[Montserrat] text-[#697586] lg:leading-[22px] leading-[20px]">
             <p>{product.description}</p>
-            <p>Size: {product.size}</p>
+            <p>Size: {product.size?.join(", ") || "N/A"}</p>
             <div className="flex flex-col gap-[6px]">
               <div className="font-[14px] leading-[20px] font-medium text-[#383838]">
                 Recommended For
@@ -132,16 +136,25 @@ const ProductDetails = ({ productId }: ProductProps) => {
           <div className="flex items-center gap-[10px]">
             <Button
               className="max-w-[246px] w-full py-[10px] px-[80px] text-[14px] font-bold text-[#383838] lg:leading-[21px] leading-[18px]"
-              onClick={addToCart}
+              onClick={handleAddToCart}
             >
               Add To Cart
             </Button>
-            <img src="/svgs/Shared/ProductSection/heart.svg" alt="wishlist" />
+            <img
+              src={
+                isInWishlist(product.id)
+                  ? "/svgs/Shared/ProductSection/heart-filled.svg"
+                  : "/svgs/Shared/ProductSection/heart.svg"
+              }
+              alt="wishlist"
+              className="cursor-pointer"
+              onClick={() => toggleWishlist(product.id)}
+            />
           </div>
           <CartModal
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
-            cartItems={cartItems}
+            cartItems={cart}
           />
 
           {aboutData.sections.map((section, sectionIndex) => (

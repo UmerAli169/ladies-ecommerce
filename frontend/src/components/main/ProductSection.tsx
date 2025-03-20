@@ -10,6 +10,9 @@ interface Product {
   name: string;
   price: number;
   image: string;
+  raing:number
+  describtion:string
+  reviews:string
 }
 
 interface ProductSectionProps {

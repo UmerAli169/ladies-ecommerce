@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getAllProducts, getProductById, getWishlist, addToWishlist } from "../services/internal"; // Add removeFromWishlist if needed
+import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   id: string;
@@ -25,16 +25,12 @@ interface ProductState {
   productdetails: Product[];
   product: Product | null;
   cart: Product[];
-  wishlist: string[];
   fetchProducts: () => Promise<void>;
   fetchProduct: (id: string) => Promise<void>;
-  fetchWishlist: () => Promise<void>;
-  toggleWishlist: (id: string) => Promise<void>;
   addToCart: (product: Product) => void;
-  isInWishlist: (id: string) => boolean;
 }
 
-export const useProductStore = create<ProductState>((set, get) => ({
+export const useProductStore = create<ProductState>((set) => ({
   products: [],
   bestSellers: [],
   newArrivals: [],
@@ -42,7 +38,6 @@ export const useProductStore = create<ProductState>((set, get) => ({
   productdetails: [],
   product: null,
   cart: [],
-  wishlist: [],
 
   fetchProducts: async () => {
     try {
@@ -65,7 +60,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
 
       set({
         products: formattedProducts,
-        bestSellers: formattedProducts.filter((p: any) => p.category === "BEST SELLERS"),
+        bestSellers: formattedProducts.filter((p: any) => p.category === "Best Sellers"),
         newArrivals: formattedProducts.filter((p: any) => p.category === "New Arrivals"),
         productdetails: formattedProducts.filter((p: any) => p.category === "Recently Viewed Products"),
         blogs: formattedProducts.filter((p: any) => p.category === "On the Blog"),
@@ -84,39 +79,9 @@ export const useProductStore = create<ProductState>((set, get) => ({
     }
   },
 
-  fetchWishlist: async () => {
-    try {
-      const wishlist = await getWishlist();
-      set({ wishlist });
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-    }
-  },
-
-  toggleWishlist: async (id: string) => {
-    try {
-      const { wishlist } = get();
-      if (wishlist.includes(id)) {
-        // Remove from wishlist
-        const updatedWishlist = wishlist.filter((item) => item !== id);
-        // await removeFromWishlist(id); // Ensure this API exists
-        set({ wishlist: updatedWishlist });
-      } else {
-        // Add to wishlist
-        const updatedWishlist = [...wishlist, id];
-        await addToWishlist(id);
-        set({ wishlist: updatedWishlist });
-      }
-    } catch (error) {
-      console.error("Error toggling wishlist:", error);
-    }
-  },
-
   addToCart: (product) => {
     set((state) => ({ cart: [...state.cart, product] }));
   },
-
-  isInWishlist: (id: string) => get().wishlist.includes(id),
 }));
 
 export default useProductStore;

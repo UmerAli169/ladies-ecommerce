@@ -7,9 +7,12 @@ import BlogSection from "../../components/main/ProductSection";
 import SkinQuiz from "@/components/main/SkinQuiz";
 import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
+import useWishlistStore from "@/store/useWishlistStore";
 
 function MainPage() {
-  const { bestSellers, newArrivals, fetchProducts, blogs, addToCart, toggleWishlist, isInWishlist } = useProductStore(); 
+  const { bestSellers, newArrivals, fetchProducts, blogs, addToCart } = useProductStore(); 
+  const {  toggleWishlist, isInWishlist } = useWishlistStore(); 
+
 
   useEffect(() => {
     fetchProducts();

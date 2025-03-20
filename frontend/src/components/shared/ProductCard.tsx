@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     router.push(`/ProductDetails?id=${product.id}`);
   };
 
-  const averageRating = product.reviews.length
+  const averageRating = product.reviews?.length
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
     : 0;
@@ -82,9 +82,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}${product.image}`}
+          src={product.image}
           alt={product.name}
-          className="w-full h-full max-h-[220px] object-cover rounded-[6px] "
+          className="w-full h-full max-h-[220px] object-cover rounded-[6px]"
         />
       </div>
 
