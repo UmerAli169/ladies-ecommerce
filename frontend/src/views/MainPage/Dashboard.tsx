@@ -21,21 +21,21 @@ function MainPage() {
     <div>
       <Dashboard />
         <ProductSection
-          products={newArrivals}
+          products={newArrivals as any}
           cardWidth={289} 
-          addToCart={addToCart}
+          addToCart={addToCart as any}
           toggleWishlist={toggleWishlist}
           isInWishlist={isInWishlist}
         />
       <ProductSection
-        products={bestSellers}
+        products={bestSellers  as any}
         cardWidth={289}
-        addToCart={addToCart}
+        addToCart={addToCart  as any}
         toggleWishlist={toggleWishlist}
         isInWishlist={isInWishlist}
       />
       <Frame />
-      <BlogSection products={blogs} cardWidth={320} />
+      <BlogSection products={blogs  } cardWidth={320} />
       <SkinQuiz />
       <InstagramGallery />
     </div>

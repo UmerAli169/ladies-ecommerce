@@ -83,7 +83,6 @@ export const useProductStore = create<ProductState>((set) => ({
   },
 
   addToCart: async(product) => {
-    console.log(product,'fromstate')
     const response = await addToCart(product);
 
     set((state) => ({ cart: [...state.cart, product] }));

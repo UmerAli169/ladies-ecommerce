@@ -106,13 +106,26 @@ export const getWishlist = async (req:any, res:any) => {
   }
 };
 
+
+
 export const addToCart = async (req: any, res: any) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity =2} = req.body;
     const userId = req.userId;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
+    }
+    const product:any = await Product.findById(new mongoose.Types.ObjectId(productId));
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    
+    // Ensure productId is valid
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      console.log("Invalid productId received:", productId); // Debugging
+      return res.status(400).json({ error: "Invalid product ID format" });
     }
 
     const user = await User.findById(userId);
@@ -120,14 +133,26 @@ export const addToCart = async (req: any, res: any) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const product = await Product.findById(productId);
+    // const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    const cartItem: any = new Cart({
+    // Convert productId to ObjectId
+    const objectIdProductId = new mongoose.Types.ObjectId(productId);
+
+    const existingCartItem = await Cart.findOne({ userId, productId: objectIdProductId });
+
+    if (existingCartItem) {
+      existingCartItem.quantity += quantity;
+      existingCartItem.total = existingCartItem.price * existingCartItem.quantity;
+      await existingCartItem.save();
+      return res.status(200).json({ message: "Cart updated successfully!", cartItem: existingCartItem });
+    }
+
+    const cartItem :any= new Cart({
       userId,
-      productId,
+      productId: objectIdProductId,
       name: product.name,
       image: product.image,
       price: product.price,
@@ -136,7 +161,6 @@ export const addToCart = async (req: any, res: any) => {
     });
 
     await cartItem.save();
-
     user.cart.push(cartItem._id);
     await user.save();
 
@@ -146,6 +170,8 @@ export const addToCart = async (req: any, res: any) => {
     res.status(500).json({ error: "Failed to add to cart" });
   }
 };
+
+
 
 export const getProductById = async (req: any, res: any) => {
   try {

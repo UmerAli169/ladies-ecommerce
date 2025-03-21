@@ -23,7 +23,7 @@ function WishlistPage() {
         setWishlistProducts(Array.isArray(data?.products) ? data.products : []);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
-      }
+      } 
     }
     loadWishlist();
   }, []);

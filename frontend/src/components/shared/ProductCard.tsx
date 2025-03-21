@@ -18,7 +18,7 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
-  addToCart: (product: Product) => void;
+  addToCart: (product: any) => void;
   toggleWishlist: (productId: number) => void;
   isInWishlist: boolean;
 }
@@ -26,7 +26,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   addToCart,
-  toggleWishlist,
+  toggleWishlist, 
   isInWishlist,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -39,6 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
     : 0;
+
   return (
     <CustomCard
       className="w-full rounded-[6px] cursor-pointer relative"
@@ -124,7 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
             onClick={() => 
                
-              addToCart(product)}
+              addToCart(product.id)}
 
           >
             Add To Bag

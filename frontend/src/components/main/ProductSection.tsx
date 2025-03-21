@@ -16,7 +16,7 @@ interface Product {
 }
 
 interface ProductSectionProps {
-  addToCart: (product: Product) => void;
+  addToCart: (product: any) => void;
   toggleWishlist: (id: string) => void;
   isInWishlist: (id: string) => boolean;
   products: Product[];
@@ -34,7 +34,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems]:any = useState<Product[]>([]);
 
   const scrollAmount = cardWidth * 4;
 
@@ -49,6 +49,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({
     },
     [scrollAmount]
   );
+
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,8 +110,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                   className="shrink-0"
                 >
                   <ProductCard
-                    product={product}
-                    addToCart={() => addToCart(product)}
+                    product={product  as any}
+                    addToCart={() => addToCart(product.id)}
                     toggleWishlist={() => toggleWishlist(product.id)}
                     isInWishlist={
                       typeof isInWishlist === "function"
@@ -121,11 +123,11 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               ))}
             </div>
 
-            {/* <CartModal
+            <CartModal
               isOpen={isCartOpen}
               onClose={() => setIsCartOpen(false)}
               cartItems={cartItems}
-            /> */}
+            />
 
             <button
               className="absolute right-[-20px] top-1/2 -translate-y-1/2 rounded-full hidden lg:flex z-[20]"

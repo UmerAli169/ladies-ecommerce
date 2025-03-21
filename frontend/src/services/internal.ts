@@ -126,7 +126,7 @@ export const getProductById = async (productId:any) => {
 
 export const addToCart = async (productId:any, quantity:any) => {
   try {
-    const response = await api.post("/cart", { productId, quantity });
+    const response = await api.post("/api/products/cart", { productId, quantity });
     toast.success("Product added to cart!");
     return response.data;
   } catch (error) {
