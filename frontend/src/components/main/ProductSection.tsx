@@ -10,9 +10,9 @@ interface Product {
   name: string;
   price: number;
   image: string;
-  raing:number
-  describtion:string
-  reviews:string
+  raing: number;
+  describtion: string;
+  reviews: string;
 }
 
 interface ProductSectionProps {
@@ -28,13 +28,12 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   cardWidth,
   toggleWishlist,
   isInWishlist,
-  addToCart, 
+  addToCart,
 }) => {
-  
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems]:any = useState<Product[]>([]);
+  const [cartItems, setCartItems]: any = useState<Product[]>([]);
 
   const scrollAmount = cardWidth * 4;
 
@@ -49,8 +48,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
     },
     [scrollAmount]
   );
-
-  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,14 +70,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] relative">
         <div className="text-center">
           <div className="flex gap-[10px] items-center">
-            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt=""/>
+            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
               {[...new Set(products?.map((item) => item.category))].map(
-                (category) => (
-                  <p key={category}>{category}</p>
+                (category, index) => (
+                  <p key={`${category}-${index}`}>{category}</p>
                 )
               )}
             </div>
+
             <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="" />
           </div>
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
@@ -110,7 +108,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                   className="shrink-0"
                 >
                   <ProductCard
-                    product={product  as any}
+                    product={product as any}
                     addToCart={() => addToCart(product.id)}
                     toggleWishlist={() => toggleWishlist(product.id)}
                     isInWishlist={

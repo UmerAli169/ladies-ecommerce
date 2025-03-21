@@ -24,11 +24,14 @@ export const CartModal: React.FC<CartModalProps> = ({
 }) => {
   const router = useRouter();
 
-  const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const handleCheckout = () => {
-    onClose(); 
-    router.push("/Checkout"); 
+    onClose();
+    router.push("/Checkout");
   };
 
   return (
@@ -45,7 +48,7 @@ export const CartModal: React.FC<CartModalProps> = ({
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ type: "tween", duration: 0.3 }}
         className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg p-6 z-50 flex flex-col"
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[26px] leading-[36px] font-semibold text-[#383838]">
@@ -61,8 +64,8 @@ export const CartModal: React.FC<CartModalProps> = ({
         <div className="flex-1 overflow-y-auto scrollbar-hidden">
           {cartItems.length > 0 ? (
             <>
-              {cartItems.map((item) => (
-                <CartItem key={item.id} item={item} />
+              {cartItems.map((item, index) => (
+                <CartItem key={item.id || index} item={item} />
               ))}
               <SampleSelection />
             </>
@@ -77,7 +80,10 @@ export const CartModal: React.FC<CartModalProps> = ({
               <span>Subtotal</span>
               <span>${total.toFixed(2)}</span>
             </div>
-            <Button onClick={handleCheckout} className="w-full text-white py-2 mt-4 rounded">
+            <Button
+              onClick={handleCheckout}
+              className="w-full text-white py-2 mt-4 rounded"
+            >
               Check Out
             </Button>
           </div>
