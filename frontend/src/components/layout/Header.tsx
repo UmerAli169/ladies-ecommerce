@@ -11,7 +11,7 @@ import DesktopMenu from "../navbar/DesktopMenu";
 import IconSection from "../navbar/IconSection";
 import MobileMenu from "../navbar/MobileMenu";
 import { useAuthStore } from "@/store/authStore";
-import { useProductStore } from "@/store/productStore";
+import { useCartStore } from "@/store/cartStore";
 
 const Header = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Get Zustand states
-  const { cart, fetchCart } = useProductStore();
+  const { cart, fetchCart } = useCartStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   // Load menu items on mount
   useEffect(() => {

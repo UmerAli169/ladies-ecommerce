@@ -23,7 +23,7 @@ export const CartModal: React.FC<CartModalProps> = ({
   cartItems,
 }) => {
   const router = useRouter();
-  const total = cartItems.reduce(
+  const total = cartItems?.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
@@ -61,7 +61,7 @@ export const CartModal: React.FC<CartModalProps> = ({
         <img src="/svgs/cart/stright.svg" alt="" />
 
         <div className="flex-1 overflow-y-auto scrollbar-hidden">
-          {cartItems.length > 0 ? (
+          {cartItems?.length > 0 ? (
             <>
               {cartItems.map((item, index) => (
                 <CartItem key={item.id || index} item={item} />
@@ -73,7 +73,7 @@ export const CartModal: React.FC<CartModalProps> = ({
           )}
         </div>
 
-        {cartItems.length > 0 && (
+        {cartItems?.length > 0 && (
           <div className="absolute bottom-0 left-0 w-full bg-white p-6 shadow-md">
             <div className="flex justify-between text-[#B0A6BD] font-normal leading-[18px] text-[16px]">
               <span>Subtotal</span>

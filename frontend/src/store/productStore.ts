@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import {
-  addToCart,
-  getAllProducts,
-  fetchCart,
-  getProductById,
-} from "../services/internal";
+import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   _id: string;
@@ -29,12 +24,10 @@ interface ProductState {
   newArrivals: Product[];
   productdetails: Product[];
   product: Product | null;
-  cart: Product[];
   fetchProducts: () => Promise<void>;
   fetchProduct: (id: string) => Promise<void>;
-  addToCart: (productId: string, quantity?: number) => Promise<void>;
-  fetchCart: () => Promise<void>;
 }
+
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   bestSellers: [],
@@ -42,7 +35,6 @@ export const useProductStore = create<ProductState>((set) => ({
   blogs: [],
   productdetails: [],
   product: null,
-  cart: [],
 
   fetchProducts: async () => {
     try {
@@ -91,23 +83,6 @@ export const useProductStore = create<ProductState>((set) => ({
       return response;
     } catch (error) {
       console.error("Error fetching product:", error);
-    }
-  },
-
-  addToCart: async (productId, quantity = 1) => {
-    try {
-      await addToCart(productId, quantity); // Call API from internal.ts
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    }
-  },
-
-  fetchCart: async () => {
-    try {
-      const cartData = await fetchCart(); // Call API from internal.ts
-      set({ cart: cartData.cart }); // Update Zustand state
-    } catch (error) {
-      console.error("Error fetching cart:", error);
     }
   },
 }));
