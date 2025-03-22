@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { addToCart, getAllProducts, getProductById } from "../services/internal";
+import {
+  addToCart,
+  getAllProducts,
+  fetchCart,
+  getProductById,
+} from "../services/internal";
 
 interface Product {
   _id: string;
@@ -27,9 +32,9 @@ interface ProductState {
   cart: Product[];
   fetchProducts: () => Promise<void>;
   fetchProduct: (id: string) => Promise<void>;
-  addToCart: (product: Product) => void;
+  addToCart: (productId: string, quantity?: number) => Promise<void>;
+  fetchCart: () => Promise<void>;
 }
-
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   bestSellers: [],
@@ -60,13 +65,20 @@ export const useProductStore = create<ProductState>((set) => ({
 
       set({
         products: formattedProducts,
-        bestSellers: formattedProducts.filter((p: any) => p.category === "Best Sellers"),
-        newArrivals: formattedProducts.filter((p: any) => p.category === "New Arrivals"),
-        productdetails: formattedProducts.filter((p: any) => p.category === "Recently Viewed Products"),
-        blogs: formattedProducts.filter((p: any) => p.category === "On the Blog"),
+        bestSellers: formattedProducts.filter(
+          (p: any) => p.category === "Best Sellers"
+        ),
+        newArrivals: formattedProducts.filter(
+          (p: any) => p.category === "New Arrivals"
+        ),
+        productdetails: formattedProducts.filter(
+          (p: any) => p.category === "Recently Viewed Products"
+        ),
+        blogs: formattedProducts.filter(
+          (p: any) => p.category === "On the Blog"
+        ),
       });
-      return response
-
+      return response;
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -76,16 +88,27 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
-      return response
+      return response;
     } catch (error) {
       console.error("Error fetching product:", error);
     }
   },
 
-  addToCart: async(product) => {
-    const response = await addToCart(product);
+  addToCart: async (productId, quantity = 1) => {
+    try {
+      await addToCart(productId, quantity); // Call API from internal.ts
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  },
 
-    set((state) => ({ cart: [...state.cart, product] }));
+  fetchCart: async () => {
+    try {
+      const cartData = await fetchCart(); // Call API from internal.ts
+      set({ cart: cartData.cart }); // Update Zustand state
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    }
   },
 }));
 

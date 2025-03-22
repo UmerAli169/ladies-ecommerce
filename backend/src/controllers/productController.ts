@@ -27,10 +27,9 @@ export const createProduct = async (req: any, res: any) => {
     }
 
     const imagePaths = req.files
-    ? (req.files as Express.Multer.File[]).map((file: any) => file.path) 
-    : [];
-  
-  
+      ? (req.files as Express.Multer.File[]).map((file: any) => file.path)
+      : [];
+
     const product: any = new Product({
       name,
       description,
@@ -67,20 +66,26 @@ export const getAllProducts = async (req: any, res: any) => {
 
 export const toggleWishlist = async (req: any, res: any) => {
   try {
-    const  productId  = req.params.id;
+    const productId = req.params.id;
     const userId = req.userId;
     let wishlist = await Wishlist.findOne({ userId });
 
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [productId] });
       await wishlist.save();
-      return res.status(200).json({ message: "Product added to wishlist", wishlist });
+      return res
+        .status(200)
+        .json({ message: "Product added to wishlist", wishlist });
     }
 
     if (wishlist.products.includes(productId)) {
-      wishlist.products = wishlist.products.filter((id) => id && id !== productId); 
+      wishlist.products = wishlist.products.filter(
+        (id) => id && id !== productId
+      );
       await wishlist.save();
-      return res.status(200).json({ message: "Product removed from wishlist", wishlist });
+      return res
+        .status(200)
+        .json({ message: "Product removed from wishlist", wishlist });
     }
 
     wishlist.products.push(productId);
@@ -91,9 +96,9 @@ export const toggleWishlist = async (req: any, res: any) => {
   }
 };
 
-export const getWishlist = async (req:any, res:any) => {
+export const getWishlist = async (req: any, res: any) => {
   try {
-    const userId = req.userId; 
+    const userId = req.userId;
     const wishlist = await Wishlist.findOne({ userId }).populate("products");
 
     if (!wishlist) {
@@ -106,22 +111,22 @@ export const getWishlist = async (req:any, res:any) => {
   }
 };
 
-
-
 export const addToCart = async (req: any, res: any) => {
   try {
-    const { productId, quantity =2} = req.body;
+    const { productId, quantity = 2 } = req.body;
     const userId = req.userId;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: No user ID found" });
     }
-    const product:any = await Product.findById(new mongoose.Types.ObjectId(productId));
+    const product: any = await Product.findById(
+      new mongoose.Types.ObjectId(productId)
+    );
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-    
+
     // Ensure productId is valid
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       console.log("Invalid productId received:", productId); // Debugging
@@ -141,16 +146,25 @@ export const addToCart = async (req: any, res: any) => {
     // Convert productId to ObjectId
     const objectIdProductId = new mongoose.Types.ObjectId(productId);
 
-    const existingCartItem = await Cart.findOne({ userId, productId: objectIdProductId });
+    const existingCartItem = await Cart.findOne({
+      userId,
+      productId: objectIdProductId,
+    });
 
     if (existingCartItem) {
       existingCartItem.quantity += quantity;
-      existingCartItem.total = existingCartItem.price * existingCartItem.quantity;
+      existingCartItem.total =
+        existingCartItem.price * existingCartItem.quantity;
       await existingCartItem.save();
-      return res.status(200).json({ message: "Cart updated successfully!", cartItem: existingCartItem });
+      return res
+        .status(200)
+        .json({
+          message: "Cart updated successfully!",
+          cartItem: existingCartItem,
+        });
     }
 
-    const cartItem :any= new Cart({
+    const cartItem: any = new Cart({
       userId,
       productId: objectIdProductId,
       name: product.name,
@@ -171,7 +185,29 @@ export const addToCart = async (req: any, res: any) => {
   }
 };
 
+export const getCart = async (req: any, res: any) => {
+  try {
+    const userId = req.userId;
 
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: No user ID found" });
+    }
+
+    const user = await User.findById(userId).populate({
+      path: "cart",
+      populate: { path: "productId", select: "name image price" }, // Populate product details
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ cart: user.cart });
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    res.status(500).json({ error: "Failed to fetch cart" });
+  }
+};
 
 export const getProductById = async (req: any, res: any) => {
   try {

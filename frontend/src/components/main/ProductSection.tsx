@@ -32,8 +32,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems]: any = useState<Product[]>([]);
 
   const scrollAmount = cardWidth * 4;
 
@@ -120,12 +118,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 </div>
               ))}
             </div>
-
-            <CartModal
-              isOpen={isCartOpen}
-              onClose={() => setIsCartOpen(false)}
-              cartItems={cartItems}
-            />
 
             <button
               className="absolute right-[-20px] top-1/2 -translate-y-1/2 rounded-full hidden lg:flex z-[20]"

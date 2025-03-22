@@ -20,7 +20,6 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
 
-
   if (!product) {
     return <p className="text-center">Loading product...</p>;
   }
@@ -48,10 +47,15 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart(product);
-    setIsCartOpen(true);
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(product._id, 1);
+      setIsCartOpen(true);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
+
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row gap-[123px]">

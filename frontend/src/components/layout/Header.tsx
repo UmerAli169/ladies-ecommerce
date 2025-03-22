@@ -11,6 +11,7 @@ import DesktopMenu from "../navbar/DesktopMenu";
 import IconSection from "../navbar/IconSection";
 import MobileMenu from "../navbar/MobileMenu";
 import { useAuthStore } from "@/store/authStore";
+import { useProductStore } from "@/store/productStore";
 
 const Header = () => {
   const router = useRouter();
@@ -24,17 +25,27 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Get Zustand states
+  const { cart, fetchCart } = useProductStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  // Load menu items on mount
   useEffect(() => {
     setMenuItems(navbar.menuItems);
     setIcons(navbar.icons);
     setMobileMenu(navbar.mobileMenu);
   }, []);
 
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
+  // Update isLoggedIn when auth state changes
   useEffect(() => {
     setIsLoggedIn(isAuthenticated);
   }, [isAuthenticated]);
+
+  // Fetch cart data when the component mounts
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCart();
+    }
+  }, [isAuthenticated, fetchCart]);
 
   const closeModal = () => setActiveModal(null);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -63,6 +74,7 @@ const Header = () => {
                 <button
                   onClick={toggleMenu}
                   className="flex flex-col items-center"
+                  aria-label="Toggle mobile menu"
                 >
                   {mobileMenu && (
                     <img
@@ -93,11 +105,13 @@ const Header = () => {
           )}
         </Wrapper>
       </nav>
+
       <ModalManager
-            activeModal={activeModal}
-            closeModal={closeModal}
-            setActiveModal={setActiveModal}
-          />
+        activeModal={activeModal}
+        closeModal={closeModal}
+        setActiveModal={setActiveModal}
+      />
+
       {isAuthenticated && (
         <>
           <MobileMenu
@@ -110,9 +124,9 @@ const Header = () => {
           <CartModal
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
-            cartItems={[]}
+            cartItems={cart} // ✅ Pass actual cart data
+            fetchCart={fetchCart} // ✅ No `as any` needed
           />
-          
         </>
       )}
     </>

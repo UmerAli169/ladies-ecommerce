@@ -18,7 +18,7 @@ api.interceptors.response.use(
   }
 );
 
-export const register = async (data:any) => {
+export const register = async (data: any) => {
   try {
     const response = await api.post("/api/auth/register", data);
     toast.success("Registration successful!");
@@ -28,7 +28,7 @@ export const register = async (data:any) => {
   }
 };
 
-export const login = async (data:any) => {
+export const login = async (data: any) => {
   try {
     const response = await api.post("/api/auth/login", data);
     toast.success("Login successful!");
@@ -38,7 +38,7 @@ export const login = async (data:any) => {
   }
 };
 
-export const recoverPassword = async (email:any) => {
+export const recoverPassword = async (email: any) => {
   try {
     const response = await api.post("/api/auth/recover-password", { email });
     toast.success("Password recovery email sent!");
@@ -48,9 +48,11 @@ export const recoverPassword = async (email:any) => {
   }
 };
 
-export const resetPassword = async (token:any, password:any) => {
+export const resetPassword = async (token: any, password: any) => {
   try {
-    const response = await api.post(`/api/auth/reset-password/${token}`, { password });
+    const response = await api.post(`/api/auth/reset-password/${token}`, {
+      password,
+    });
     toast.success("Password reset successful!");
     return response.data;
   } catch (error) {
@@ -96,9 +98,9 @@ export const getWishlist = async () => {
 
 export const toggleWishlist = async (id: string) => {
   try {
-    console.log(id,'id')
+    console.log(id, "id");
     const response = await api.post(`/api/products/addToWishlist/${id}`);
-    
+
     // Check response message to determine action
     if (response.data.message.includes("removed")) {
       toast.success(response.data.message);
@@ -113,9 +115,8 @@ export const toggleWishlist = async (id: string) => {
   }
 };
 
-export const getProductById = async (productId:any) => {
+export const getProductById = async (productId: any) => {
   try {
-
     const response = await api.put(`/api/products/getProductById/${productId}`);
 
     return response.data;
@@ -124,9 +125,13 @@ export const getProductById = async (productId:any) => {
   }
 };
 
-export const addToCart = async (productId:any, quantity:any) => {
+export const addToCart = async (productId: any, quantity: any) => {
   try {
-    const response = await api.post("/api/products/cart", { productId, quantity });
+    console.log(productId, "id");
+    const response = await api.post("/api/products/addToCart", {
+      productId,
+      quantity,
+    });
     toast.success("Product added to cart!");
     return response.data;
   } catch (error) {
@@ -134,7 +139,17 @@ export const addToCart = async (productId:any, quantity:any) => {
   }
 };
 
-export const createReview = async (formData:any) => {
+export const fetchCart = async () => {
+  try {
+    const response = await api.get("/api/products/fetchCart");
+    toast.success("Product added to cart!");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createReview = async (formData: any) => {
   try {
     const response = await api.post("/api/reviews", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -146,7 +161,7 @@ export const createReview = async (formData:any) => {
   }
 };
 
-export const getReviewsByProduct = async (productId:any) => {
+export const getReviewsByProduct = async (productId: any) => {
   try {
     const response = await api.get(`/api/reviews/${productId}`);
     return response.data;
@@ -155,19 +170,9 @@ export const getReviewsByProduct = async (productId:any) => {
   }
 };
 
-export const getReviewsByUser = async (userId:any) => {
+export const getReviewsByUser = async (userId: any) => {
   try {
     const response = await api.get(`/api/reviews/user/${userId}`);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const deleteReview = async (reviewId:any) => {
-  try {
-    const response = await api.delete(`/api/reviews/${reviewId}`);
-    toast.success("Review deleted successfully!");
     return response.data;
   } catch (error) {
     throw error;
