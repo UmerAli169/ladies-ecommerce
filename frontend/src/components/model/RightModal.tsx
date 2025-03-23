@@ -64,7 +64,7 @@ export const CartModal: React.FC<CartModalProps> = ({
           {cartItems?.length > 0 ? (
             <>
               {cartItems.map((item, index) => (
-                <CartItem key={item.id || index} item={item} />
+                <CartItem key={item.id || index} item={item as any} />
               ))}
               <SampleSelection />
             </>

@@ -7,7 +7,7 @@ import Button from "./Button";
 
 interface Product {
   image: string | undefined;
-  id: number;
+  _id: number;
   name: string;
   description: string;
   price: number;
@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const router = useRouter();
 
   const handleRedirect = () => {
-    router.push(`/ProductDetails?id=${product.id}`);
+    router.push(`/ProductDetails?id=${product._id}`);
   };
   const averageRating = product.reviews?.length
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
@@ -121,7 +121,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="mt-[20px]">
           <Button
             className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
-            onClick={() => addToCart(product.id)}
+            onClick={() => addToCart(product?._id)}
           >
             Add To Bag
           </Button>

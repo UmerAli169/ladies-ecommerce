@@ -14,13 +14,12 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       setUser: (user) => {
-        console.log("Setting user in Zustand:", user); // Debugging
         set({ user, isAuthenticated: true });
       },
       logout: () => set({ user: null, isAuthenticated: false }),
     }),
     {
-      name: "auth-storage", // LocalStorage Key
+      name: "auth-storage",
     }
   )
 );

@@ -40,7 +40,7 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getAllProducts();
       const formattedProducts = response.map((product: any) => ({
-        id: product._id,
+        _id: product._id,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -52,7 +52,6 @@ export const useProductStore = create<ProductState>((set) => ({
         reviews: product.reviews,
         size: product.size,
         recommendedFor: product.recommendedFor,
-        blog: product.Blog,
       }));
 
       set({

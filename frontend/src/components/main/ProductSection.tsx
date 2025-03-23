@@ -2,11 +2,10 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
-import { CartModal } from "../model/RightModal";
 
 interface Product {
   category: string;
-  id: string;
+  _id: string;
   name: string;
   price: number;
   image: string;
@@ -46,7 +45,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
     },
     [scrollAmount]
   );
-
   useEffect(() => {
     const handleScroll = () => {
       if (scrollRef.current) {
@@ -101,17 +99,17 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             >
               {products.map((product, index) => (
                 <div
-                  key={`${product.id}-${index}`}
+                  key={`${product._id}-${index}`}
                   style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
                   className="shrink-0"
                 >
                   <ProductCard
                     product={product as any}
-                    addToCart={() => addToCart(product.id)}
-                    toggleWishlist={() => toggleWishlist(product.id)}
+                    addToCart={() => addToCart(product._id)}
+                    toggleWishlist={() => toggleWishlist(product._id)}
                     isInWishlist={
                       typeof isInWishlist === "function"
-                        ? isInWishlist(product.id)
+                        ? isInWishlist(product._id)
                         : false
                     }
                   />
