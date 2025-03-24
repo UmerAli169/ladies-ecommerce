@@ -10,38 +10,13 @@ import OrderSummary from "@/components/shared/OrderSummary";
 import { useAuthStore } from "@/store/authStore"; // Import Zustand auth store
 import { useCartStore } from "@/store/cartStore";
 
-const orders = [
-  {
-    items: [
-      {
-        id: "12348904321",
-        name: "Soft Finish",
-        quantity: 2,
-        price: 19.6,
-        image: "/cart/cart1.png",
-      },
-    ],
-  },
-  {
-    items: [
-      {
-        id: "123489043421",
-        name: "Soft Finish",
-        quantity: 1,
-        price: 19.6,
-        image: "/cart/cart1.png",
-      },
-    ],
-  },
-];
-
 const Checkout = () => {
   const handleBackToInfo = () => setShowShipping(false);
   const handleProceedToPayment = () => setShowPayment(true);
   const { user, isAuthenticated, logout } = useAuthStore();
   const { cart } = useCartStore();
   const [deliveryMethod, setDeliveryMethod] = useState("ship");
-  const [shippingCharge, setShippingCharge] = useState(5.0); // Default charge for shipping
+  const [shippingCharge, setShippingCharge] = useState(5.0);
 
   const [showShipping, setShowShipping] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
@@ -69,7 +44,6 @@ const Checkout = () => {
           {showPayment ? (
             <Payment
               onBack={() => setShowPayment(false)}
-              onPayNow={() => console.log("Payment successful!")}
               paymentMethod={paymentMethod}
               setPaymentMethod={setPaymentMethod}
               email={userEmail}
@@ -79,11 +53,8 @@ const Checkout = () => {
             />
           ) : showShipping ? (
             <Shipping
-              email={userEmail}
-              address="Maidan Nezalezhnosti 2, Kyiv, 01000, Ukraine"
               onBack={handleBackToInfo}
               onProceedToPayment={handleProceedToPayment}
-              isLoggedIn={false}
             />
           ) : (
             <>

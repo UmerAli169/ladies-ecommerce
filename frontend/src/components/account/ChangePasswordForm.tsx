@@ -2,8 +2,12 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Button from "../shared/Button";
 import { AuthInput } from "../shared/Input";
+import { useAuthStore } from "@/store/authStore"; // Import Zustand store
+import toast from "react-hot-toast";
 
 const ChangePasswordForm = () => {
+  const { updatePassword } = useAuthStore();
+
   return (
     <Formik
       initialValues={{ oldPassword: "", newPassword: "", confirmPassword: "" }}
@@ -16,12 +20,22 @@ const ChangePasswordForm = () => {
           .oneOf([Yup.ref("newPassword")], "Passwords must match")
           .required("Confirm password is required"),
       })}
-      onSubmit={(values) => {
-        console.log("Password update:", values);
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        try {
+          await updatePassword({
+            oldPassword: values.oldPassword,
+            newPassword: values.newPassword,
+          });
+          toast.success("Password updated successfully!");
+          resetForm();
+        } catch (error) {
+          toast.error("Failed to update password!");
+        }
+        setSubmitting(false);
       }}
     >
-      {() => (
-        <Form className="space-y-4 ">
+      {({ isSubmitting }) => (
+        <Form className="space-y-4">
           <h2 className="text-xl font-semibold">Change Password</h2>
 
           <AuthInput
@@ -46,10 +60,8 @@ const ChangePasswordForm = () => {
             />
           </div>
 
-          
-
-          <Button type="submit" className="px-4 py-2 max-w-[362px]">
-            Update Password
+          <Button type="submit" className="px-4 py-2 max-w-[362px]" disabled={isSubmitting}>
+            {isSubmitting ? "Updating..." : "Update Password"}
           </Button>
         </Form>
       )}

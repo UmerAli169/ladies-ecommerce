@@ -6,6 +6,8 @@ import {
   loginUser,
   resetPassword,
   recoverPassword,
+  updateContactInfo,
+  changepassword,
 } from "../controllers/authController";
 import {
   registerValidation,
@@ -19,7 +21,8 @@ router.post("/register", registerValidation, registerUser);
 router.post("/login", loginValidation, loginUser);
 router.post("/recover-password", recoverPassword);
 router.post("/reset-password/:token", resetPassword);
-
+router.post("/change-password", authenticateUser,changepassword);
+router.put("/update-contact-info", authenticateUser, updateContactInfo);
 
 router.get("/me", authenticateUser, async (req: any, res: any) => {
   const authReq = req as any; 

@@ -11,7 +11,7 @@ interface AuthInputProps {
 
 export const AuthInput = ({ name, type, label, placeholder, required }: AuthInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [field, meta] = useField(name); // Get Formik's field and error metadata
+  const [field, meta] = useField(name); // Bind with Formik
 
   return (
     <div className="relative w-full">
@@ -24,6 +24,7 @@ export const AuthInput = ({ name, type, label, placeholder, required }: AuthInpu
         {...field}
         type={type === "password" && showPassword ? "text" : type}
         placeholder={placeholder}
+        required={required}
         className={`w-full border rounded-[4px] p-[10px] pr-10 outline-none ${
           meta.touched && meta.error ? "border-[#E77373]" : "border-[#DFE1E3]"
         }`}
@@ -43,7 +44,9 @@ export const AuthInput = ({ name, type, label, placeholder, required }: AuthInpu
         </button>
       )}
 
-      <ErrorMessage name={name} component="div" className="text-[#E77373] text-[14px] mt-1" />
+      {meta.touched && meta.error && (
+        <div className="text-[#E77373] text-[14px] mt-1">{meta.error}</div>
+      )}
     </div>
   );
 };

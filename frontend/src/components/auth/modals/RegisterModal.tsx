@@ -19,6 +19,7 @@ export const RegisterModal = ({ isOpen, onClose, onLoginClick }: RegisterModalPr
   const [registerError, setRegisterError] = useState("");
 
   const handleRegister = async (values: Record<string, string>, { setSubmitting, resetForm }: any) => {
+    console.log("first")
     setSubmitting(true);
     try {
       await register(values); 

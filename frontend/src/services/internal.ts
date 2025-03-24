@@ -211,3 +211,24 @@ export const removeCartItem = async (cartItemId: string) => {
     throw error;
   }
 };
+
+
+export const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
+  try {
+    const response = await api.post("/api/auth/change-password", data);
+    toast.success("Password updated successfully!");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateContactInfo = async (data: { firstName: string; lastName: string; email: string }) => {
+  try {
+    const response = await api.put("/api/auth/update-contact-info", data);
+    toast.success("Contact information updated successfully!");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

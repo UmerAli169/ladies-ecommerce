@@ -5,6 +5,10 @@ export interface IUser extends Document {
   lastName?: string;
   email: string;
   password?: string;
+  phone?: string; // ✅ Fixed: Correct type declaration
+  address?: string; // ✅ Fixed: Correct type declaration
+  city?: string; // ✅ Fixed: Correct type declaration
+  country?: string; // ✅ Fixed: Correct type declaration
   googleId?: string;
   resetPasswordToken?: string | null;
   resetPasswordExpires?: Date | null;
@@ -19,6 +23,10 @@ const UserSchema = new Schema<IUser>(
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
+    phone: { type: String }, // ✅ Kept schema correct
+    address: { type: String }, // ✅ Kept schema correct
+    city: { type: String }, // ✅ Kept schema correct
+    country: { type: String }, // ✅ Kept schema correct
     password: {
       type: String,
       required: function (this: IUser) {

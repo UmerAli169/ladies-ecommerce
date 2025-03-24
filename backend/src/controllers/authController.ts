@@ -24,12 +24,12 @@ export const registerUser = async (req: any, res: any) => {
       password: hashedPassword,
     });
 
-    const token = generateToken(newUser._id);
+    const token = generateToken(newUser.id);
 
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", 
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
@@ -62,10 +62,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     res
       .cookie("token", token, {
-        httpOnly: true, 
-        secure: process.env.NODE_ENV === "production", 
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, 
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ message: "Login successful", user, token });
   } catch (error) {
@@ -154,3 +154,53 @@ export const resetPassword = async (
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateContactInfo = async (req: any, res: any) => {
+  try {
+    const userId = req.userId;
+    const { firstName, lastName, phone, address, city, country, email} = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { firstName, lastName, phone, address, city, country ,email},
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Contact info updated", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating contact info", error });
+  }
+};
+
+
+export const changepassword =async (req:any, res:any) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.userId;
+
+  try {
+    const user:any= await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect old password" });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    
+    await user.save();
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
