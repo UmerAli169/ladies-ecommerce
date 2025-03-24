@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { addToCart, getAllProducts, getProductById } from "../services/internal";
+import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   _id: string;
@@ -24,10 +24,8 @@ interface ProductState {
   newArrivals: Product[];
   productdetails: Product[];
   product: Product | null;
-  cart: Product[];
   fetchProducts: () => Promise<void>;
   fetchProduct: (id: string) => Promise<void>;
-  addToCart: (product: Product) => void;
 }
 
 export const useProductStore = create<ProductState>((set) => ({
@@ -37,13 +35,12 @@ export const useProductStore = create<ProductState>((set) => ({
   blogs: [],
   productdetails: [],
   product: null,
-  cart: [],
 
   fetchProducts: async () => {
     try {
       const response = await getAllProducts();
       const formattedProducts = response.map((product: any) => ({
-        id: product._id,
+        _id: product._id,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -55,18 +52,24 @@ export const useProductStore = create<ProductState>((set) => ({
         reviews: product.reviews,
         size: product.size,
         recommendedFor: product.recommendedFor,
-        blog: product.Blog,
       }));
 
       set({
         products: formattedProducts,
-        bestSellers: formattedProducts.filter((p: any) => p.category === "Best Sellers"),
-        newArrivals: formattedProducts.filter((p: any) => p.category === "New Arrivals"),
-        productdetails: formattedProducts.filter((p: any) => p.category === "Recently Viewed Products"),
-        blogs: formattedProducts.filter((p: any) => p.category === "On the Blog"),
+        bestSellers: formattedProducts.filter(
+          (p: any) => p.category === "Best Sellers"
+        ),
+        newArrivals: formattedProducts.filter(
+          (p: any) => p.category === "New Arrivals"
+        ),
+        productdetails: formattedProducts.filter(
+          (p: any) => p.category === "Recently Viewed Products"
+        ),
+        blogs: formattedProducts.filter(
+          (p: any) => p.category === "On the Blog"
+        ),
       });
-      return response
-
+      return response;
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -76,16 +79,10 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
-      return response
+      return response;
     } catch (error) {
       console.error("Error fetching product:", error);
     }
-  },
-
-  addToCart: async(product) => {
-    const response = await addToCart(product);
-
-    set((state) => ({ cart: [...state.cart, product] }));
   },
 }));
 

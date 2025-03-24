@@ -8,6 +8,7 @@ import Accordion from "../about/Accordion";
 import { CartModal } from "../model/RightModal";
 import { useProductStore } from "@/store/productStore";
 import { useWishlistStore } from "../../store/useWishlistStore";
+import { useCartStore } from "../../store/cartStore";
 import aboutData from "../../Data/productDetails/details.json";
 
 interface ProductProps {
@@ -15,11 +16,11 @@ interface ProductProps {
 }
 
 const ProductDetails = ({ productInfo }: ProductProps) => {
-  const { product, fetchProduct, addToCart, cart } = useProductStore();
+  const { product } = useProductStore();
   const { wishlist, toggleWishlist, isInWishlist } = useWishlistStore();
+  const { addToCart, cart } = useCartStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
-
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
@@ -48,10 +49,15 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart(product);
-    setIsCartOpen(true);
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(product._id, 1);
+      setIsCartOpen(true);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
+
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row gap-[123px]">

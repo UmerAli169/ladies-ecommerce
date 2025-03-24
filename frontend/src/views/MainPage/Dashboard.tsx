@@ -8,34 +8,36 @@ import SkinQuiz from "@/components/main/SkinQuiz";
 import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
 import useWishlistStore from "@/store/useWishlistStore";
+import useCartStore from "@/store/cartStore";
 
 function MainPage() {
-  const { bestSellers, newArrivals, fetchProducts, blogs, addToCart } = useProductStore(); 
-  const {  toggleWishlist, isInWishlist } = useWishlistStore(); 
-
+  const { bestSellers, newArrivals, fetchProducts, blogs } = useProductStore();
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { addToCart } = useCartStore();
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
   return (
     <div>
       <Dashboard />
-        <ProductSection
-          products={newArrivals as any}
-          cardWidth={289} 
-          addToCart={addToCart as any}
-          toggleWishlist={toggleWishlist}
-          isInWishlist={isInWishlist}
-        />
       <ProductSection
-        products={bestSellers  as any}
+        products={newArrivals as any}
         cardWidth={289}
-        addToCart={addToCart  as any}
+        addToCart={addToCart as any}
+        toggleWishlist={toggleWishlist}
+        isInWishlist={isInWishlist}
+      />
+      <ProductSection
+        products={bestSellers as any}
+        cardWidth={289}
+        addToCart={addToCart as any}
         toggleWishlist={toggleWishlist}
         isInWishlist={isInWishlist}
       />
       <Frame />
-      <BlogSection products={blogs  } cardWidth={320} />
+      <BlogSection products={blogs} cardWidth={320} />
       <SkinQuiz />
       <InstagramGallery />
     </div>

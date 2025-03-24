@@ -10,8 +10,8 @@ export interface IUser extends Document {
   resetPasswordExpires?: Date | null;
   cart: Types.ObjectId[];
   products: Types.ObjectId[];
-  reviews: Types.ObjectId[];
-
+  wishlist: Types.ObjectId[];
+  orders: Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>(
@@ -19,7 +19,7 @@ const UserSchema = new Schema<IUser>(
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
-    password: { 
+    password: {
       type: String,
       required: function (this: IUser) {
         return !this.googleId;
@@ -30,9 +30,10 @@ const UserSchema = new Schema<IUser>(
     resetPasswordExpires: { type: Date, default: null },
     cart: [{ type: Schema.Types.ObjectId, ref: "Cart" }],
     products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-
+    wishlist: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 const User = mongoose.model<IUser>("User", UserSchema);
