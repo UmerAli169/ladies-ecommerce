@@ -100,7 +100,10 @@ const Checkout = () => {
                 onEdit={() => setShowShipping(true)}
               />
 
-              <ShippingAddress />
+              <ShippingAddress
+                onContinue={() => setShowShipping(true)}
+                user={isAuthenticated ? user : null}
+              />
             </>
           )}
         </div>
