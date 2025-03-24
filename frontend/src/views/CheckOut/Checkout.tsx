@@ -30,7 +30,7 @@ const orders = [
         image: "/cart/cart1.png",
       },
     ],
-  },
+  }, 
 ];
 
 const Checkout = () => {

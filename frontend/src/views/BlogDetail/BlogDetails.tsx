@@ -1,5 +1,5 @@
 "use client";
-import BlogSection from "../../components/main/BlogSection";
+// import BlogSection from "../../components/main/BlogSection";
 import data from "../../Data/blog/blogdetails.json";
 import Wrapper from "@/app/wrapper";
 import Button from "@/components/shared/Button";
@@ -95,7 +95,7 @@ const BlogDetails = () => {
           </div>
         </div>
       </Wrapper>
-      <BlogSection />
+      {/* <BlogSection /> */}
     </div>
   );
 };

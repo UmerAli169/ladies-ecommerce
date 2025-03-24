@@ -6,5 +6,5 @@ function page() {
     <div><Checkout/></div>
   )
 }
-
+ 
 export default page
