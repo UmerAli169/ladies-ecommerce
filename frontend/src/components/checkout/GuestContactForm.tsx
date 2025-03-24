@@ -7,18 +7,19 @@ import Link from "next/link";
 import ContactInfo from "../shared/ContactInfo";
 
 interface GuestContactFormProps {
-  email?: string;
+  user?: any;
   isLoggedIn: boolean;
   onLogout: () => void;
   onEmailChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const GuestContactForm: React.FC<GuestContactFormProps> = ({
-  email,
+  user,
   isLoggedIn,
   onLogout,
   onEmailChange,
 }) => {
+
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px]">
@@ -34,14 +35,14 @@ const GuestContactForm: React.FC<GuestContactFormProps> = ({
 
       {isLoggedIn ? (
         <ContactInfo 
-          email={email || ""}
+          email={user?.email || ""}
           isLoggedIn={isLoggedIn}
           onLogout={onLogout} method={undefined}        />
       ) : (
         <InputField
           type="email"
           placeholder="Enter your email"
-          value={email}
+          value={user}
           onChange={onEmailChange}
         />
       )}
