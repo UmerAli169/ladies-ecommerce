@@ -12,6 +12,7 @@ import IconSection from "../navbar/IconSection";
 import MobileMenu from "../navbar/MobileMenu";
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
+import useProductStore from "@/store/productStore";
 
 const Header = () => {
   const router = useRouter();
@@ -24,23 +25,20 @@ const Header = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
+    const {products } = useProductStore();
 
-  // Get Zustand states
   const { cart, fetchCart } = useCartStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  // Load menu items on mount
   useEffect(() => {
     setMenuItems(navbar.menuItems);
     setIcons(navbar.icons);
     setMobileMenu(navbar.mobileMenu);
   }, []);
 
-  // Update isLoggedIn when auth state changes
   useEffect(() => {
     setIsLoggedIn(isAuthenticated);
   }, [isAuthenticated]);
 
-  // Fetch cart data when the component mounts
   useEffect(() => {
     if (isAuthenticated) {
       fetchCart();
@@ -58,6 +56,10 @@ const Header = () => {
     }
   };
 
+  const searchResults = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+console.log(searchResults,'searchResults')
   return (
     <>
       <nav className="bg-[#FFFFFF] relative">
@@ -124,8 +126,8 @@ const Header = () => {
           <CartModal
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
-            cartItems={cart} // ✅ Pass actual cart data
-            fetchCart={fetchCart} // ✅ No `as any` needed
+            cartItems={cart as any} 
+            fetchCart={fetchCart as any} 
           />
         </>
       )}
