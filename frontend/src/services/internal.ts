@@ -232,3 +232,9 @@ export const updateContactInfo = async (data: { firstName: string; lastName: str
     throw error;
   }
 };
+
+
+export const getAllCategories = async () => {
+  const response = await api.get("/api/products/categories");
+  return response.data; // Ensure backend sends data in correct format
+};

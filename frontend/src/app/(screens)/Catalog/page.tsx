@@ -2,22 +2,25 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../../../components/shared/ProductCard";
 import Sidebar from "../../../components/catalog/Sliderbar";
-import productsData from "../../../Data/mainPage/cardSection/products.json";
-import categoriesData from "@/Data/categories/categorie.json";
 import Wrapper from "@/app/wrapper";
 import Filters from "@/components/shared/Filters";
 import ProductSection from "@/components/main/ProductSection";
 import useWishlistStore from "@/store/useWishlistStore";
 import useProductStore from "@/store/productStore";
+import useCategoryStore from "@/store/categoryStore";
 
 const CatalogPage = () => {
+  const { categories, fetchCategories } = useCategoryStore();
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
     const { toggleWishlist, isInWishlist } = useWishlistStore();
-    const { bestSellers, newArrivals, fetchProducts, blogs } = useProductStore();
-  
+    const {products ,newArrivals} = useProductStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<any[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState(newArrivals || []);
-  const [totalProducts, setTotalProducts] = useState(productsData.newArrivals.length);
+  const [filteredProducts, setFilteredProducts] = useState(products || []);
+  const [totalProducts, setTotalProducts] = useState(products.length);
   const [sortBy, setSortBy] = useState("relevance");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
@@ -40,7 +43,7 @@ const CatalogPage = () => {
   };
 
   // Prepare sidebar sections
-  const collapsibleSections = categoriesData.map((category) => ({
+  const collapsibleSections = categories.map((category) => ({
     key: category.slug,
     title: category.name,
     href: '#', // Dummy href for Link component
@@ -78,32 +81,32 @@ const CatalogPage = () => {
 
   // Apply all filters
   useEffect(() => {
-    let filtered = [...productsData.newArrivals];
+    let filtered :any= [...products];
 
     // Apply category filter
     if (activeCategory) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter((product:any) => 
         product.categories?.includes(activeCategory)
       );
     }
 
     // Apply subcategory filter
     if (activeSubCategory) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter((product:any) => 
         product.subcategories?.includes(activeSubCategory)
       );
     }
 
     // Apply skin type filter
     if (filters.skinType.length > 0 && !filters.skinType.includes('All')) {
-      filtered = filtered.filter(product =>
+      filtered = filtered.filter((product:any) => 
         filters.skinType.some(type => product.skinTypes?.includes(type))
       );
     }
 
     // Apply price range filter
     if (filters.priceRange.length > 0) {
-      filtered = filtered.filter(product => {
+      filtered = filtered.filter((product:any) => {
         const price = Number(product.price);
         return filters.priceRange.some(range => {
           if (range === 'Under $25') return price < 25;
@@ -118,7 +121,7 @@ const CatalogPage = () => {
     if (filters.minPrice || filters.maxPrice) {
       const min = filters.minPrice ? Number(filters.minPrice) : 0;
       const max = filters.maxPrice ? Number(filters.maxPrice) : Infinity;
-      filtered = filtered.filter(product => {
+      filtered = filtered.filter((product:any) => {
         const price = Number(product.price);
         return price >= min && price <= max;
       });
@@ -126,9 +129,9 @@ const CatalogPage = () => {
 
     // Apply sorting
     if (sortBy === "lowest") {
-      filtered.sort((a, b) => Number(a.price) - Number(b.price));
+      filtered.sort((a:any, b:any) => Number(a.price) - Number(b.price));
     } else if (sortBy === "highest") {
-      filtered.sort((a, b) => Number(b.price) - Number(a.price));
+      filtered.sort((a:any, b:any) => Number(b.price) - Number(a.price));
     }
 
     setFilteredProducts(filtered);
@@ -145,8 +148,8 @@ const CatalogPage = () => {
       <div className="flex md:flex-row flex-col gap-[20px] pt-[40px]">
         <div className="md:max-w-[250px] w-full max-h-[80vh] overflow-y-auto">
           <Sidebar
-            title="Shop All"
-            collapsibleSections={collapsibleSections}
+            tittle="Shop All"
+            collapsibleSections={collapsibleSections as any}
           />
           <Filters 
             onFilterChange={handleFilterChange}
@@ -174,13 +177,13 @@ const CatalogPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative pt-[30px]">
             {filteredProducts.map((product: any) => (
                <ProductCard
-               key={product.id} 
+               key={product._id} 
                product={product as any}
-               addToCart={() => addToCart(product.id)}
-               toggleWishlist={() => toggleWishlist(product.id)}
+               addToCart={() => addToCart(product._id)}
+               toggleWishlist={() => toggleWishlist(product._id)}
                isInWishlist={
                  typeof isInWishlist === "function"
-                   ? isInWishlist(product.id)
+                   ? isInWishlist(product._id)
                    : false
                }
              />
@@ -218,8 +221,8 @@ const CatalogPage = () => {
           </div>
 
           <ProductSection
-            title="Recently Viewed Products"
-            products={productsData.bestSellers}
+            // tittle="Recently Viewed Products"
+            products={newArrivals as any}
             cardWidth={289}
           />
         </main>

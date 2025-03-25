@@ -9,6 +9,8 @@ import {
   getCart,
   removeFromCart,
   updateCartItemQuantity,
+  createCategory,
+  getAllCategories,
 } from "../controllers/productController";
 import authenticateUser from "../utils/authMiddleware";
 import { upload } from "../middlewares/upload";
@@ -33,5 +35,10 @@ router.put("/updateCart/:cartItemId", authenticateUser, updateCartItemQuantity);
 router.get("/fetchCart", authenticateUser, getCart);
 
 router.delete("/removeFromCart/:cartItemId", authenticateUser, removeFromCart);
+
+
+router.post("/category", authenticateUser, createCategory);
+router.get("/categories", getAllCategories);
+
 
 export default router;

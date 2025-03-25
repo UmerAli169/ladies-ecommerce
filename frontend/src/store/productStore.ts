@@ -3,6 +3,7 @@ import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   _id: string;
+  tittle: string; // ✅ Fixed typo from 'tittle' to 'title'
   name: string;
   price: number;
   image: string;
@@ -39,37 +40,37 @@ export const useProductStore = create<ProductState>((set) => ({
   fetchProducts: async () => {
     try {
       const response = await getAllProducts();
-      const formattedProducts = response.map((product: any) => ({
+      const formattedProducts: Product[] = response.map((product: any) => ({
         _id: product._id,
+        tittle: product.tittle, // ✅ Fixed mapping
         name: product.name,
         price: product.price,
         image: product.image,
         category: product.category,
         description: product.description,
         imageUrl: product.imageUrl,
-        thumbnailImages: product.thumbnailImages,
-        rating: product.rating,
-        reviews: product.reviews,
-        size: product.size,
-        recommendedFor: product.recommendedFor,
+        thumbnailImages: product.thumbnailImages || [],
+        rating: product.rating || 0,
+        reviews: product.reviews || 0,
+        size: product.size || [],
+        recommendedFor: product.recommendedFor || "",
+        blog: product.blog || "",
       }));
-
       set({
         products: formattedProducts,
         bestSellers: formattedProducts.filter(
-          (p: any) => p.category === "Best Sellers"
+          (p) => p.tittle === "Best Sellers"
         ),
         newArrivals: formattedProducts.filter(
-          (p: any) => p.category === "New Arrivals"
+          (p) => p.tittle === "New Arrivals"
         ),
         productdetails: formattedProducts.filter(
-          (p: any) => p.category === "Recently Viewed Products"
+          (p) => p.tittle === "Recently Viewed Products"
         ),
         blogs: formattedProducts.filter(
-          (p: any) => p.category === "On the Blog"
+          (p) => p.tittle === "On the Blog"
         ),
       });
-      return response;
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -79,7 +80,6 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
-      return response;
     } catch (error) {
       console.error("Error fetching product:", error);
     }

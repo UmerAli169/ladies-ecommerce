@@ -2,17 +2,21 @@ import Product from "../models/Product";
 import Cart from "../models/Cart";
 import User from "../models/User";
 import Wishlist from "../models/Wishlist";
+import Category from "../models/Category";
+import Subcategory from "../models/Subcategory";
 const mongoose = require("mongoose");
+
 
 export const createProduct = async (req: any, res: any) => {
   try {
     const {
+      tittle,
       name,
       description,
       price,
       discount,
       category,
-      stock,
+      subcategory,
       size,
       recommendedFor,
     } = req.body;
@@ -26,23 +30,48 @@ export const createProduct = async (req: any, res: any) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    // Find or create category
+    let categoryExists = await Category.findOne({ name: category });
+    if (!categoryExists) {
+      categoryExists = await Category.create({ name: category, subcategories: [] });
+    }
+
+    // Find or create subcategory
+    let subcategoryExists = await Subcategory.findOne({
+      name: subcategory,
+      category: categoryExists._id,
+    });
+
+    if (!subcategoryExists) {
+      subcategoryExists = await Subcategory.create({
+        name: subcategory,
+        category: categoryExists._id,
+      });
+
+      // Add subcategory to category's subcategories list
+      await Category.findByIdAndUpdate(categoryExists._id, {
+        $push: { subcategories: subcategoryExists._id },
+      });
+    }
+
+    // Handle image uploads
     const imagePaths = req.files
       ? (req.files as Express.Multer.File[]).map((file: any) => file.path)
       : [];
 
     const product: any = new Product({
+      tittle,
       name,
       description,
       price,
       image: imagePaths.length > 0 ? imagePaths[0] : "",
       thumbnailImages: imagePaths,
       discount,
-      category,
-      stock,
+      category: categoryExists._id,
+      subcategory: subcategoryExists._id,
       size: size ? size.split(",") : [],
       recommendedFor,
     });
-
     await product.save();
 
     user.products.push(product._id);
@@ -52,6 +81,47 @@ export const createProduct = async (req: any, res: any) => {
   } catch (error) {
     console.error("Error creating product:", error);
     res.status(500).json({ error: "Failed to add product" });
+  }
+};
+
+
+
+// Get all categories with subcategories populated
+export const getAllCategories = async (req: any, res: any) => {
+  try {
+    const categories = await Category.find().populate("subcategories");
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching categories", error });
+  }
+};
+
+// Create a new category
+export const createCategory = async (req: any, res: any) => {
+  try {
+    const { name, subcategories } = req.body;
+
+    // Step 1: Create Category
+    const newCategory = new Category({ name });
+    await newCategory.save();
+
+    // Step 2: Create Subcategories if provided
+    if (subcategories && subcategories.length > 0) {
+      const createdSubcategories = await Subcategory.insertMany(
+        subcategories.map((sub: string) => ({ name: sub, category: newCategory._id }))
+      );
+
+      // Step 3: Update Category with Subcategory IDs
+      newCategory.subcategories = createdSubcategories.map((sub) => sub._id);
+      await newCategory.save();
+    }
+
+    res.status(201).json({
+      message: "Category created successfully",
+      category: newCategory,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating category", error });
   }
 };
 

@@ -4,6 +4,7 @@ import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
 
 interface Product {
+  tittle: any;
   category: string;
   _id: string;
   name: string;
@@ -68,9 +69,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           <div className="flex gap-[10px] items-center">
             <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {[...new Set(products?.map((item) => item.category))].map(
-                (category, index) => (
-                  <p key={`${category}-${index}`}>{category}</p>
+              {[...new Set(products?.map((item) => item.tittle))].map(
+                (tittle, index) => (
+                  <p key={`${tittle}-${index}`}>{tittle}</p>
                 )
               )}
             </div>

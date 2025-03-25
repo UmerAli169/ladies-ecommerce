@@ -5,45 +5,41 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface SidebarProps {
-  title?: string;
+  tittle?: string;
   links?: { label: string; href: string }[];
   collapsibleSections?: {
     key: string;
     title: string;
     href?: string;
     onClick?: (e: React.MouseEvent) => void;
-    isActive?: boolean;
     items: {
+      key: string;
       label: string;
       href?: string;
       onClick?: (e: React.MouseEvent) => void;
-      isActive?: boolean;
     }[];
   }[];
 }
 
-const Sidebar = ({
-  title,
-  links = [],
-  collapsibleSections = [],
-}: SidebarProps) => {
+const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps) => {
   const pathname = usePathname();
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
 
-  const toggleSection = (event: React.MouseEvent, section: string) => {
+  const toggleSection = (event: React.MouseEvent, sectionKey: string) => {
     event.preventDefault();
     setOpenSections((prev) => ({
       ...prev,
-      [section]: !prev[section],
+      [sectionKey]: !prev[sectionKey],
     }));
   };
 
   return (
     <div className="md:max-w-[250px] w-full bg-[#FFFFFF] rounded-[6px] py-[20px] px-[30px] mb-[20px]">
-      {title && (
-        <h2 className="text-[24px] font-bold text-[#383838] mb-4">{title}</h2>
+      {tittle && (
+        <h2 className="text-[24px] font-bold text-[#383838] mb-4">{tittle}</h2>
       )}
 
+      {/* Static Links */}
       <ul className="space-y-[20px]">
         {links.map((link, index) => {
           const isActive = pathname === link.href;
@@ -52,9 +48,7 @@ const Sidebar = ({
               <Link
                 href={link.href}
                 className={`block text-[16px] font-medium ${
-                  isActive
-                    ? "text-[#F5A3B7]"
-                    : "text-[#383838] hover:text-black"
+                  isActive ? "text-[#F5A3B7]" : "text-[#383838] hover:text-black"
                 }`}
               >
                 {link.label}
@@ -64,75 +58,66 @@ const Sidebar = ({
         })}
       </ul>
 
+      {/* Collapsible Sections */}
       {collapsibleSections.map((section) => {
-        const isActive = pathname === section.href;
-
+        const isSectionOpen = openSections[section.key] || false;
         return (
           <div key={section.key} className="mt-6">
             <div
-              className={`hover:text-[#E49BAE] text-[16px] leading-[24px] font-medium flex items-center justify-between cursor-pointer ${
-                isActive ? "text-[#F5A3B7]" : "text-[#697586]"
+              className={`text-[16px] font-medium flex items-center justify-between cursor-pointer ${
+                pathname === section.href ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
               }`}
             >
               {section.href ? (
-                <Link 
-                  href={section.href} 
-                  onClick={section.onClick}
-                >
+                <Link href={section.href} onClick={section.onClick}>
                   {section.title}
                 </Link>
               ) : (
-                <button 
-                  onClick={(e) => {
-                    section.onClick?.(e);
-                    toggleSection(e, section.key);
-                  }}
+                <button
+                  onClick={(e) => toggleSection(e, section.key)}
                   className="w-full text-left"
                 >
                   {section.title}
                 </button>
               )}
 
-              {section?.items?.length > 0 && (
-                <button
-                  onClick={(e) => toggleSection(e, section.key)}
-                  className="ml-2"
-                >
-                  {openSections[section.key] ? (
-                    <ChevronUp size={16} />
-                  ) : (
-                    <ChevronDown size={16} />
-                  )}
+              {section.items.length > 0 && (
+                <button onClick={(e) => toggleSection(e, section.key)} className="ml-2">
+                  {isSectionOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
               )}
             </div>
 
-            {openSections[section.key] && (
+            {/* Subcategories */}
+            {isSectionOpen && (
               <ul className="space-y-[10px] mt-2">
-                {section.items.map((item, idx) => (
-                  <li key={idx}>
-                    {item.href ? (
-                      <Link
-                        href={item.href}
-                        onClick={item.onClick}
-                        className={`text-[14px] leading-[21px] font-normal ${
-                          item.isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    ) : (
-                      <button
-                        onClick={item.onClick}
-                        className={`text-[14px] leading-[21px] font-normal w-full text-left ${
-                          item.isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    )}
-                  </li>
-                ))}
+                {section.items.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <li key={item.key}>
+                      {item.href ? (
+                        <Link
+                          href={item.href}
+                          onClick={item.onClick}
+                          className={`text-[14px] leading-[21px] font-normal ${
+                            isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={item.onClick}
+                          className={`text-[14px] leading-[21px] font-normal w-full text-left ${
+                            isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
