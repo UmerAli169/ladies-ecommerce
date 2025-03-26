@@ -39,7 +39,6 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
         <h2 className="text-[24px] font-bold text-[#383838] mb-4">{tittle}</h2>
       )}
 
-      {/* Static Links */}
       <ul className="space-y-[20px]">
         {links.map((link, index) => {
           const isActive = pathname === link.href;
@@ -58,7 +57,6 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
         })}
       </ul>
 
-      {/* Collapsible Sections */}
       {collapsibleSections.map((section) => {
         const isSectionOpen = openSections[section.key] || false;
         return (
@@ -95,8 +93,6 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
                 </button>
               )}
             </div>
-
-            {/* Subcategories */}
             {isSectionOpen && (
               <ul className="space-y-[10px] mt-2">
                 {section.items.map((item) => {

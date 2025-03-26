@@ -5,27 +5,23 @@ import ProductSection from "@/components/main/ProductSection";
 import ProductDetails from "@/components/productdetails/ProductDetails";
 import ReviewSection from "@/components/productdetails/ReviewSection";
 import { useProductStore } from "@/store/productStore";
+import useWishlistStore from "@/store/useWishlistStore";
+import useCartStore from "@/store/cartStore";
 
 function Page() {
-  const [product, setProduct] = useState<any>(null);
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
-  const { productdetails, fetchProduct }: any = useProductStore();
+  const { product, fetchProduct, likeproduct, productdetails }: any =
+    useProductStore();
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { addToCart } = useCartStore();
 
   useEffect(() => {
     const getProduct = async () => {
       if (!productId) return;
 
       try {
-        const data = await fetchProduct(productId);
-
-        if (!data) {
-          console.error(
-            "Product data is undefined. Check fetchProduct function."
-          );
-        } else {
-          setProduct(data);
-        }
+        await fetchProduct(productId);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -33,12 +29,24 @@ function Page() {
 
     getProduct();
   }, [productId]);
-
   return (
     <div className="py-[40px]">
       {product && <ProductDetails productInfo={product} />}
       <ReviewSection productId={productId as string} />
-      <ProductSection products={productdetails} cardWidth={289} />
+      <ProductSection
+        products={productdetails as any}
+        addToCart={addToCart as any}
+        toggleWishlist={toggleWishlist}
+        isInWishlist={isInWishlist}
+        cardWidth={289}
+      />
+      <ProductSection
+        products={likeproduct as any}
+        addToCart={addToCart as any}
+        toggleWishlist={toggleWishlist}
+        isInWishlist={isInWishlist}
+        cardWidth={289}
+      />
     </div>
   );
 }

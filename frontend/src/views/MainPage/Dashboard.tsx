@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Dashboard from "../../components/main/Dashboard";
 import ProductSection from "../../components/main/ProductSection";
 import Frame from "../../components/main/Frame";
-import BlogSection from "../../components/main/ProductSection";
+import BlogSection from "../../components/shared/BlogSections";
 import SkinQuiz from "@/components/main/SkinQuiz";
 import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
@@ -18,7 +18,6 @@ function MainPage() {
   useEffect(() => {
     fetchProducts();
   }, []);
-
   return (
     <div>
       <Dashboard />
@@ -37,7 +36,7 @@ function MainPage() {
         isInWishlist={isInWishlist}
       />
       <Frame />
-      <BlogSection products={blogs} cardWidth={320} />
+      <BlogSection products={blogs as any} cardWidth={320} />
       <SkinQuiz />
       <InstagramGallery />
     </div>

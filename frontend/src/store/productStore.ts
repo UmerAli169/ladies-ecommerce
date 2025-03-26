@@ -24,6 +24,7 @@ interface ProductState {
   products: Product[];
   bestSellers: Product[];
   newArrivals: Product[];
+  likeproduct:Product[]
   productdetails: Product[];
   product: Product | null;
   fetchProducts: () => Promise<void>;
@@ -36,6 +37,7 @@ export const useProductStore = create<ProductState>((set) => ({
   newArrivals: [],
   blogs: [],
   productdetails: [],
+  likeproduct:[],
   product: null,
 
   fetchProducts: async () => {
@@ -72,6 +74,9 @@ export const useProductStore = create<ProductState>((set) => ({
         blogs: formattedProducts.filter(
           (p) => p.tittle === "On the Blog"
         ),
+        likeproduct: formattedProducts.filter(
+          (p) => p.tittle === "You May Also Like"
+        ),
       });
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -82,6 +87,7 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
+      return
     } catch (error) {
       console.error("Error fetching product:", error);
     }

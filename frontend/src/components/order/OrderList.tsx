@@ -17,5 +17,5 @@ const OrderList = ({ orders }: { orders: Order[] }) => {
     </div>
   );
 };
-
+ 
 export default OrderList;

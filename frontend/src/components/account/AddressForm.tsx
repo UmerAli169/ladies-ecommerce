@@ -21,18 +21,18 @@ const AddressForm = () => {
 
   return (
     <div className="space-y-[20px] rounded-lg w-full">
-      <p className="text-xl font-semibold">Your Addresses</p>
+      <p className="text-xl font-semibold ">Your Addresses</p>
       <div className="flex justify-between items-center pb-2">
         <div className="w-full flex justify-between p-[10px] border">
           <div>
-            <span className="pr-[30px]">Default</span>
+            <span className="pr-[30px] text-[#697586]">Default</span>
             <span>
               {user?.address
                 ? `${user.address.address}, ${user.address.city}, ${user.address.country}, ${user.address.postalCode}`
                 : "No address saved"}
             </span>
           </div>
-          <button className="text-blue-500" onClick={() => setShowForm(true)}>
+          <button className="text-[#697586]" onClick={() => setShowForm(true)}>
             Change
           </button>
         </div>
@@ -70,13 +70,13 @@ const AddressForm = () => {
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
-              <AuthInput name="country" type="text" placeholder="Enter Country" label="Country" />
-              <AuthInput name="address" type="text" placeholder="Enter Address" label="Address" />
+              <AuthInput name="country" type="text" placeholder=" Country" label="Country" />
+              <AuthInput name="address" type="text" placeholder=" Address" label="Address" />
               <div className="grid grid-cols-2 gap-2">
-                <AuthInput name="city" type="text" placeholder="Enter City" label="City" />
-                <AuthInput name="postalCode" type="text" placeholder="Enter Postal Code" label="Postal Code" />
+                <AuthInput name="city" type="text" placeholder=" City" label="City" />
+                <AuthInput name="postalCode" type="text" placeholder=" Postal Code" label="Postal Code" />
               </div>
-              <AuthInput name="phone" type="text" placeholder="Enter Phone Number" label="Phone Number" />
+              <AuthInput name="phone" type="text" placeholder=" Phone Number" label=" Number" />
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2">
                   <Field type="checkbox" name="setAsDefault" />
@@ -87,9 +87,9 @@ const AddressForm = () => {
                   The recipient is not me
                 </label>
               </div>
-              <button type="submit" className="w-full bg-pink-500 text-white py-2 rounded" disabled={isSubmitting}>
+              <Button type="submit" className="w-[240px] text-white py-2 " disabled={isSubmitting}>
                 {isSubmitting ? "Saving..." : "Save"}
-              </button>
+              </Button>
             </Form>
           )}
         </Formik>

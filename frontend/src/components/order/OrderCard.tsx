@@ -5,7 +5,7 @@ interface Order {
   id: string;
   date: string;
   status: string;
-  items: any[]; // Replace with proper type
+  items: any[]; 
 }
 
 const OrderCard = ({ order }: { order: Order }) => {
