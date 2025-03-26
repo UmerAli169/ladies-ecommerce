@@ -8,140 +8,134 @@ import ProductSection from "@/components/main/ProductSection";
 import useWishlistStore from "@/store/useWishlistStore";
 import useProductStore from "@/store/productStore";
 import useCategoryStore from "@/store/categoryStore";
+import useCartStore from "@/store/cartStore";
 
 const CatalogPage = () => {
   const { categories, fetchCategories } = useCategoryStore();
+  const { addToCart } = useCartStore();
 
   useEffect(() => {
     fetchCategories();
   }, []);
-    const { toggleWishlist, isInWishlist } = useWishlistStore();
-    const {products ,newArrivals} = useProductStore();
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { products, newArrivals } = useProductStore();
   const [filteredProducts, setFilteredProducts] = useState(products || []);
   const [totalProducts, setTotalProducts] = useState(products.length);
   const [sortBy, setSortBy] = useState("relevance");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
+  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(
+    null
+  );
   const [filters, setFilters] = useState({
     skinType: [] as string[],
     priceRange: [] as string[],
-    minPrice: '',
-    maxPrice: ''
+    minPrice: "",
+    maxPrice: "",
   });
 
   // Handle category selection
   const handleCategoryClick = (categorySlug: string) => {
-    setActiveCategory(prev => prev === categorySlug ? null : categorySlug);
+    setActiveCategory((prev) => (prev === categorySlug ? null : categorySlug));
     setActiveSubCategory(null);
   };
 
   // Handle subcategory selection
   const handleSubCategoryClick = (subCategorySlug: string) => {
-    setActiveSubCategory(prev => prev === subCategorySlug ? null : subCategorySlug);
+    setActiveSubCategory((prev) =>
+      prev === subCategorySlug ? null : subCategorySlug
+    );
   };
 
   // Prepare sidebar sections
   const collapsibleSections = categories.map((category) => ({
-    key: category.slug,
+    key: category.name,
     title: category.name,
-    href: '#', // Dummy href for Link component
+    href: "#",
     onClick: (e: React.MouseEvent) => {
       e.preventDefault();
-      handleCategoryClick(category.slug);
+      handleCategoryClick(category.name);
     },
-    isActive: activeCategory === category.slug,
+    isActive: activeCategory === category.name,
     items: category.subcategories.map((sub) => ({
       label: sub.name,
-      href: '#', // Dummy href
+      href: "#",
       onClick: (e: React.MouseEvent) => {
         e.preventDefault();
-        handleSubCategoryClick(sub.slug);
+        handleSubCategoryClick(sub.name);
       },
-      isActive: activeSubCategory === sub.slug,
+      isActive: activeSubCategory === sub.name,
     })),
   }));
 
   // Handle filter changes
   const handleFilterChange = (filterType: string, value: string | string[]) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [filterType]: Array.isArray(value) ? value : [value]
+      [filterType]: Array.isArray(value) ? value : [value],
     }));
   };
 
   // Handle price range input
-  const handlePriceInput = (type: 'min' | 'max', value: string) => {
-    setFilters(prev => ({
+  const handlePriceInput = (type: "min" | "max", value: string) => {
+    setFilters((prev) => ({
       ...prev,
-      [`${type}Price`]: value
+      [`${type}Price`]: value,
     }));
   };
 
   // Apply all filters
   useEffect(() => {
-    let filtered :any= [...products];
+    let filtered: any = [...products];
 
-    // Apply category filter
     if (activeCategory) {
-      filtered = filtered.filter((product:any) => 
-        product.categories?.includes(activeCategory)
+      filtered = filtered.filter((product: any) =>
+        product.category.name?.includes(activeCategory)
       );
     }
 
-    // Apply subcategory filter
     if (activeSubCategory) {
-      filtered = filtered.filter((product:any) => 
-        product.subcategories?.includes(activeSubCategory)
+      filtered = filtered.filter((product: any) =>
+        product.subcategory.name?.includes(activeSubCategory)
       );
     }
 
-    // Apply skin type filter
-    if (filters.skinType.length > 0 && !filters.skinType.includes('All')) {
-      filtered = filtered.filter((product:any) => 
-        filters.skinType.some(type => product.skinTypes?.includes(type))
+    if (filters.skinType.length > 0 && !filters.skinType.includes("All")) {
+      filtered = filtered.filter((product: any) =>
+        filters.skinType.some((type) => product.skinTypes?.includes(type))
       );
     }
 
-    // Apply price range filter
     if (filters.priceRange.length > 0) {
-      filtered = filtered.filter((product:any) => {
+      filtered = filtered.filter((product: any) => {
         const price = Number(product.price);
-        return filters.priceRange.some(range => {
-          if (range === 'Under $25') return price < 25;
-          if (range === '$25 - $50') return price >= 25 && price <= 50;
-          if (range === '$50 - $100') return price >= 50 && price <= 100;
+        return filters.priceRange.some((range) => {
+          if (range === "Under $25") return price < 25;
+          if (range === "$25 - $50") return price >= 25 && price <= 50;
+          if (range === "$50 - $100") return price >= 50 && price <= 100;
           return true;
         });
       });
     }
 
-    // Apply custom price range
     if (filters.minPrice || filters.maxPrice) {
       const min = filters.minPrice ? Number(filters.minPrice) : 0;
       const max = filters.maxPrice ? Number(filters.maxPrice) : Infinity;
-      filtered = filtered.filter((product:any) => {
+      filtered = filtered.filter((product: any) => {
         const price = Number(product.price);
         return price >= min && price <= max;
       });
     }
 
-    // Apply sorting
     if (sortBy === "lowest") {
-      filtered.sort((a:any, b:any) => Number(a.price) - Number(b.price));
+      filtered.sort((a: any, b: any) => Number(a.price) - Number(b.price));
     } else if (sortBy === "highest") {
-      filtered.sort((a:any, b:any) => Number(b.price) - Number(a.price));
+      filtered.sort((a: any, b: any) => Number(b.price) - Number(a.price));
     }
 
     setFilteredProducts(filtered);
     setTotalProducts(filtered.length);
   }, [activeCategory, activeSubCategory, filters, sortBy]);
 
-  const addToCart = (product: any) => {
-    setCartItems((prev) => [...prev, product]);
-    setIsCartOpen(true);
-  };
 
   return (
     <Wrapper>
@@ -151,7 +145,7 @@ const CatalogPage = () => {
             tittle="Shop All"
             collapsibleSections={collapsibleSections as any}
           />
-          <Filters 
+          <Filters
             onFilterChange={handleFilterChange}
             onPriceInput={handlePriceInput}
           />
@@ -176,17 +170,17 @@ const CatalogPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative pt-[30px]">
             {filteredProducts.map((product: any) => (
-               <ProductCard
-               key={product._id} 
-               product={product as any}
-               addToCart={() => addToCart(product._id)}
-               toggleWishlist={() => toggleWishlist(product._id)}
-               isInWishlist={
-                 typeof isInWishlist === "function"
-                   ? isInWishlist(product._id)
-                   : false
-               }
-             />
+              <ProductCard
+                key={product._id}
+                product={product as any}
+                addToCart={() => addToCart(product._id)}
+                toggleWishlist={() => toggleWishlist(product._id)}
+                isInWishlist={
+                  typeof isInWishlist === "function"
+                    ? isInWishlist(product._id)
+                    : false
+                }
+              />
             ))}
           </div>
 

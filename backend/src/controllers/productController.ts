@@ -127,8 +127,13 @@ export const createCategory = async (req: any, res: any) => {
 
 export const getAllProducts = async (req: any, res: any) => {
   try {
-    const products = await Product.find().populate("reviews", "rating");
-    res.json(products);
+    const products = await Product.find()
+    .populate("reviews", "rating")
+    .populate("category", "name")
+    .populate("subcategory", "name"); 
+  
+
+      res.json(products);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }

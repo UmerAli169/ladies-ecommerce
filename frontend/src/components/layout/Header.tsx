@@ -59,7 +59,7 @@ const Header = () => {
   const searchResults = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-console.log(searchResults,'searchResults')
+// console.log(searchResults,'searchResults')
   return (
     <>
       <nav className="bg-[#FFFFFF] relative">

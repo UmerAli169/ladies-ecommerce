@@ -69,12 +69,20 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
               }`}
             >
               {section.href ? (
-                <Link href={section.href} onClick={section.onClick}>
+                <Link
+                  href={section.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    section.onClick && section.onClick(e);
+                  }}
+                >
                   {section.title}
                 </Link>
               ) : (
                 <button
-                  onClick={(e) => toggleSection(e, section.key)}
+                  onClick={(e) => {
+                    toggleSection(e, section.key);
+                  }}
                   className="w-full text-left"
                 >
                   {section.title}
@@ -98,7 +106,10 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
                       {item.href ? (
                         <Link
                           href={item.href}
-                          onClick={item.onClick}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            item.onClick && item.onClick(e);
+                          }}
                           className={`text-[14px] leading-[21px] font-normal ${
                             isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
                           }`}
@@ -107,7 +118,9 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
                         </Link>
                       ) : (
                         <button
-                          onClick={item.onClick}
+                          onClick={(e) => {
+                            item.onClick && item.onClick(e);
+                          }}
                           className={`text-[14px] leading-[21px] font-normal w-full text-left ${
                             isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
                           }`}

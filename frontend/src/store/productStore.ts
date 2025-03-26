@@ -8,6 +8,7 @@ interface Product {
   price: number;
   image: string;
   category: string;
+  subcategory:string;
   description: string;
   imageUrl: string;
   thumbnailImages: string[];
@@ -47,6 +48,7 @@ export const useProductStore = create<ProductState>((set) => ({
         price: product.price,
         image: product.image,
         category: product.category,
+        subcategory:product.subcategory,
         description: product.description,
         imageUrl: product.imageUrl,
         thumbnailImages: product.thumbnailImages || [],
