@@ -1,12 +1,12 @@
 "use client";
-import AccountLayout from "@/app/(screens)/Account/AccountLayout/page";
 import React, { useState } from "react";
 import productsData from "../../Data/mainPage/cardSection/products.json";
 import ProductCard from "@/components/shared/ProductCard";
 import { CartModal } from "../../components/model/RightModal";
+import AccountLayout from "@/components/account/AccountLayout";
 
 function Page() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);  
   const [cartItems, setCartItems] = useState<any[]>([]);
 
   const addToCart = (product: any) => {
@@ -20,7 +20,9 @@ function Page() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative">
           {productsData.newArrivals.map((product: any) => (
             <div key={product.id} className="w-full">
-              <ProductCard product={product} addToCart={addToCart} />
+              <ProductCard product={product} addToCart={addToCart} toggleWishlist={function (productId: number): void {
+                throw new Error("Function not implemented.");
+              } } isInWishlist={false} />
             </div>
           ))}
         </div>

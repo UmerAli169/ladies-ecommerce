@@ -17,14 +17,14 @@ interface CartModalProps {
   }[];
 }
 
-export const CartModal: React.FC<CartModalProps> = ({
+export const CartModal: React.FC<any> = ({
   isOpen,
   onClose,
   cartItems,
 }) => {
   const router = useRouter();
   const total = cartItems?.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc:any, item:any) => acc + item.price * item.quantity,
     0
   );
 
@@ -63,10 +63,10 @@ export const CartModal: React.FC<CartModalProps> = ({
         <div className="flex-1 overflow-y-auto scrollbar-hidden">
           {cartItems?.length > 0 ? (
             <>
-              {cartItems.map((item, index) => (
+              {cartItems.map((item:any, index:any) => (
                 <CartItem key={item.id || index} item={item as any} />
               ))}
-              <SampleSelection />
+              <SampleSelection /> 
             </>
           ) : (
             <p className="text-[#B0A6BD]">Your cart is empty.</p>
@@ -81,7 +81,7 @@ export const CartModal: React.FC<CartModalProps> = ({
             </div>
             <Button
               onClick={handleCheckout}
-              className="w-full text-white py-2 mt-4 rounded"
+              className="w-full text-white py-2 mt-4 rounded hover:bg-black hover:text-white"
             >
               Check Out
             </Button>

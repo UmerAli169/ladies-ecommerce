@@ -43,7 +43,7 @@ const ContactInformationForm = () => {
             </div>
           </div>
 
-          <Button type="submit" className="px-4 py-2 max-w-[362px]">Save</Button>
+          <Button type="submit" className="px-4 py-2 max-w-[362px] hover:bg-black hover:text-white">Save</Button>
         </Form>
       )}
     </Formik>

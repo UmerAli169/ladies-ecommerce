@@ -42,7 +42,7 @@ const FrameSection: React.FC<FrameSectionProps> = ({
           <p className="lg:text-[36px] text-[32px] font-medium text-[#383838]">
             {product.title}
           </p>
-          <p className="lg:text-[16px] text-[12px] font-normal text-[Montserrat] text-[#697586]">
+          <p className="lg:text-[16px] text-[12px] font-normal lg:leading-[27px] leading-[20px] text-[Montserrat] text-[#697586]">
             {product.description}
           </p>
           <div className="flex flex-wrap gap-[6px]">
@@ -57,19 +57,19 @@ const FrameSection: React.FC<FrameSectionProps> = ({
           </div>
           <div className="flex items-center gap-[30px] md:flex-row flex-col ">
             <Button
-              className={`lg:max-w-[246px] text-[#FFFFFF]  text-[14px] font-semibold py-[10px] ${buttonClassName}`}
+              className={`lg:max-w-[246px] text-[#FFFFFF] text-white border-none  text-[14px] font-semibold py-[10px] ${buttonClassName}`}
               href={`/BlogDetail `}
             >
               {product.shopNowText}
             </Button>
-            <div className="flex items-center gap-[4px]">
+            <div className="flex items-center gap-[4px]  hover:text-[#F5A3B7]  ">
               <Button className="max-w-[137px] bg-[#F9FAFC] text-black">
                 {product.exploreMoreText}
               </Button>
               <img
-                src={product.exploreIcon}
+                src={product.exploreIcon ? product.exploreIcon : " "}
                 alt=""
-                className="ml-[8px] w-[12px]"
+                className="ml-[8px] w-[12px] "
               />
             </div>
           </div>

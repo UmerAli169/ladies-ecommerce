@@ -8,7 +8,7 @@ const SkinQuiz = () => {
         <div className="max-w-4xl flex flex-col md:flex-row items-center">
           <img src="/skaincare.png" alt="Skin Quiz" />
           <Wrapper>
-            <div className="md:ml-6 md:text-center text-left md:text-left py-[30px] max-w-[449px]">
+            <div className="md:ml-6 md:text-left flex flex-col  gap-[6px] text-left md:text-left py-[30px] max-w-[449px]">
               <p className="lg:text-[36px] text-[32px] text-[#383838] font-bold">
                 The Skin Quiz
               </p>
@@ -16,7 +16,7 @@ const SkinQuiz = () => {
                 Meet the quiz that will curate a routine just just just as
                 unique as you are.
               </p>
-              <Button className="lg:max-w-[226px] text-[14px] text-[#FFFFFF] font-semibold w-full lg:p-[10px] px-[10px] py-[8px]">
+              <Button className="lg:max-w-[246px] text-[14px] text-[#FFFFFF] font-semibold w-full lg:p-[10px] px-[10px] py-[8px] hover:bg-black hover:text-white">
                 Explore More
               </Button>
             </div>{" "}

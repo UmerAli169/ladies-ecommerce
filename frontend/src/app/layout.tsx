@@ -32,7 +32,9 @@ export default function RootLayout({
         <ToastProvider />
         <Header />
         <main className="flex-grow">
-          <AuthGuard>{children}</AuthGuard>
+          {/* <AuthGuard>  */}
+            { children}
+            {/* </AuthGuard> */}
         </main>
         <Footer />
       </body>

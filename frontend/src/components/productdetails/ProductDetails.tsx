@@ -60,8 +60,9 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
 
   return (
     <Wrapper>
-      <div className="flex flex-col md:flex-row gap-[123px]">
-        <div className="flex flex-col items-center w-full md:w-1/2 relative">
+      <div className="flex flex-col md:flex-row justify-between
+">
+        <div className="flex flex-col items-center w-full md:w-1/3   relative">
           <button
             className="absolute left-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
             onClick={() => scroll("left")}
@@ -71,7 +72,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
           <img
             src={product.image}
             alt={product.name}
-            className="w-full object-cover"
+            className="w-full  h-full max-w-[495px] max-h-[495px] object-cover"
           />
 
           <button
@@ -80,7 +81,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
           >
             <img src="/svgs/Shared/ProductSection/rightArrow.svg" alt="right" />
           </button>
-          <div className="w-full relative lg:py-[30px] py-[20px]">
+          <div className="w-full relative ">
             <div
               ref={scrollRef}
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
@@ -90,14 +91,14 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
                   key={`${thumb}-${index}`}
                   src={thumb}
                   alt="thumbnail"
-                  className="w-26 h-[124px] object-cover cursor-pointer"
+                  className="max-w-[83px] w-full  max-h-[83px] object-cover cursor-pointer"
                 />
               ))}
             </div>
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[10px] md:w-1/2">
+        <div className="w-full flex flex-col gap-[10px] md:w-1/2 ">
           <p className="lg:text-[22px] text-[20px] font-medium text-[#383838] lg:leading-[33px] leading-[30px]">
             {product.name}
           </p>
@@ -111,11 +112,11 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
                     : "/svgs/Shared/ProductSection/cardStar.svg"
                 }
                 alt="star"
-                className="w-4 h-4"
+                className="w-[16px] h-[16px]"
               />
             ))}
             <span className="lg:text-[14px] ml-[8px] text-[12px] font-medium font-[Montserrat] font-normal text-[#697586] lg:leading-[22px] leading-[20px]">
-              {product.reviews.length} reviews
+            {Array.isArray(product.reviews) ? product.reviews.length : 0} reviews
             </span>
           </div>
           <p className="lg:text-[16px] text-[14px] font-medium text-[#383838] lg:leading-[27px] leading-[24px]">
@@ -135,7 +136,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
           </div>
           <div className="flex items-center gap-[10px]">
             <Button
-              className="max-w-[246px] w-full py-[10px] px-[80px] text-[14px] font-bold text-[#383838] lg:leading-[21px] leading-[18px]"
+              className="max-w-[246px] w-full py-[10px] px-[80.5px] text-[14px] font-bold text-white lg:leading-[21px] leading-[18px] hover:bg-black hover:text-white"
               onClick={handleAddToCart}
             >
               Add To Cart

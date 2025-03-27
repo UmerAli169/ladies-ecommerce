@@ -27,7 +27,6 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   cart: [],
 
-  // Fetch Cart Items
   fetchCart: async () => {
     try {
       const cartData = await fetchCart();
@@ -37,7 +36,6 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  // Add Item to Cart
   addToCart: async (productId, quantity = 1) => {
     try {
       await addToCart(productId, quantity);
@@ -47,14 +45,13 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  // Increment Quantity (✅ Uses `cartItemId`)
   incrementQuantity: async (cartItemId) => {
     try {
       const cart = get().cart;
       const item: any = cart.find((item) => item._id === cartItemId);
       if (item) {
-        await updateCartItemQuantity(cartItemId, item.quantity + 1); // Send new quantity
-        get().fetchCart(); // Refresh cart
+        await updateCartItemQuantity(cartItemId, item.quantity + 1);
+        get().fetchCart(); 
       }
     } catch (error) {
       console.error("Error incrementing quantity:", error);
@@ -66,7 +63,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       const cart = get().cart;
       const item: any = cart.find((item) => item._id === cartItemId);
       if (item && item.quantity > 1) {
-        await updateCartItemQuantity(cartItemId, item.quantity - 1); // Send new quantity
+        await updateCartItemQuantity(cartItemId, item.quantity - 1); 
         get().fetchCart(); // Refresh cart
       }
     } catch (error) {
@@ -74,11 +71,10 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  // Remove Item from Cart (✅ Uses `cartItemId`)
   removeFromCart: async (cartItemId) => {
     try {
       await removeCartItem(cartItemId);
-      get().fetchCart(); // Refresh cart after removing
+      get().fetchCart(); 
     } catch (error) {
       console.error("Error removing item from cart:", error);
     }

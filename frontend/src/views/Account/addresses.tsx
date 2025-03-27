@@ -1,6 +1,7 @@
 "use client"
-import AccountLayout from "../../app/(screens)/Account/AccountLayout/page";
-import AddressForm from '../../app/(screens)/Account/AddressForm/AddressForm'
+
+import AccountLayout from "@/components/account/AccountLayout";
+import AddressForm from "@/components/account/AddressForm";
 
 const ContactInformation = () => {
   return (

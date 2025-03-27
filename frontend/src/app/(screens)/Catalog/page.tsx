@@ -16,19 +16,21 @@ const CatalogPage = () => {
   const { addToCart } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { products, productdetails } = useProductStore();
-  
+
   const [filteredProducts, setFilteredProducts] = useState(products || []);
   const [totalProducts, setTotalProducts] = useState(products.length);
   const [sortBy, setSortBy] = useState("relevance");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
+  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(
+    null
+  );
   const [filters, setFilters] = useState({
     skinType: [] as string[],
     priceRange: [] as string[],
     minPrice: "",
     maxPrice: "",
   });
-  
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -37,13 +39,19 @@ const CatalogPage = () => {
     let filtered = [...products];
 
     if (activeCategory) {
-      filtered = filtered.filter((product) => product.category.name?.includes(activeCategory));
+      filtered = filtered.filter((product: any) =>
+        product.category.name?.includes(activeCategory)
+      );
     }
     if (activeSubCategory) {
-      filtered = filtered.filter((product) => product.subcategory.name?.includes(activeSubCategory));
+      filtered = filtered.filter((product: any) =>
+        product.subcategory.name?.includes(activeSubCategory)
+      );
     }
     if (filters.skinType.length > 0 && !filters.skinType.includes("All")) {
-      filtered = filtered.filter((product) => filters.skinType.some((type) => product.skinTypes?.includes(type)));
+      filtered = filtered.filter((product: any) =>
+        filters.skinType.some((type: any) => product.skinTypes?.includes(type))
+      );
     }
     if (filters.priceRange.length > 0) {
       filtered = filtered.filter((product) => {
@@ -78,22 +86,24 @@ const CatalogPage = () => {
     setActiveCategory((prev) => (prev === categorySlug ? null : categorySlug));
     setActiveSubCategory(null);
   };
-  
+
   const handleSubCategoryClick = (subCategorySlug: string) => {
-    setActiveSubCategory((prev) => (prev === subCategorySlug ? null : subCategorySlug));
+    setActiveSubCategory((prev) =>
+      prev === subCategorySlug ? null : subCategorySlug
+    );
   };
-  
+
   const handleFilterChange = (filterType: string, value: string | string[]) => {
     setFilters((prev) => ({
       ...prev,
       [filterType]: Array.isArray(value) ? value : [value],
     }));
   };
-  
+
   const handlePriceInput = (type: "min" | "max", value: string) => {
     setFilters((prev) => ({ ...prev, [`${type}Price`]: value }));
   };
-  
+
   const collapsibleSections = categories.map((category) => ({
     key: category.name,
     title: category.name,
@@ -118,15 +128,25 @@ const CatalogPage = () => {
     <Wrapper>
       <div className="flex md:flex-row flex-col gap-[20px] pt-[40px]">
         <div className="md:max-w-[250px] w-full max-h-[80vh] overflow-y-auto">
-          <Sidebar tittle="Shop All" collapsibleSections={collapsibleSections as any} />
-          <Filters onFilterChange={handleFilterChange} onPriceInput={handlePriceInput} />
+          <Sidebar
+            tittle="Shop All"
+            collapsibleSections={collapsibleSections as any}
+          />
+          <Filters
+            onFilterChange={handleFilterChange}
+            onPriceInput={handlePriceInput}
+          />
         </div>
         <main className="flex-1">
           <div className="flex justify-between items-center">
             <p className="text-gray-600">{totalProducts} Products</p>
             <div>
               <label className="mr-[12px] text-gray-600">Sort By</label>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="p-[10px] rounded">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="p-[10px] rounded"
+              >
                 <option value="relevance">Relevance</option>
                 <option value="lowest">Lowest Price</option>
                 <option value="highest">Highest Price</option>
@@ -140,16 +160,26 @@ const CatalogPage = () => {
                 product={product as any}
                 addToCart={() => addToCart(product._id)}
                 toggleWishlist={() => toggleWishlist(product._id)}
-                isInWishlist={typeof isInWishlist === "function" ? isInWishlist(product._id) : false}
+                isInWishlist={
+                  typeof isInWishlist === "function"
+                    ? isInWishlist(product._id)
+                    : false
+                }
               />
             ))}
           </div>
           <Pagination totalPages={Math.ceil(totalProducts / 10)} />
-          <ProductSection products={productdetails  as any} cardWidth={289} />
+          {/* <ProductSection
+            products={productdetails as any}
+            cardWidth={289}
+            addToCart={}
+            toggleWishlist={}
+            isInWishlist={}
+          /> */}
         </main>
       </div>
     </Wrapper>
   );
 };
 
-export default CatalogPage; 
+export default CatalogPage;

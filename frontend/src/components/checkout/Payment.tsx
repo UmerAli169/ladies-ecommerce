@@ -31,7 +31,6 @@ const Payment: React.FC<PaymentProps> = ({
   const orderId = "167749-0500"; // Dynamically generate this in real implementation
 
   const handlePayment = () => {
-    // Here you can call API or handle logic before showing success modal
     setShowSuccess(true);
   };
 
@@ -85,19 +84,17 @@ const Payment: React.FC<PaymentProps> = ({
       )}
 
       <div className="flex gap-[40px]">
-        {/* Pay Now Button */}
         <Button
           onClick={handlePayment}
-          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px]"
+          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px] hover:bg-black hover:text-white"
         >
           Pay Now
         </Button>
 
-        {/* Return to Shopping */}
         <div className="flex items-center gap-[4px]">
           <Button
             onClick={onBack}
-            className="max-w-[173px] bg-[#FFFFFF] text-[16px] text-[#B0A6BD] font-normal"
+            className="max-w-[173px] bg-[#FFFFFF] text-[16px] text-[#B0A6BD] font-normal "
           >
             Return to Shopping
           </Button>

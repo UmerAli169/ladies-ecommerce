@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import data from '../../../Data/blog/blogdetails.json';
+import data from '../../Data/blog/blogdetails.json';
 
 const BlogDetails = () => {
   const router = useRouter();

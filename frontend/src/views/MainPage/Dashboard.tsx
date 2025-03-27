@@ -36,7 +36,7 @@ function MainPage() {
         isInWishlist={isInWishlist}
       />
       <Frame />
-      <BlogSection products={blogs as any} cardWidth={320} />
+      <BlogSection products={blogs as any} cardWidth={392} />
       <SkinQuiz />
       <InstagramGallery />
     </div>

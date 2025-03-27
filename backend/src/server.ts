@@ -53,44 +53,4 @@ app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 
 
-import Category from "../src/models/Category";
-import Subcategory from "./models/Subcategory";
 
-
-
-const seedData = async () => {
-  try {
-    await Category.deleteMany();
-    await Subcategory.deleteMany();
-
-    // Step 1: Insert Categories
-    const categories = await Category.insertMany([
-      { name: "Shirts" },
-      { name: "Pants" },
-      { name: "Shoes" },
-    ]);
-
-    // Step 2: Insert Subcategories & Capture their IDs
-    const subcategories = await Subcategory.insertMany([
-      { name: "T-Shirts", category: categories[0]._id },
-      { name: "Jeans", category: categories[1]._id },
-      { name: "Sneakers", category: categories[2]._id },
-    ]);
-
-    // Step 3: Update Categories with Subcategory IDs
-    for (const sub of subcategories) {
-      await Category.findByIdAndUpdate(sub.category, {
-        $push: { subcategories: sub._id },
-      });
-    }
-
-    console.log("✅ Seed Data Added Successfully!");
-    process.exit();
-  } catch (error) {
-    console.error("❌ Error Seeding Data:", error);
-    process.exit(1);
-  }
-};
-
-
-// seedData();

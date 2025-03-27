@@ -41,27 +41,25 @@ export const ReviewModal = ({
       formData.append("rating", values.rating.toString());
       formData.append("title", values.title);
       formData.append("text", values.text);
-  
+
       if (values.photos && values.photos.length > 0) {
         Array.from(values.photos).forEach((file) => {
           formData.append("images", file);
         });
       }
-  
-  
+
       await createReview(formData);
-  
+
       actions.setSubmitting(false);
       onClose();
     } catch (error) {
       console.error("❌ Error submitting review:", error);
     }
   };
-  
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-[26px] font-semibold leading-[39px] text-[#383838] mb-4 text-center">
+      <h2 className="text-[26px] font-normal  text-[#383838] mb-4 text-center">
         Write a Review
       </h2>
 
@@ -85,10 +83,13 @@ export const ReviewModal = ({
             .min(1, "Please select a rating")
             .required("Rating is required"),
         })}
-        onSubmit={handleReviewSubmit}
+        onSubmit={handleReviewSubmit as any}
       >
         {({ setFieldValue, handleSubmit, values }) => (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 w-full max-w-[500px] "
+          >
             <div className="max-w-[80px] w-full rounded-full flex gap-[10px] items-center">
               <img src="/reviews/reviewsection.png" alt="Reviewer" />
               <div className="flex gap-2 ">
@@ -143,28 +144,38 @@ export const ReviewModal = ({
               Add Photos
             </label>
 
-            <div className="mt-4 flex flex-col gap-[20px]">
-              <p className="font-medium">Your Profile</p>
+            <div className="mt-4 flex flex-col gap-[20px] items-center">
+              <div className="w-full">
+                <p className="font-medium text-left">Your Profile</p>
+              </div>
+
               <AuthInput type="text" name="name" placeholder="Name" required />
               <AuthInput
                 type="email"
                 name="email"
                 placeholder="Email Address"
-                required
+                required  
               />
-              <OrDivider />
-              <AuthButton type="button">Sign In</AuthButton>
-              <GoogleButton />
+              <div className="max-w-[392px] flex flex-col gap-[20px] items-center">
+                <OrDivider />
+                <AuthButton
+                  type="button"
+                  className="bg-white text-black border max-w-[380px] text-[16px] text-[#697586]"
+                >
+                  Sign In
+                </AuthButton>
+                <GoogleButton />
+              </div>
             </div>
 
-            <p className="text-center text-sm mt-4">
+            <p className="text-center text-[#B0A6BD] text-[12px] font-normal mt-4">
               By continuing you agree to our{" "}
               <a href="#" className="underline">
                 Privacy Policy
               </a>
             </p>
 
-            <AuthButton type="submit" className="w-full bg-pink-500 mt-2">
+            <AuthButton type="submit" className="w-full  ">
               Agree & Submit
             </AuthButton>
           </form>

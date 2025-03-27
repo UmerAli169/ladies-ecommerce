@@ -40,7 +40,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
               alt="left decoration"
             />
             <p className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              Reviews All
+              Read the reviews{" "}
             </p>
             <img
               src="/svgs/Shared/ProductSection/rightflower.svg"
@@ -68,7 +68,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   />
                 ))}
               </div>
-              <p className="text-sm text-gray-500">{averageRating} /5</p>
+              <p className="text-sm text-gray-500">{averageRating}</p>
             </div>
 
             <div>
@@ -81,9 +81,8 @@ const ReviewSection = ({ productId }: { productId: string }) => {
             </div>
           </div>
         </div>
-
         <div className="mt-[40px] space-y-[30px]">
-          {reviews.map((review: any, index) => (
+          {reviews.slice(0, 3).map((review: any, index, array) => (
             <div key={review._id || index} className="rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold">
@@ -124,9 +123,10 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  })}{" "}
+                  })}
                 </span>
               </div>
+
               <div className="mt-[20px]">
                 <p className="font-medium font-[16px] leading-[20px] ml-[50px]">
                   {review.title}
@@ -147,6 +147,14 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   </div>
                 )}
               </div>
+
+              {index !== array.length - 1 && (
+                <img
+                  src="/svgs/Review/flowerin.svg"
+                  alt=""
+                  className=" w-full max-w-[2500px]"
+                />
+              )}
             </div>
           ))}
         </div>

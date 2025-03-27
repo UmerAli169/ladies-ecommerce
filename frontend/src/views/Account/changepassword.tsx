@@ -1,12 +1,16 @@
-"use client"
-import AccountLayout from "../../app/(screens)/Account/AccountLayout/page";
-import ChangePasswordForm from '../../app/(screens)/Account/ChangePasswordForm/ChangePasswordForm'
+"use client";
+
+import AccountLayout from "@/components/account/AccountLayout";
+import ChangePasswordForm from "@/components/account/ChangePasswordForm";
+import { Suspense } from "react";
 
 const ContactInformation = () => {
   return (
-    <AccountLayout>
-      <ChangePasswordForm />
-    </AccountLayout>
+    <Suspense fallback={<p>Loading...</p>}>
+      <AccountLayout>
+        <ChangePasswordForm />
+      </AccountLayout>
+    </Suspense>
   );
 };
 
