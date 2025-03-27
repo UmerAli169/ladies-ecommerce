@@ -91,7 +91,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
             <div
               ref={scrollRef}
-              className="flex gap-[10px] overflow-x-scroll scrollbar-hide flex-nowrap relative"
+              className="flex gap-[20px] overflow-x-scroll scrollbar-hide flex-nowrap relative"
             >
               {products.map((product, index) => (
                 <div
@@ -116,31 +116,30 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           </div>
         )}
 
-        {products.length > 4 && (
-          <div className="flex mt-4 gap-2">
-            {Array.from({ length: Math.min(totalDots, 4) }).map((_, index) => {
-              let startIndex = Math.min(currentIndex, totalDots - 4);
-              let dotIndex = startIndex + index;
+        <div className="flex mt-4 gap-2">
+          {Array.from({ length: Math.min(totalDots, 4) }).map((_, index) => {
+            let startIndex = Math.min(currentIndex, totalDots - 4);
+            let dotIndex = startIndex + index;
 
-              return (
-                <button
-                  key={dotIndex}
-                  className={`w-[10px] h-[10px] rounded-full ${
-                    dotIndex === currentIndex ? "bg-[#B0A6BD]" : "bg-[#DFE1E3]"
-                  }`}
-                  onClick={() => {
-                    if (scrollRef.current) {
-                      scrollRef.current.scrollTo({
-                        left: dotIndex * scrollAmount,
-                        behavior: "smooth",
-                      });
-                    }
-                  }}
-                />
-              );
-            })}
-          </div>
-        )}
+            return (
+              <button
+                key={dotIndex}
+                className={`w-[10px] h-[10px] rounded-full transition-all duration-300 ${
+                  dotIndex === currentIndex ? "bg-[#B0A6BD]" : "bg-[#DFE1E3]"
+                }`}
+                onClick={() => {
+                  if (scrollRef.current) {
+                    scrollRef.current.scrollTo({
+                      left: dotIndex * scrollAmount,
+                      behavior: "smooth",
+                    });
+                    setCurrentIndex(dotIndex);
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
     </Wrapper>
   );

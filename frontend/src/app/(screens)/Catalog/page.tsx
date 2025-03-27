@@ -37,13 +37,13 @@ const CatalogPage = () => {
     let filtered = [...products];
 
     if (activeCategory) {
-      filtered = filtered.filter((product) => product.category.name?.includes(activeCategory));
+      filtered = filtered.filter((product:any) => product.category.name?.includes(activeCategory));
     }
     if (activeSubCategory) {
-      filtered = filtered.filter((product) => product.subcategory.name?.includes(activeSubCategory));
+      filtered = filtered.filter((product:any) => product.subcategory.name?.includes(activeSubCategory));
     }
     if (filters.skinType.length > 0 && !filters.skinType.includes("All")) {
-      filtered = filtered.filter((product) => filters.skinType.some((type) => product.skinTypes?.includes(type)));
+      filtered = filtered.filter((product:any) => filters.skinType.some((type:any) => product.skinTypes?.includes(type)));
     }
     if (filters.priceRange.length > 0) {
       filtered = filtered.filter((product) => {
@@ -145,7 +145,13 @@ const CatalogPage = () => {
             ))}
           </div>
           <Pagination totalPages={Math.ceil(totalProducts / 10)} />
-          <ProductSection products={productdetails  as any} cardWidth={289} />
+          <ProductSection products={productdetails as any} cardWidth={289} addToCart={function (product: any): void {
+            throw new Error("Function not implemented.");
+          } } toggleWishlist={function (id: string): void {
+            throw new Error("Function not implemented.");
+          } } isInWishlist={function (id: string): boolean {
+            throw new Error("Function not implemented.");
+          } } />
         </main>
       </div>
     </Wrapper>

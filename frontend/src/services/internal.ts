@@ -155,7 +155,6 @@ export const getReviewsByUser = async (userId: any) => {
   }
 };
 
-// ✅ Add to Cart (Product ID & Quantity)
 export const addToCart = async (productId: string, quantity: number) => {
   try {
     const response = await api.post("/api/products/addToCart", {
@@ -170,7 +169,6 @@ export const addToCart = async (productId: string, quantity: number) => {
   }
 };
 
-// ✅ Fetch Cart Items
 export const fetchCart = async () => {
   try {
     const response = await api.get("/api/products/fetchCart");
@@ -181,7 +179,6 @@ export const fetchCart = async () => {
   }
 };
 
-// ✅ Update Cart Item Quantity (Increment or Decrement)
 export const updateCartItemQuantity = async (
   cartItemId: string,
   quantity: number
@@ -198,7 +195,6 @@ export const updateCartItemQuantity = async (
   }
 };
 
-// ✅ Remove Cart Item
 export const removeCartItem = async (cartItemId: string) => {
   try {
     const response = await api.delete(

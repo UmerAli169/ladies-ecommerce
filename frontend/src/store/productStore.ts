@@ -3,9 +3,10 @@ import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   _id: string;
-  tittle: string; // ✅ Fixed typo from 'tittle' to 'title'
+  tittle: string; 
   name: string;
   price: number;
+  discount:number;
   image: string;
   category: string;
   subcategory:string;
@@ -45,9 +46,10 @@ export const useProductStore = create<ProductState>((set) => ({
       const response = await getAllProducts();
       const formattedProducts: Product[] = response.map((product: any) => ({
         _id: product._id,
-        tittle: product.tittle, // ✅ Fixed mapping
+        tittle: product.tittle,
         name: product.name,
         price: product.price,
+        discount:product.discount,
         image: product.image,
         category: product.category,
         subcategory:product.subcategory,

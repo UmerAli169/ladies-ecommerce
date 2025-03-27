@@ -39,7 +39,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
     : 0;
-
   return (
     <CustomCard
       className="w-full rounded-[6px] cursor-pointer relative"
@@ -47,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {product.discount && (
-        <div className="absolute top-[30px] left-[1px] bg-[#F5A3B7] rounded-r-full text-white text-[12px] font-bold px-3 py-1">
+        <div className="absolute top-[30px] left-[1px] bg-[#F5A3B7] rounded-r-full text-white text-[12px] font-bold px-3 py-1 z-10">
           -{product.discount}%
         </div>
       )}
@@ -62,7 +61,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="absolute top-[20px] right-[23px] cursor-pointer transition-opacity duration-300"
             onClick={(e) => {
               e.stopPropagation();
-              toggleWishlist(product.id);
+              toggleWishlist(product._id);
             }}
           >
             <img
@@ -81,13 +80,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
           src={product.image}
           alt={product.name}
           onClick={handleRedirect}
-          className="w-full h-full max-h-[220px] object-cover rounded-[6px]"
+          className="w-full h-full max-h-[442x] object-cover rounded-[6px]"
         />
       </div>
 
       <div className="px-[20px] py-[10px]">
         <div className="flex flex-col gap-[10px]">
-          <p className="font-[poppins] text-[16px] leading-[24px] text-[#383838] font-medium hover:text-[#F5A3B7]">
+          <p className="text-[16px]  text-[#383838] font-medium hover:text-[#F5A3B7]">
             {product.name}
           </p>
 
@@ -105,20 +104,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
               />
             ))}
             <span className="text-[14px] text-[#383838] font-medium">
-              ({averageRating.toFixed(1)})
+              ({averageRating.toFixed(0)})
             </span>
           </div>
 
           <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px]">
-            {product.description}
+            {product.description.slice(0,80)}...
           </p>
 
           <div className="font-[Montserrat] text-[16px] text-[#383838] font-normal">
-            ${product.price}
+            {product.price}$
           </div>
         </div>
 
-        <div className="mt-[20px]">
+        <div className="my-[20px]">
           <Button
             className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
             onClick={() => addToCart(product?._id)}

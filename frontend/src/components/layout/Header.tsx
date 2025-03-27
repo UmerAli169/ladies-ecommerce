@@ -91,9 +91,9 @@ const Header = () => {
 
               <Link
                 href="/"
-                className="text-[#383838] flex justify-center items-center text-[24px] font-medium leading-[25px]"
+                className="text-[#383838] flex justify-center items-center text-[24px] font-medium leading-[25px] gap-[10px]"
               >
-                <span className="text-[#F5A3B7]">Bloom </span>Beauty
+                <span className="text-[#F5A3B7]">Bloom   </span> Beauty
               </Link>
 
               <DesktopMenu menuItems={menuItems} />

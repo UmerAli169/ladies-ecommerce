@@ -7,8 +7,15 @@ interface AuthState {
   isAuthenticated: boolean;
   setUser: (user: any) => void;
   logout: () => void;
-  updatePassword: (data: { oldPassword: string; newPassword: string }) => Promise<void>;
-  updateContactInfo: (data: { firstName: string; lastName: string; email: string }) => Promise<void>;
+  updatePassword: (data: {
+    oldPassword: string;
+    newPassword: string;
+  }) => Promise<void>;
+  updateContactInfo: (data: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -17,7 +24,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
 
-      setUser: (user) => set({ user, isAuthenticated: !!user }), 
+      setUser: (user) => set({ user, isAuthenticated: !!user }),
 
       logout: () => set({ user: null, isAuthenticated: false }),
 
