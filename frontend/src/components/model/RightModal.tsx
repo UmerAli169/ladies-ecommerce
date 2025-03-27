@@ -66,7 +66,7 @@ export const CartModal: React.FC<CartModalProps> = ({
               {cartItems.map((item, index) => (
                 <CartItem key={item.id || index} item={item as any} />
               ))}
-              <SampleSelection />
+              <SampleSelection /> 
             </>
           ) : (
             <p className="text-[#B0A6BD]">Your cart is empty.</p>
@@ -81,7 +81,7 @@ export const CartModal: React.FC<CartModalProps> = ({
             </div>
             <Button
               onClick={handleCheckout}
-              className="w-full text-white py-2 mt-4 rounded"
+              className="w-full text-white py-2 mt-4 rounded hover:bg-black hover:text-white"
             >
               Check Out
             </Button>

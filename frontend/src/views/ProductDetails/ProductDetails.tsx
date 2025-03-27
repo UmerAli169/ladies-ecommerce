@@ -29,6 +29,7 @@ function Page() {
 
     getProduct();
   }, [productId]);
+
   return (
     <div className="py-[40px]">
       {product && <ProductDetails productInfo={product} />}

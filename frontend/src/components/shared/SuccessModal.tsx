@@ -18,7 +18,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, orderId })
           <X size={20} />
         </button>
 
-        <h2 className="text-[20px] font-semibold mb-4">Thanks for your order</h2>
+        <h2 className="text-[20px] font-medium mb-4">Thanks for your order</h2>
 
         <div className="flex items-center gap-2 bg-[#E9F6EE] text-[#1E4620] px-4 py-2 rounded-md">
           <img src="/check.svg" alt="Success" className="w-5" />
@@ -34,7 +34,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, orderId })
           </a>
         </p>
 
-        <AuthButton type="button" onClick={onClose} className="mt-4 bg-[#E91E63] text-white px-6 py-2 rounded-md">
+        <AuthButton type="button" onClick={onClose} className="mt-4 bg-[#E91E63] text-white px-6 py-2 rounded-md hover:bg-black hover:text-white">
           Home
         </AuthButton>
       </div>

@@ -70,13 +70,38 @@ const AddressForm = () => {
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
-              <AuthInput name="country" type="text" placeholder=" Country" label="Country" />
-              <AuthInput name="address" type="text" placeholder=" Address" label="Address" />
+              <AuthInput
+                name="country"
+                type="text"
+                placeholder=" Country"
+                label="Country"
+              />
+              <AuthInput
+                name="address"
+                type="text"
+                placeholder=" Address"
+                label="Address"
+              />
               <div className="grid grid-cols-2 gap-2">
-                <AuthInput name="city" type="text" placeholder=" City" label="City" />
-                <AuthInput name="postalCode" type="text" placeholder=" Postal Code" label="Postal Code" />
+                <AuthInput
+                  name="city"
+                  type="text"
+                  placeholder=" City"
+                  label="City"
+                />
+                <AuthInput
+                  name="postalCode"
+                  type="text"
+                  placeholder=" Postal Code"
+                  label="Postal Code"
+                />
               </div>
-              <AuthInput name="phone" type="text" placeholder=" Phone Number" label=" Number" />
+              <AuthInput
+                name="phone"
+                type="text"
+                placeholder=" Phone Number"
+                label=" Number"
+              />
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2">
                   <Field type="checkbox" name="setAsDefault" />
@@ -87,7 +112,11 @@ const AddressForm = () => {
                   The recipient is not me
                 </label>
               </div>
-              <Button type="submit" className="w-[240px] text-white py-2 " disabled={isSubmitting}>
+              <Button
+                type="submit"
+                className="w-[240px] text-white py-2  hover:bg-black hover:text-white"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>
             </Form>

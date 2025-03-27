@@ -60,7 +60,7 @@ const ChangePasswordForm = () => {
             />
           </div>
 
-          <Button type="submit" className="px-4 py-2 max-w-[362px]" disabled={isSubmitting}>
+          <Button type="submit" className="px-4 py-2 max-w-[362px] hover:bg-black hover:text-white" disabled={isSubmitting}>
             {isSubmitting ? "Updating..." : "Update Password"}
           </Button>
         </Form>

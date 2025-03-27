@@ -62,6 +62,8 @@ export const useProductStore = create<ProductState>((set) => ({
         recommendedFor: product.recommendedFor || "",
         blog: product.blog || "",
       }));
+
+     
       set({
         products: formattedProducts,
         bestSellers: formattedProducts.filter(
@@ -80,6 +82,8 @@ export const useProductStore = create<ProductState>((set) => ({
           (p) => p.tittle === "You May Also Like"
         ),
       });
+      
+
     } catch (error) {
       console.error("Error fetching products:", error);
     }

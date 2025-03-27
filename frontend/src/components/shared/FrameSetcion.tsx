@@ -57,7 +57,7 @@ const FrameSection: React.FC<FrameSectionProps> = ({
           </div>
           <div className="flex items-center gap-[30px] md:flex-row flex-col ">
             <Button
-              className={`lg:max-w-[246px] text-[#FFFFFF]  text-[14px] font-semibold py-[10px] ${buttonClassName}`}
+              className={`lg:max-w-[246px] text-[#FFFFFF] text-white border-none  text-[14px] font-semibold py-[10px] ${buttonClassName}`}
               href={`/BlogDetail `}
             >
               {product.shopNowText}
@@ -67,8 +67,8 @@ const FrameSection: React.FC<FrameSectionProps> = ({
                 {product.exploreMoreText}
               </Button>
               <img
-                src={product.exploreIcon}
-                alt="icon"
+                src={product.exploreIcon ? product.exploreIcon : " "}
+                alt=""
                 className="ml-[8px] w-[12px] "
               />
             </div>

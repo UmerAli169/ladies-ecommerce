@@ -9,14 +9,14 @@ export const createReview = async (req: any, res: any) => {
     const { userId, productId, rating, title, text } = req.body;
 
     const images =
-      req.files && req.files.length > 0
-        ? req.files.map((file: Express.Multer.File) => `/${file.filename}`)
-        : [];
+    req.files
+    ? (req.files as Express.Multer.File[]).map((file: any) => file.path)
+    : [];
 
     const newReview: any = new Review({
       userId,
       productId,
-      rating,
+      rating,   
       title,
       text,
       images,
