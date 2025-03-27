@@ -1,13 +1,17 @@
 "use client"
 
-import AccountLayout from "../../app/(screens)/Account/AccountLayout/page";
-import ContactInformationForm from '../../app/(screens)/Account/ContactInformationForm/page'
+import AccountLayout from "@/components/account/AccountLayout";
+import { Suspense } from "react";
+
 
 const ContactInformation = () => {
   return (
+          <Suspense fallback={<p>Loading...</p>}>
     <AccountLayout>
-      <ContactInformationForm />
+
+      <ContactInformation />
     </AccountLayout>
+      </Suspense>
   );
 };
 

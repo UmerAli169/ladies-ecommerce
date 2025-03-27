@@ -83,7 +83,7 @@ export const ReviewModal = ({
             .min(1, "Please select a rating")
             .required("Rating is required"),
         })}
-        onSubmit={handleReviewSubmit}
+        onSubmit={handleReviewSubmit as any}
       >
         {({ setFieldValue, handleSubmit, values }) => (
           <form

@@ -116,7 +116,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
               />
             ))}
             <span className="lg:text-[14px] ml-[8px] text-[12px] font-medium font-[Montserrat] font-normal text-[#697586] lg:leading-[22px] leading-[20px]">
-              {product.reviews?.length} reviews
+            {Array.isArray(product.reviews) ? product.reviews.length : 0} reviews
             </span>
           </div>
           <p className="lg:text-[16px] text-[14px] font-medium text-[#383838] lg:leading-[27px] leading-[24px]">
