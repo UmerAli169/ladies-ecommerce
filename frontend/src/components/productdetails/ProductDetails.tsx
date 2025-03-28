@@ -60,8 +60,10 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
 
   return (
     <Wrapper>
-      <div className="flex flex-col md:flex-row justify-between
-">
+      <div
+        className="flex flex-col md:flex-row justify-between
+"
+      >
         <div className="flex flex-col items-center w-full md:w-1/3   relative">
           <button
             className="absolute left-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
@@ -116,7 +118,8 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
               />
             ))}
             <span className="lg:text-[14px] ml-[8px] text-[12px] font-medium font-[Montserrat] font-normal text-[#697586] lg:leading-[22px] leading-[20px]">
-            {Array.isArray(product.reviews) ? product.reviews.length : 0} reviews
+              {Array.isArray(product.reviews) ? product.reviews.length : 0}{" "}
+              reviews
             </span>
           </div>
           <p className="lg:text-[16px] text-[14px] font-medium text-[#383838] lg:leading-[27px] leading-[24px]">
