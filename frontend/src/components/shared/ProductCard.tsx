@@ -122,7 +122,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
             onClick={() => addToCart(product?._id)}
           >
-            Add To Bag
+            Add To Cart
           </Button>
         </div>
       </div>

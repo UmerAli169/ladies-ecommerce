@@ -1,19 +1,21 @@
 "use client";
-import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Wrapper from "@/app/wrapper";
-import ProductCard from "../shared/ProductCard";
 import BlogCards from "./BlogCards";
-import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 interface Product {
-  tittle: any;
+  title: string;
   category: string;
   _id: string;
   name: string;
   price: number;
   image: string;
-  raing: number;
-  describtion: string;
+  rating: number;
+  description: string;
   reviews: string;
 }
 
@@ -21,128 +23,63 @@ interface ProductSectionProps {
   products: Product[];
   cardWidth: number;
 }
-
 const ProductSection: React.FC<ProductSectionProps> = ({
   products,
   cardWidth,
 }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(products,'omer')
 
-  const scrollAmount = cardWidth * 4;
-
-  const scroll = useCallback(
-    (direction: "left" | "right") => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollBy({
-          left: direction === "left" ? -scrollAmount : scrollAmount,
-          behavior: "smooth",
-        });
-      }
-    },
-    [scrollAmount]
-  );
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const scrollLeft = scrollRef.current.scrollLeft;
-        const visibleIndex = Math.round(scrollLeft / scrollAmount);
-        setCurrentIndex(visibleIndex);
-      }
-    };
-
-    const scrollContainer = scrollRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
-      return () => scrollContainer.removeEventListener("scroll", handleScroll);
-    }
-  }, [scrollAmount]);
-  const totalDots = useMemo(() => Math.ceil(products.length / 4), [products]);
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] relative">
         <div className="text-center">
           <div className="flex gap-[10px] items-center">
-            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="" />
+            <img src="/svgs/Shared/ProductSection/leftflower.svg" alt="Left Flower" />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {[...new Set(products?.map((item) => item.tittle))].map(
-                (tittle, index) => (
-                  <p key={`${tittle}-${index}`}>{tittle}</p>
-                )
-              )}
+              {[...new Set(products?.map((item:any) => item.tittle))].map((tittle, index) => (
+                <p key={`${tittle}-${index}`}>{tittle}</p>
+              ))}
             </div>
-
-            <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="" />
+            <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="Right Flower" />
           </div>
-          <Link href="/Catalog">
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
             See All
           </p>
-          </Link>
         </div>
 
         {products.length === 0 ? (
           <p className="text-gray-500 mt-4">No products available.</p>
         ) : (
           <div className="w-full relative lg:py-[30px] py-[20px]">
-            <button
-              className="absolute left-[-20px] top-1/2 -translate-y-1/2 rounded-full hidden lg:flex z-[20]"
-              onClick={() => scroll("left")}
-            >
-              <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="Left" />
-            </button>
-
-            <div
-              ref={scrollRef}
-              className="flex gap-[20px] overflow-x-scroll scrollbar-hide flex-nowrap relative"
-            >
-              {products.map((product, index) => (
-                <div
-                  key={`${product._id}-${index}`}
-                  style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
-                  className="shrink-0"
-                >
-                  <BlogCards product={product as any} />
-                </div>
-              ))}
+            <div className="absolute top-1/2 left-[-1px] z-10 cursor-pointer custom-prev">
+              <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="Left Arrow" />
             </div>
 
-            <button
-              className="absolute right-[-20px] top-1/2 -translate-y-1/2 rounded-full hidden lg:flex z-[20]"
-              onClick={() => scroll("right")}
+            <Swiper
+              navigation={{
+                nextEl: ".custom-next",
+                prevEl: ".custom-prev",
+              }}
+              modules={[Navigation]}
+              spaceBetween={20}
+              slidesPerView="auto"
+              className="mySwiper"
             >
-              <img
-                src="/svgs/Shared/ProductSection/rightArrow.svg"
-                alt="Right"
-              />
-            </button>
+              {products.map((product, index) => (
+                <SwiperSlide
+                  key={`${product._id}-${index}`}
+                  style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
+                >
+                  <BlogCards product={product as any} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <div className="absolute top-1/2 right-[-1px] z-10 cursor-pointer custom-next">
+              <img src="/svgs/Shared/ProductSection/rightArrow.svg" alt="Right Arrow" />
+            </div>
           </div>
         )}
-
-        <div className="flex mt-4 gap-2">
-          {Array.from({ length: Math.min(totalDots, 4) }).map((_, index) => {
-            let startIndex = Math.min(currentIndex, totalDots - 4);
-            let dotIndex = startIndex + index;
-
-            return (
-              <button
-                key={dotIndex}
-                className={`w-[10px] h-[10px] rounded-full transition-all duration-300 ${
-                  dotIndex === currentIndex ? "bg-[#B0A6BD]" : "bg-[#DFE1E3]"
-                }`}
-                onClick={() => {
-                  if (scrollRef.current) {
-                    scrollRef.current.scrollTo({
-                      left: dotIndex * scrollAmount,
-                      behavior: "smooth",
-                    });
-                    setCurrentIndex(dotIndex);
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
       </div>
     </Wrapper>
   );

@@ -18,7 +18,7 @@ const Accordion: React.FC<AccordionProps> = ({ question, answer }) => {
         onClick={() => setOpen(!open)}
       >
         {question}
-        <span className="text-[18px]">{open ? <img src="/svgs/Shared/OpenAndCloaed/accodionOpen.svg" alt="" /> :<img src="/svgs/Shared/OpenAndCloaed/accodionOpen.svg" alt="" /> }</span>
+        <span className="text-[18px] my-auto">{open ? <img src="/svgs/Shared/OpenAndCloaed/accodionClosed.svg" alt="" /> :<img src="/svgs/Shared/OpenAndCloaed/accodionOpen.svg" alt="" /> }</span>
       </button>
       {open && (
         <p className=" p-3 leading-[22px] font-normal font-[Montserrat] font-normal text-[16px] text-[#383838]">
