@@ -107,11 +107,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
               ({averageRating.toFixed(0)})
             </span>
           </div>
-
-          <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px]">
-            {product.description.slice(0,80)}...
-          </p>
-
+          <div className=" h-full  min-h-[40px] max-h-[20px]">
+            <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px] ">
+              {product.description.slice(0, 80)}...
+            </p>
+          </div>
           <div className="font-[Montserrat] text-[16px] text-[#383838] font-normal">
             {product.price}$
           </div>

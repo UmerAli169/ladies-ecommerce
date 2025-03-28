@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "w-full bg-[rgba(245,163,183,1)] shadow-[0px_4px_20px_0px_rgba(245,163,183,0.3)]  lg:text-[16px] text-[14px] font-normal rounded-[4px] hover:bg-[#383838] hover:text-[#FFFFFF";
+    "w-full bg-[rgba(245,163,183,1)]  lg:text-[16px] text-[14px] font-normal rounded-[4px] hover:bg-[#383838] hover:text-[#FFFFFF";
 
   if (href) {
     return (

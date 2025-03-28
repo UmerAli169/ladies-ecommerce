@@ -1,5 +1,6 @@
 import Wrapper from "@/app/wrapper";
 import Button from "../shared/Button";
+import Link from "next/link";
 
 const images = [
   "/imageGallary.png",
@@ -30,9 +31,11 @@ const InstagramGallery = () => {
               alt="Right Flower"
             />
           </div>
+          <Link href="/Catalog">
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
             See All
           </p>
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-[20px] py-[30px]">

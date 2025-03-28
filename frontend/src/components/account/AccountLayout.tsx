@@ -47,28 +47,7 @@ const AccountLayout = ({ children }: { children: ReactNode }) => {
                   key: "wishlist",
                   title: "Wishlist",
                   href: "/Account/wishlist",
-                  items: [
-                    {
-                      label: "All period",
-                      href: "/Account/wishlist?filter=all",
-                    },
-                    {
-                      label: "For this month",
-                      href: "/account/wishlist?filter=this-month",
-                    },
-                    {
-                      label: "Last month",
-                      href: "/account/wishlist?filter=last-month",
-                    },
-                    {
-                      label: "This year",
-                      href: "/account/wishlist?filter=this-year",
-                    },
-                    {
-                      label: "Last year",
-                      href: "/account/wishlist?filter=last-year",
-                    },
-                  ],
+                  items: [],
                 },
               ]}
             />

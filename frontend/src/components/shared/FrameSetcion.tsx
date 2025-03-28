@@ -57,7 +57,7 @@ const FrameSection: React.FC<FrameSectionProps> = ({
           </div>
           <div className="flex items-center gap-[30px] md:flex-row flex-col ">
             <Button
-              className={`lg:max-w-[246px] text-[#FFFFFF] text-white border-none  text-[14px] font-semibold py-[10px] ${buttonClassName}`}
+              className={`lg:max-w-[246px] max-w-[200px] w-full lg:mt-[34px] text-[14px] text-[#FFFFFF] font-semibold lg:py-[8.5px] px-[10px] py-[8px] hover:bg-black hover:text-white`}
               href={`/BlogDetail `}
             >
               {product.shopNowText}

@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
+import Link from "next/link";
 
 interface Product {
   tittle: any;
@@ -79,9 +80,11 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
             <img src="/svgs/Shared/ProductSection/rightflower.svg" alt="" />
           </div>
+          <Link href="/Catalog">
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
             See All
           </p>
+          </Link>
         </div>
 
         {products.length === 0 ? (

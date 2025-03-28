@@ -5,6 +5,7 @@ import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import { ReviewModal } from "./WriteReview";
 import { useAuthStore } from "@/store/authStore";
+import Link from "next/link";
 const ReviewSection = ({ productId }: { productId: string }) => {
   const UserId = useAuthStore((state: any) => state.user.user._id);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,9 +49,11 @@ const ReviewSection = ({ productId }: { productId: string }) => {
             />
           </div>
 
+          <Link href="/Catalog">
           <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
             See All
           </p>
+          </Link>
 
           <div className="flex flex-col gap-[20px] text-center mt-2">
             <div className="flex items-center justify-center gap-2">
