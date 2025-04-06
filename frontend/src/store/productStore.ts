@@ -3,13 +3,13 @@ import { getAllProducts, getProductById } from "../services/internal";
 
 interface Product {
   _id: string;
-  tittle: string; 
+  tittle: string;
   name: string;
   price: number;
-  discount:number;
+  discount: number;
   image: string;
   category: string;
-  subcategory:string;
+  subcategory: string;
   description: string;
   imageUrl: string;
   thumbnailImages: string[];
@@ -25,7 +25,7 @@ interface ProductState {
   products: Product[];
   bestSellers: Product[];
   newArrivals: Product[];
-  likeproduct:Product[]
+  likeproduct: Product[];
   productdetails: Product[];
   product: Product | null;
   fetchProducts: () => Promise<void>;
@@ -38,7 +38,7 @@ export const useProductStore = create<ProductState>((set) => ({
   newArrivals: [],
   blogs: [],
   productdetails: [],
-  likeproduct:[],
+  likeproduct: [],
   product: null,
 
   fetchProducts: async () => {
@@ -49,10 +49,10 @@ export const useProductStore = create<ProductState>((set) => ({
         tittle: product.tittle,
         name: product.name,
         price: product.price,
-        discount:product.discount,
+        discount: product.discount,
         image: product.image,
         category: product.category,
-        subcategory:product.subcategory,
+        subcategory: product.subcategory,
         description: product.description,
         imageUrl: product.imageUrl,
         thumbnailImages: product.thumbnailImages || [],
@@ -63,7 +63,6 @@ export const useProductStore = create<ProductState>((set) => ({
         blog: product.blog || "",
       }));
 
-     
       set({
         products: formattedProducts,
         bestSellers: formattedProducts.filter(
@@ -75,15 +74,11 @@ export const useProductStore = create<ProductState>((set) => ({
         productdetails: formattedProducts.filter(
           (p) => p.tittle === "Recently Viewed Products"
         ),
-        blogs: formattedProducts.filter(
-          (p) => p.tittle === "On the Blog"
-        ),
+        blogs: formattedProducts.filter((p) => p.tittle === "On the Blog"),
         likeproduct: formattedProducts.filter(
           (p) => p.tittle === "You May Also Like"
         ),
       });
-      
-
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -93,7 +88,7 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
-      return
+      return;
     } catch (error) {
       console.error("Error fetching product:", error);
     }

@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import ProductCard from "../../../components/shared/ProductCard";
 import Sidebar from "../../../components/catalog/Sliderbar";
@@ -15,10 +16,10 @@ const CatalogPage = () => {
   const { categories, fetchCategories } = useCategoryStore();
   const { addToCart } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
-  const { products, productdetails } = useProductStore();
+  const { products, fetchProducts, productdetails } = useProductStore();
 
   const [filteredProducts, setFilteredProducts] = useState(products || []);
-  const [totalProducts, setTotalProducts] = useState(products.length);
+  const [totalProducts, setTotalProducts] = useState(products.length || 0);
   const [sortBy, setSortBy] = useState("relevance");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSubCategory, setActiveSubCategory] = useState<string | null>(
@@ -33,6 +34,7 @@ const CatalogPage = () => {
 
   useEffect(() => {
     fetchCategories();
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const CatalogPage = () => {
     }
     if (filters.skinType.length > 0 && !filters.skinType.includes("All")) {
       filtered = filtered.filter((product: any) =>
-        filters.skinType.some((type: any) => product.skinTypes?.includes(type))
+        filters.skinType.some((type) => product.skinTypes?.includes(type))
       );
     }
     if (filters.priceRange.length > 0) {
@@ -154,28 +156,24 @@ const CatalogPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative pt-[30px]">
-            {filteredProducts.map((product) => (
+            {filteredProducts.slice(0, 9).map((product) => (
               <ProductCard
                 key={product._id}
                 product={product as any}
                 addToCart={() => addToCart(product._id)}
                 toggleWishlist={() => toggleWishlist(product._id)}
-                isInWishlist={
-                  typeof isInWishlist === "function"
-                    ? isInWishlist(product._id)
-                    : false
-                }
+                isInWishlist={isInWishlist(product._id)}
               />
             ))}
           </div>
           <Pagination totalPages={Math.ceil(totalProducts / 10)} />
-          {/* <ProductSection
+          <ProductSection
             products={productdetails as any}
             cardWidth={289}
-            addToCart={}
-            toggleWishlist={}
-            isInWishlist={}
-          /> */}
+            addToCart={addToCart}
+            toggleWishlist={toggleWishlist}
+            isInWishlist={isInWishlist}
+          />
         </main>
       </div>
     </Wrapper>
