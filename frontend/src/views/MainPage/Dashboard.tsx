@@ -14,7 +14,7 @@ function MainPage() {
   const { bestSellers, newArrivals, fetchProducts, blogs } = useProductStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { addToCart } = useCartStore();
-
+console.log(newArrivals,'newArrivals')
   useEffect(() => {
     fetchProducts();
   }, []);

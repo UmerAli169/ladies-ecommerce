@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../shared/Button";
 import Wrapper from "@/app/wrapper";
 import AboutSection from "../about/AboutSection";
@@ -21,6 +21,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
   const { addToCart, cart } = useCartStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track current image index
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
@@ -58,32 +59,45 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
     }
   };
 
+  const handleImageChange = (direction: "left" | "right") => {
+    if (direction === "left") {
+      setCurrentImageIndex(
+        (prevIndex) =>
+          prevIndex === 0 ? product.thumbnailImages.length - 1 : prevIndex - 1
+      );
+    } else {
+      setCurrentImageIndex(
+        (prevIndex) =>
+          prevIndex === product.thumbnailImages.length - 1
+            ? 0
+            : prevIndex + 1
+      );
+    }
+  };
+
   return (
     <Wrapper>
-      <div
-        className="flex flex-col md:flex-row justify-between
-"
-      >
-        <div className="flex flex-col items-center w-full md:w-1/3   relative">
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="flex flex-col items-center w-full md:w-1/3 relative">
           <button
             className="absolute left-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
-            onClick={() => scroll("left")}
+            onClick={() => handleImageChange("left")}
           >
             <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="left" />
           </button>
           <img
-            src={product.image}
+            src={product.thumbnailImages[currentImageIndex]} // Display image based on index
             alt={product.name}
-            className="w-full  h-full max-w-[495px] max-h-[495px] object-cover"
+            className="w-full h-full max-w-[495px] max-h-[495px] object-cover"
           />
 
           <button
             className="absolute right-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
-            onClick={() => scroll("right")}
+            onClick={() => handleImageChange("right")}
           >
             <img src="/svgs/Shared/ProductSection/rightArrow.svg" alt="right" />
           </button>
-          <div className="w-full relative ">
+          <div className="w-full relative">
             <div
               ref={scrollRef}
               className="flex mt-[20px] gap-[20px] overflow-x-auto scrollbar-hide"
@@ -93,7 +107,8 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
                   key={`${thumb}-${index}`}
                   src={thumb}
                   alt="thumbnail"
-                  className="max-w-[83px] w-full  max-h-[83px] object-cover cursor-pointer"
+                  className="max-w-[83px] w-full max-h-[83px] object-cover cursor-pointer"
+                  onClick={() => setCurrentImageIndex(index)} // Set current image when clicking on thumbnail
                 />
               ))}
             </div>
@@ -139,7 +154,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
           </div>
           <div className="flex items-center gap-[10px]">
             <Button
-              className="max-w-[246px] w-full py-[10px] px-[80.5px] text-[14px] font-bold text-white lg:leading-[21px] leading-[18px] hover:bg-custom-gradienthover:text-white"
+              className="max-w-[246px] w-full py-[10px] px-[70.5px] text-[14px] lg:text-[16px] font-bold text-white lg:leading-[21px] leading-[18px] hover:bg-custom-gradient hover:text-white"
               onClick={handleAddToCart}
             >
               Add To Cart
