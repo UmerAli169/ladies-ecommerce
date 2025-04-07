@@ -49,7 +49,7 @@ const FrameSection: React.FC<FrameSectionProps> = ({
             {product?.buttonLabels?.map((label, index) => (
               <button
                 key={index}
-                className="max-w-[90px] rounded-[70px] text-[12px] py-[8px]  bg-[rgba(180,176,190,0.2)] text-black p-[10px] hover:bg-[#F5A3B7] hover:text-white"
+                className="max-w-[190px] rounded-[70px] text-[12px] py-[8px]  bg-[rgba(180,176,190,0.2)] text-black p-[10px] hover:bg-[#F5A3B7] hover:text-white"
               >
                 {label}
               </button>

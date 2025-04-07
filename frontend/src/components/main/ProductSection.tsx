@@ -60,7 +60,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
   return (
     <Wrapper>
-      <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] pb-12 relative">
+      <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] pb-[30px] relative">
         <div className="text-center">
           <div className="flex gap-[10px] items-center">
             <img
@@ -153,7 +153,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
             <div
               ref={paginationRef}
-              className="swiper-pagination absolute bottom-4 left-0 right-0"
+              className="swiper-pagination absolute left-0 right-0"
             />
           </>
         )}
