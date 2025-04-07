@@ -89,7 +89,6 @@ export const getAllProducts = async () => {
 export const getWishlist = async () => {
   try {
     const response = await api.get(`/api/products/getWishlist`);
-    toast.success("Product getWishlist!");
     return response.data;
   } catch (error) {
     throw error;
@@ -208,8 +207,10 @@ export const removeCartItem = async (cartItemId: string) => {
   }
 };
 
-
-export const changePassword = async (data: { oldPassword: string; newPassword: string }) => {
+export const changePassword = async (data: {
+  oldPassword: string;
+  newPassword: string;
+}) => {
   try {
     const response = await api.post("/api/auth/change-password", data);
     toast.success("Password updated successfully!");
@@ -219,7 +220,11 @@ export const changePassword = async (data: { oldPassword: string; newPassword: s
   }
 };
 
-export const updateContactInfo = async (data: { firstName: string; lastName: string; email: string }) => {
+export const updateContactInfo = async (data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+}) => {
   try {
     const response = await api.put("/api/auth/update-contact-info", data);
     toast.success("Contact information updated successfully!");
@@ -228,7 +233,6 @@ export const updateContactInfo = async (data: { firstName: string; lastName: str
     throw error;
   }
 };
-
 
 export const getAllCategories = async () => {
   const response = await api.get("/api/products/categories");

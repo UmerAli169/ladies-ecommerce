@@ -36,7 +36,10 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     }
   },
 
-  isInWishlist: (id: string) => get().wishlist.includes(id),
+  isInWishlist: (id: string) => {
+    const wishlist = get().wishlist;
+    return Array.isArray(wishlist) && wishlist.includes(id);
+  },
 }));
 
 export default useWishlistStore;

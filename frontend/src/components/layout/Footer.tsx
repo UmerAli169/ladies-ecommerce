@@ -30,9 +30,13 @@ const Footer = () => {
               <Link
                 key={index}
                 href={social.href}
-                className="w-8 h-8 rounded-full  flex items-center justify-center hover:bg-gray-200 transition-colors"
+                className="w-8 h-8 rounded-full  flex items-center justify-center  hover:text-[#F5A3B7] transition-colors"
               >
-                <img src={social.icon} alt="social icon" className="w-[30px] " />
+                <img
+                  src={social.icon}
+                  alt="social icon"
+                  className="w-[30px] "
+                />
               </Link>
             ))}
           </div>
@@ -50,9 +54,25 @@ const Footer = () => {
                 {data.brand.description}
               </p>
               <div className="text-[#FFFFFF] text-[14px] space-y-[10px]  leading-[17px] font-normal font-[Montserrat] ">
-                <p>{data.brand.contact.phone}</p>
-                <p>{data.brand.contact.email}</p>
-                <p>{data.brand.contact.location}</p>
+                <div className="text-[#FFFFFF] text-[14px] space-y-[10px] leading-[17px] font-normal font-[Montserrat]">
+                  <p>
+                    <a
+                      href={`tel:${data.brand.contact.phone}`}
+                      className="hover:underline"
+                    >
+                      {data.brand.contact.phone}
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href={`mailto:${data.brand.contact.email}`}
+                      className="hover:underline"
+                    >
+                      {data.brand.contact.email}
+                    </a>
+                  </p>
+                  <p>{data.brand.contact.location}</p>
+                </div>
               </div>
             </div>
 
@@ -66,7 +86,7 @@ const Footer = () => {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-[#FFFFFF] text-[14px]  hover:text-gray-800"
+                        className="text-[#FFFFFF] text-[14px]  hover:text-[#F5A3B7]"
                       >
                         {link.label}
                       </Link>

@@ -21,9 +21,15 @@ interface SidebarProps {
   }[];
 }
 
-const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps) => {
+const Sidebar = ({
+  tittle,
+  links = [],
+  collapsibleSections = [],
+}: SidebarProps) => {
   const pathname = usePathname();
-  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
+  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   const toggleSection = (event: React.MouseEvent, sectionKey: string) => {
     event.preventDefault();
@@ -47,7 +53,9 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
               <Link
                 href={link.href}
                 className={`block text-[16px] font-medium ${
-                  isActive ? "text-[#F5A3B7]" : "text-[#383838] hover:text-black"
+                  isActive
+                    ? "text-[#F5A3B7]"
+                    : "text-[#383838] hover:text-black"
                 }`}
               >
                 {link.label}
@@ -63,7 +71,9 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
           <div key={section.key} className="mt-6">
             <div
               className={`text-[16px] font-medium flex items-center justify-between cursor-pointer ${
-                pathname === section.href ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
+                pathname === section.href
+                  ? "text-[#F5A3B7]"
+                  : "text-[#697586] hover:text-[#E49BAE]"
               }`}
             >
               {section.href ? (
@@ -88,17 +98,24 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
               )}
 
               {section.items.length > 0 && (
-                <button onClick={(e) => toggleSection(e, section.key)} className="ml-2">
-                  {isSectionOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                <button
+                  onClick={(e) => toggleSection(e, section.key)}
+                  className="ml-2"
+                >
+                  {isSectionOpen ? (
+                    <ChevronUp size={16} />
+                  ) : (
+                    <ChevronDown size={16} />
+                  )}
                 </button>
               )}
             </div>
             {isSectionOpen && (
               <ul className="space-y-[10px] mt-2">
-                {section.items.map((item) => {
+                {section.items.map((item, index) => {
                   const isActive = pathname === item.href;
                   return (
-                    <li key={item.key}>
+                    <li key={item.key || index}>
                       {item.href ? (
                         <Link
                           href={item.href}
@@ -107,7 +124,9 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
                             item.onClick && item.onClick(e);
                           }}
                           className={`text-[14px] leading-[21px] font-normal ${
-                            isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
+                            isActive
+                              ? "text-[#F5A3B7]"
+                              : "text-[#697586] hover:text-[#E49BAE]"
                           }`}
                         >
                           {item.label}
@@ -118,7 +137,9 @@ const Sidebar = ({ tittle, links = [], collapsibleSections = [] }: SidebarProps)
                             item.onClick && item.onClick(e);
                           }}
                           className={`text-[14px] leading-[21px] font-normal w-full text-left ${
-                            isActive ? "text-[#F5A3B7]" : "text-[#697586] hover:text-[#E49BAE]"
+                            isActive
+                              ? "text-[#F5A3B7]"
+                              : "text-[#697586] hover:text-[#E49BAE]"
                           }`}
                         >
                           {item.label}

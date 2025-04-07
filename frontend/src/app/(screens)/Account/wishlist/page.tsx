@@ -23,7 +23,7 @@ function WishlistPage() {
         setWishlistProducts(Array.isArray(data?.products) ? data.products : []);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
-      } 
+      }
     }
     loadWishlist();
   }, []);
@@ -65,7 +65,6 @@ function WishlistPage() {
             ))}
           </div>
 
-          {/* Pagination Controls */}
           <div className="flex flex-col items-center my-[20px] gap-[10px]">
             <div className="flex items-center gap-2">
               <button
