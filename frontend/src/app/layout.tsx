@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased flex flex-col min-h-screen max-w-[2440px] mx-auto w-full font-[poppins] bg-[#F9FAFC]`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased flex flex-col min-h-screen w-full font-[poppins] bg-[#F9FAFC]`}
       >
         <ToastProvider />
         <Header />
