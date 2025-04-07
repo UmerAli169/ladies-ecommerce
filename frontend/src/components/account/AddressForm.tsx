@@ -39,7 +39,7 @@ const AddressForm = () => {
       </div>
       {!showForm && (
         <Button
-          className="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+          className="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
           onClick={() => setShowForm(true)}
         >
           Add A New Address
@@ -114,7 +114,7 @@ const AddressForm = () => {
               </div>
               <Button
                 type="submit"
-                className="w-[240px] text-white py-2  hover:bg-black hover:text-white"
+                className="w-[240px] text-white py-2  hover:bg-custom-gradienthover:text-white"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Saving..." : "Save"}

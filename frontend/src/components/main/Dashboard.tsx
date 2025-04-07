@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function Dashboard() {
   return (
-    <div className="bg-[#F5E0E5] lg:py-[102px] py-[78px] relative">
+    <div className=" lg:py-[102px] py-[78px] relative">
       <img
         src="/main.png"
         alt="main"
@@ -20,7 +20,7 @@ function Dashboard() {
             Great gift for yourself and loved ones
           </p>
           <Link href="/">
-            <Button className="lg:max-w-[246px] max-w-[200px] w-full lg:mt-[34px] text-[14px] text-[#FFFFFF] font-semibold lg:py-[8.5px] px-[10px] py-[8px] hover:bg-black hover:text-white">
+            <Button className="lg:max-w-[246px] max-w-[200px] w-full lg:mt-[34px] text-[14px] text-[#FFFFFF] font-semibold lg:py-[8.5px] px-[10px] py-[8px] hover:bg-custom-gradient hover:text-white">
               Shop Now
             </Button>
           </Link>

@@ -10,10 +10,16 @@ export default {
      "./src/**/**/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {
+    extend: {   backgroundImage: {
+      'custom-gradient': 'linear-gradient(88.13deg, #252525 -42.06%, #3A3A3A 58.46%, #323232 165.46%)',
+    },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+      }, extend: {
+        fontFamily: {
+          poppins: ["var(--font-poppins)"],
+        },
       },
     },
   },

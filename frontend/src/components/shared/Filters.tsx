@@ -156,7 +156,7 @@ export default function Filters({ onFilterChange, onPriceInput }: FiltersProps) 
       </div>
 
       <div>
-        <Button className="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white">
+        <Button className="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white">
           Apply
         </Button>
       </div>

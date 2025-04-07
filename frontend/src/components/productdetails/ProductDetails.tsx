@@ -139,7 +139,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
           </div>
           <div className="flex items-center gap-[10px]">
             <Button
-              className="max-w-[246px] w-full py-[10px] px-[80.5px] text-[14px] font-bold text-white lg:leading-[21px] leading-[18px] hover:bg-black hover:text-white"
+              className="max-w-[246px] w-full py-[10px] px-[80.5px] text-[14px] font-bold text-white lg:leading-[21px] leading-[18px] hover:bg-custom-gradienthover:text-white"
               onClick={handleAddToCart}
             >
               Add To Cart

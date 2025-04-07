@@ -50,7 +50,7 @@ const ShippingAddress = ({ onContinue, user }: { onContinue: () => void; user: a
 
       <div className="pt-[40px]">
         <Button
-          className="max-w-[285px] w-full py-[12px] px-[33px] text-white font-semibold font-[16px] hover:bg-black hover:text-white"
+          className="max-w-[285px] w-full py-[12px] px-[33px] text-white font-semibold font-[16px] hover:bg-custom-gradienthover:text-white"
           onClick={onContinue} 
         >
           Continue to Shipping

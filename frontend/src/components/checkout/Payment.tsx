@@ -86,7 +86,7 @@ const Payment: React.FC<PaymentProps> = ({
       <div className="flex gap-[40px]">
         <Button
           onClick={handlePayment}
-          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px] hover:bg-black hover:text-white"
+          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px] hover:bg-custom-gradienthover:text-white"
         >
           Pay Now
         </Button>

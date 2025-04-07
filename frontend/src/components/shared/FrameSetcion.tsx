@@ -47,25 +47,25 @@ const FrameSection: React.FC<FrameSectionProps> = ({
           </p>
           <div className="flex flex-wrap gap-[6px]">
             {product?.buttonLabels?.map((label, index) => (
-              <Button
+              <button
                 key={index}
-                className="max-w-[90px] rounded-[70px] text-[12px] py-[8px]  bg-[rgba(180,176,190,0.2)] text-black"
+                className="max-w-[90px] rounded-[70px] text-[12px] py-[8px]  bg-[rgba(180,176,190,0.2)] text-black p-[10px] hover:bg-[#F5A3B7] hover:text-white"
               >
                 {label}
-              </Button>
+              </button>
             ))}
           </div>
           <div className="flex items-center gap-[30px] md:flex-row flex-col ">
             <Button
-              className={`lg:max-w-[246px] max-w-[200px] w-full  text-[14px] text-[#FFFFFF] font-semibold lg:py-[8.5px] px-[10px] py-[8px] hover:bg-black hover:text-white`}
+              className={`lg:max-w-[246px] max-w-[200px] w-full  text-[14px] text-[#FFFFFF] font-semibold lg:py-[8.5px] px-[10px] py-[8px] hover:bg-custom-gradient hover:text-white`}
               href={`/BlogDetail `}
             >
               {product.shopNowText}
             </Button>
             <div className="flex items-center gap-[4px]  hover:text-[#F5A3B7]  ">
-              <Button className="max-w-[137px] bg-[#F9FAFC] text-black">
+              <button className="max-w-[137px] bg-[#F9FAFC]   hover:text-[#F5A3B7] text-black">
                 {product.exploreMoreText}
-              </Button>
+              </button>
               <img
                 src={product.exploreIcon ? product.exploreIcon : " "}
                 alt=""

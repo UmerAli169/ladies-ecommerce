@@ -5,10 +5,11 @@ import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface Product {
   title: string;
@@ -48,8 +49,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
               {[...new Set(products?.map((item: any) => item.tittle))].map(
-                (tittle, index) => (
-                  <p key={`${tittle}-${index}`}>{tittle}</p>
+                (title, index) => (
+                  <p key={`${title}-${index}`}>{title}</p>
                 )
               )}
             </div>
@@ -69,7 +70,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           <p className="text-gray-500 mt-4">No products available.</p>
         ) : (
           <div className="w-full relative lg:py-[30px] py-[20px]">
-            <div className="absolute top-1/2 left-[-1px] z-10 cursor-pointer custom-prev">
+            <div className="absolute top-1/2 left-[-20px] z-10 cursor-pointer custom-prev">
               <img
                 src="/svgs/Shared/ProductSection/leftArrow.svg"
                 alt="Left Arrow"
@@ -81,10 +82,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 nextEl: ".custom-next",
                 prevEl: ".custom-prev",
               }}
-              modules={[Navigation]}
+            
+              pagination={{ clickable: true }}
+              cssMode={true}
+              mousewheel={true}
+              keyboard={true}
+              modules={[Navigation, Pagination, Mousewheel, Keyboard]}
               spaceBetween={20}
               slidesPerView="auto"
-              className="mySwiper"
+              className="mySwiper custom-swiper"
             >
               {products.map((product, index) => (
                 <SwiperSlide
@@ -101,7 +107,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               ))}
             </Swiper>
 
-            <div className="absolute top-1/2 right-[-1px] z-10 cursor-pointer custom-next">
+            <div className="absolute top-1/2 right-[-20px] z-10 cursor-pointer custom-next">
               <img
                 src="/svgs/Shared/ProductSection/rightArrow.svg"
                 alt="Right Arrow"
@@ -110,6 +116,39 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        .custom-pagination {
+          position: relative;
+          margin-top: 30px;
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+        }
+
+        .custom-swiper .swiper-pagination {
+          position: relative;
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+        }
+
+        .custom-swiper .swiper-pagination-bullet {
+          width: 10px;
+          height: 10px;
+          background-color:rgb(209, 219, 15);
+          opacity: 0.5;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+        }
+
+        .custom-swiper .swiper-pagination-bullet-active {
+          background-color:rgb(179, 79, 104);
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      `}</style>
     </Wrapper>
   );
 };

@@ -34,7 +34,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, orderId })
           </a>
         </p>
 
-        <AuthButton type="button" onClick={onClose} className="mt-4 bg-[#E91E63] text-white px-6 py-2 rounded-md hover:bg-black hover:text-white">
+        <AuthButton type="button" onClick={onClose} className="mt-4 bg-[#E91E63] text-white px-6 py-2 rounded-md hover:bg-custom-gradienthover:text-white">
           Home
         </AuthButton>
       </div>

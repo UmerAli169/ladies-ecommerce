@@ -12,22 +12,22 @@ const Blog = () => {
         <div>
           <BlogSection
             product={data.blogs[0]}
-            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
             isImageFirst={false}
           />
           <BlogSection
             product={data.blogs[1]}
-            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
             isImageFirst={true}
           />
           <BlogSection
             product={data.blogs[2]}
-            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
             isImageFirst={false}
           />
           <BlogSection
             product={data.blogs[3]}
-            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+            buttonClassName="lg:p-[10px] px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
             isImageFirst={true}
           />
         </div>

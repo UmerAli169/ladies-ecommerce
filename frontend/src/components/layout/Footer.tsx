@@ -25,7 +25,7 @@ const Footer = () => {
     <footer className=" bg-custom-gradient ">
       <Wrapper>
         <div className="mx-auto ">
-          <div className="flex justify-center gap-[18px]  py-[40px]">
+          <div className="flex justify-center gap-[60px]  py-[40px]">
             {socialLinks.map((social, index) => (
               <Link
                 key={index}
@@ -43,7 +43,7 @@ const Footer = () => {
           <div></div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            <div className="space-y-[10px]">
+            <div className="flex flex-col gap-[10px]">
               <p className="text-[#FFFFFF] text-[28px] leading-[42px] font-semibold">
                 <span className="text-[#F5A3B7] ">
                   {data.brand.name.split(" ")[0]}{" "}
@@ -53,31 +53,39 @@ const Footer = () => {
               <p className="text-[#FFFFFF] text-[14px]  leading-[17px] font-normal font-[Montserrat]">
                 {data.brand.description}
               </p>
-              <div className="text-[#FFFFFF] text-[14px] space-y-[10px]  leading-[17px] font-normal font-[Montserrat] ">
-                <div className="text-[#FFFFFF] text-[14px] space-y-[10px] leading-[17px] font-normal font-[Montserrat]">
-                  <p>
-                    <a
-                      href={`tel:${data.brand.contact.phone}`}
-                      className="hover:underline"
-                    >
-                      {data.brand.contact.phone}
-                    </a>
-                  </p>
-                  <p>
-                    <a
-                      href={`mailto:${data.brand.contact.email}`}
-                      className="hover:underline"
-                    >
-                      {data.brand.contact.email}
-                    </a>
-                  </p>
-                  <p>{data.brand.contact.location}</p>
+                <div className="text-[#FFFFFF] text-[14px] flex flex-col gap-[10px] leading-[17px] font-normal font-[Montserrat]">
+                  <div className="flex gap-[10px]">
+                    <img src="/svgs/footer/phone.svg" alt="" />
+                    <p>
+                      <a
+                        href={`tel:${data.brand.contact.phone}`}
+                        className="hover:underline"
+                      >
+                        {data.brand.contact.phone}
+                      </a>
+                    </p>
+                  </div>
+                  <div className="flex gap-[10px]">
+                  <img src="svgs/footer/email.svg" alt="" />
+                    <p>
+                      <a
+                        href={`mailto:${data.brand.contact.email}`}
+                        className="hover:underline"
+                      >
+                        {data.brand.contact.email}
+                      </a>
+                    </p>
+                  </div>
+                  <div className="flex gap-[10px]">
+                    <img src="/svgs/footer/location.svg" alt="" />
+                    <p>{data.brand.contact.location}</p>
+                  </div>
                 </div>
-              </div>
+        
             </div>
 
             {data.sections.map((section: any) => (
-              <div key={section.title} className="space-y-4 ">
+              <div key={section.title} className="space-y-[10px] ">
                 <p className="text-[#B0A6BD] text-[16px]  leading-[24px] font-medium">
                   {section.title}
                 </p>
@@ -96,7 +104,7 @@ const Footer = () => {
               </div>
             ))}
 
-            <div className="space-y-4">
+            <div className="space-y-[10px]">
               <h3 className="text-[#FFFFFF] text-[16px]  leading-[24px] font-medium">
                 {data.newsletter.title}
               </h3>
@@ -115,8 +123,12 @@ const Footer = () => {
               </button>
             </div>
           </div>
+          </div>
+          </Wrapper>
 
-          <div className="mt-8 py-4 border-t border-gray-200 ">
+          <div className="w-full h-[0.5px] bg-[#B0A6BD] mt-[39px]"></div>
+          <Wrapper>
+          <div className="py-[20px]  ">
             <div className="flex justify-between items-center ">
               <p className="text-[#FFFFFF] text-[14px] ">
                 {data.bottom.copyright}
@@ -135,8 +147,8 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
-      </Wrapper>
+          </Wrapper>
+  
     </footer>
   );
 };

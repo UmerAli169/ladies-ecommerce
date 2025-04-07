@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       {...props}
-      className={`w-full bg-[#F5A3B7] hover:text-[#F5A3B7]  lg:text-[16px] text-[14px] font-normal rounded-[4px] ${
+      className={`w-full bg-[#F5A3B7] hover:text-white  hover:bg-custom-gradient lg:text-[16px] text-[14px] font-normal rounded-[4px] ${
         className || ""
       } `}
     >

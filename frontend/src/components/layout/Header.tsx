@@ -25,7 +25,7 @@ const Header = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
-    const {products } = useProductStore();
+  const { products } = useProductStore();
 
   const { cart, fetchCart } = useCartStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -92,7 +92,7 @@ const Header = () => {
                 href="/"
                 className="text-[#383838] flex justify-center items-center text-[24px] font-medium leading-[25px] gap-[10px]"
               >
-                <span className="text-[#F5A3B7]">Bloom   </span> Beauty
+                <span className="text-[#F5A3B7]">Bloom </span> Beauty
               </Link>
 
               <DesktopMenu menuItems={menuItems} />
@@ -125,8 +125,8 @@ const Header = () => {
           <CartModal
             isOpen={isCartOpen}
             onClose={() => setIsCartOpen(false)}
-            cartItems={cart as any} 
-            fetchCart={fetchCart as any} 
+            cartItems={cart as any}
+            fetchCart={fetchCart as any}
           />
         </>
       )}

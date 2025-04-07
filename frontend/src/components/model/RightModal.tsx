@@ -81,7 +81,7 @@ export const CartModal: React.FC<any> = ({
             </div>
             <Button
               onClick={handleCheckout}
-              className="w-full text-white py-2 mt-4 rounded hover:bg-black hover:text-white"
+              className="w-full text-white py-2 mt-4 rounded hover:bg-custom-gradienthover:text-white"
             >
               Check Out
             </Button>

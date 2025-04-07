@@ -54,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className="my-[20px]">
           <Button
-            className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-black hover:text-white"
+            className="py-[10px] text-[14px] font-medium bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
             onClick={handleRedirect}
           >
             Read More{" "}

@@ -47,7 +47,7 @@ const Shipping: React.FC<ShippingProps> = ({ onBack, onProceedToPayment }) => {
       <div className="flex gap-[40px]">
         <Button
           onClick={onProceedToPayment}
-          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px] hover:bg-black hover:text-white"
+          className="max-w-[362px] w-full text-[#FFFFFF] text-[16px] font-semibold py-[10px] hover:bg-custom-gradienthover:text-white"
         >
           Continue to payment
         </Button>

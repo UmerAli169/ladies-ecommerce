@@ -32,7 +32,7 @@ const InstagramGallery = () => {
             />
           </div>
           <Link href="/Catalog">
-            <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
+            <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] bg-[#F5A3B7]cursor-pointer">
               See All
             </p>
           </Link>
@@ -48,11 +48,11 @@ const InstagramGallery = () => {
               />
 
               <div className="absolute inset-0 bg-white/30 flex flex-col items-center justify-end opacity-0 group-hover:opacity-100 transition duration-300">
-                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px] bg-[#383838]/30  hover:text-white  text-white   hover:text-white mb-2 flex items-center justify-center gap-2">
+                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px] bg-[#383838]/20  hover:text-white  text-white   hover:text-white mb-2 flex items-center justify-center gap-2">
                   See In{" "}
                   <img src="/svgs/Shared/icons/instra.svg" alt="Instagram" />
                 </Button>
-                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px]  text-white  hover:bg-[#F5A3B7] hover:text-white mb-[20px]">
+                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px]  text-white  hover:bg-[#F5A3B7] bg-[#F5A3B7]  hover:text-white mb-[20px]">
                   Buy Now
                 </Button>
               </div>
@@ -60,7 +60,7 @@ const InstagramGallery = () => {
           ))}
         </div>
 
-        <Button className="lg:max-w-[226px] text-[14px] text-[#FFFFFF] font-semibold w-full lg:p-[10px] px-[10px] py-[8px] hover:bg-black hover:text-white">
+        <Button className="lg:max-w-[226px] text-[14px] text-[#FFFFFF] font-semibold w-full lg:p-[10px] px-[10px] py-[8px] bg-[#F5A3B7] hover:bg-custom-gradienthover:text-white">
           Follow Us{" "}
         </Button>
       </div>

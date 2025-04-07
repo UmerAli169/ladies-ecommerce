@@ -76,7 +76,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
 
             <div>
               <Button
-                className="lg:p-[10px] max-w-[246px] w-full px-[10px] py-[8px] bg-white text-black border border-black hover:bg-black hover:text-white"
+                className="lg:p-[10px] max-w-[246px] w-full px-[10px] py-[8px] bg-white text-black border border-black hover:bg-custom-gradienthover:text-white"
                 onClick={() => setIsModalOpen(true)}
               >
                 Write a Review
