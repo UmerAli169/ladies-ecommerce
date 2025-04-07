@@ -48,7 +48,7 @@ const InstagramGallery = () => {
               />
 
               <div className="absolute inset-0 bg-white/30 flex flex-col items-center justify-end opacity-0 group-hover:opacity-100 transition duration-300">
-                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px] bg-[#383838]/20  hover:text-white  text-white   hover:text-white mb-2 flex items-center justify-center gap-2">
+                <Button className="whitespace-nowrap w-full max-w-[195px] py-[10px] px-[66px] bg-[#383838]/30  hover:text-white  text-white   hover:text-white mb-2 flex items-center justify-center gap-2">
                   See In{" "}
                   <img src="/svgs/Shared/icons/instra.svg" alt="Instagram" />
                 </Button>

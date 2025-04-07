@@ -22,24 +22,24 @@ const AccountLayout = ({ children }: { children: ReactNode }) => {
                 {
                   key: "orders",
                   title: "Orders",
-                  href: "/Account/orders",
+                  href: "#",
                   items: [
-                    { label: "All period", href: "/account/orders?filter=all" },
+                    { label: "All period", href: "#" },
                     {
                       label: "For this month",
-                      href: "/account/orders?filter=this-month",
+                      href: "#",
                     },
                     {
                       label: "Last month",
-                      href: "/account/orders?filter=last-month",
+                      href: "#",
                     },
                     {
                       label: "This year",
-                      href: "/account/orders?filter=this-year",
+                      href: "#",
                     },
                     {
                       label: "Last year",
-                      href: "/account/orders?filter=last-year",
+                      href: "#",
                     },
                   ],
                 },

@@ -63,7 +63,7 @@ const BlogDetails = () => {
           {blogPost.tags?.map((label, index) => (
             <Button
               key={index}
-              className="max-w-[90px] rounded-[70px] text-[12px] bg-[#B4B0BE]/20 lg:p-[10px] py-[8px] px-[10px] text-black mx-[2px] "
+              className="max-w-[90px] rounded-[70px] text-[12px] bg-[#B4B0BE]/30 lg:p-[10px] py-[8px] px-[10px] text-black mx-[2px] "
             >
               {label} 
             </Button>

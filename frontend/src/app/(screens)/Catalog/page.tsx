@@ -127,17 +127,18 @@ const CatalogPage = () => {
   }));
 
   return (
+    <>
     <Wrapper>
       <div className="flex md:flex-row flex-col gap-[20px] pt-[40px]">
         <div className="md:max-w-[250px] w-full max-h-[80vh] overflow-y-auto">
           <Sidebar
             tittle="Shop All"
             collapsibleSections={collapsibleSections as any}
-          />
+            />
           <Filters
             onFilterChange={handleFilterChange}
             onPriceInput={handlePriceInput}
-          />
+            />
         </div>
         <main className="flex-1">
           <div className="flex justify-between items-center">
@@ -148,7 +149,7 @@ const CatalogPage = () => {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="p-[10px] rounded"
-              >
+                >
                 <option value="relevance">Relevance</option>
                 <option value="lowest">Lowest Price</option>
                 <option value="highest">Highest Price</option>
@@ -158,25 +159,27 @@ const CatalogPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative pt-[30px]">
             {filteredProducts.slice(0, 9).map((product) => (
               <ProductCard
-                key={product._id}
-                product={product as any}
-                addToCart={() => addToCart(product._id)}
-                toggleWishlist={() => toggleWishlist(product._id)}
-                isInWishlist={isInWishlist(product._id)}
+              key={product._id}
+              product={product as any}
+              addToCart={() => addToCart(product._id)}
+              toggleWishlist={() => toggleWishlist(product._id)}
+              isInWishlist={isInWishlist(product._id)}
               />
             ))}
           </div>
           <Pagination totalPages={Math.ceil(totalProducts / 10)} />
-          <ProductSection
-            products={productdetails as any}
-            cardWidth={289}
-            addToCart={addToCart}
-            toggleWishlist={toggleWishlist}
-            isInWishlist={isInWishlist}
-          />
+        
         </main>
       </div>
     </Wrapper>
+      <ProductSection
+      products={productdetails as any}
+      cardWidth={289}
+      addToCart={addToCart}
+      toggleWishlist={toggleWishlist}
+      isInWishlist={isInWishlist}
+      />
+      ß</>
   );
 };
 
