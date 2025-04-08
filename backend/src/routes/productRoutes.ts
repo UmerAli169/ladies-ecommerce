@@ -4,13 +4,14 @@ import {
   getAllProducts,
   addToCart,
   getProductById,
-  toggleWishlist,
   getWishlist,
   getCart,
   removeFromCart,
   updateCartItemQuantity,
   createCategory,
   getAllCategories,
+  addToWishlist,
+  removeFromWishlist,
 } from "../controllers/productController";
 import authenticateUser from "../utils/authMiddleware";
 import { upload } from "../middlewares/upload";
@@ -24,8 +25,15 @@ router.post(
   createProduct
 );
 router.get("/getAllProducts", authenticateUser, getAllProducts);
-router.post("/addToWishlist/:id", authenticateUser, toggleWishlist);
+
+router.post("/addToWishlist/:id", authenticateUser, addToWishlist);
+
+router.post("/removeFromWishlist/:id", authenticateUser, removeFromWishlist);
+
+
+
 router.get("/getWishlist", authenticateUser, getWishlist);
+
 router.put("/getProductById/:id", authenticateUser, getProductById);
 
 router.post("/addToCart", authenticateUser, addToCart);
@@ -36,9 +44,8 @@ router.get("/fetchCart", authenticateUser, getCart);
 
 router.delete("/removeFromCart/:cartItemId", authenticateUser, removeFromCart);
 
-
 router.post("/category", authenticateUser, createCategory);
-router.get("/categories", getAllCategories);
 
+router.get("/categories", getAllCategories);
 
 export default router;

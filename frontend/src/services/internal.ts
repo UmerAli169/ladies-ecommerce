@@ -95,21 +95,24 @@ export const getWishlist = async () => {
   }
 };
 
-export const toggleWishlist = async (id: string) => {
+export const addToWishlist = async (id: string) => {
   try {
-    console.log(id, "id");
     const response = await api.post(`/api/products/addToWishlist/${id}`);
-
-    // Check response message to determine action
-    if (response.data.message.includes("removed")) {
-      toast.success(response.data.message);
-    } else {
-      toast.success(response.data.message);
-    }
+    toast.success(response.data.message);
 
     return response.data;
   } catch (error) {
-    toast.error("Something went wrong!");
+    throw error;
+  }
+};
+
+export const removeFromWishlist = async (id: string) => {
+  try {
+    const response = await api.post(`/api/products/removeFromWishlist/${id}`);
+    toast.success(response.data.message);
+
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

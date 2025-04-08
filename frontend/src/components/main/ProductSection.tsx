@@ -1,12 +1,10 @@
 "use client";
-
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Wrapper from "@/app/wrapper";
 import ProductCard from "../shared/ProductCard";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -42,49 +40,42 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
   const paginationRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (swiperRef.current && paginationRef.current) {
-      // Initialize navigation and pagination
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  const initializeSwiper = () => {
+    if (!swiperRef.current || !paginationRef.current) return;
+
+    if (prevRef.current && nextRef.current && paginationRef.current) {
       swiperRef.current.params.navigation.prevEl = prevRef.current;
       swiperRef.current.params.navigation.nextEl = nextRef.current;
       swiperRef.current.params.pagination.el = paginationRef.current;
 
-      swiperRef.current.navigation.init();
-      swiperRef.current.navigation.update();
-      swiperRef.current.pagination.init();
-      swiperRef.current.pagination.render();
-      swiperRef.current.pagination.update();
+      if (swiperRef.current.navigation) {
+        swiperRef.current.navigation.init();
+        swiperRef.current.navigation.update();
+      }
+
+      if (swiperRef.current.pagination) {
+        swiperRef.current.pagination.init();
+        swiperRef.current.pagination.render();
+        swiperRef.current.pagination.update();
+      }
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    if (!isMounted) return;
+    initializeSwiper();
+  }, [isMounted, products]);
 
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] pb-[30px] relative">
-        <div className="text-center">
-          <div className="flex gap-[10px] items-center">
-            <img
-              src="/svgs/Shared/ProductSection/leftflower.svg"
-              alt="Left Flower"
-            />
-            <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {[...new Set(products?.map((item: any) => item.tittle))].map(
-                (title, index) => (
-                  <p key={`${title}-${index}`}>{title}</p>
-                )
-              )}
-            </div>
-            <img
-              src="/svgs/Shared/ProductSection/rightflower.svg"
-              alt="Right Flower"
-            />
-          </div>
-          <Link href="/Catalog">
-            <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
-              See All
-            </p>
-          </Link>
-        </div>
 
         {products.length === 0 ? (
           <p className="text-gray-500 mt-4">No products available.</p>
@@ -105,12 +96,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 ref={swiperRef}
                 onSwiper={(swiper) => {
                   swiperRef.current = swiper;
+                  initializeSwiper();
                 }}
-                // pagination={{
-                //   clickable: true,
-                //   bulletClass: "swiper-pagination-bullet",
-                //   bulletActiveClass: "swiper-pagination-bullet-active",
-                // }}
+                pagination={{
+                  el: paginationRef.current,
+                  clickable: true,
+                  type: 'bullets',
+                  bulletClass: "swiper-pagination-bullet",
+                  bulletActiveClass: "swiper-pagination-bullet-active",
+                }}
                 cssMode={true}
                 mousewheel={true}
                 keyboard={true}
@@ -118,11 +112,10 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 spaceBetween={20}
                 slidesPerView="auto"
                 className="mySwiper"
-                // Remove default navigation arrows
                 navigation={{
                   prevEl: prevRef.current,
                   nextEl: nextRef.current,
-                  disabledClass: "swiper-button-disabled", // Optional: style for disabled state
+                  disabledClass: "swiper-button-disabled",
                 }}
               >
                 {products.map((product, index) => (
@@ -153,39 +146,29 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
             <div
               ref={paginationRef}
-              className="swiper-pagination absolute left-0 right-0"
+              className="swiper-pagination !relative !mt-4 !h-4 !flex !justify-center !gap-2"
             />
           </>
         )}
       </div>
 
-      <style jsx>{`
-        .swiper-pagination {
-          position: absolute;
-          display: flex;
-          justify-content: center;
-          gap: 6px;
-          bottom: 1rem;
-          left: 0;
-          right: 0;
-        }
+      <style jsx global>{`
         .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          background-color: rgb(209, 219, 15);
+          width: 9px;
+          height: 9px;
+          background-color:rgba(223, 225, 227, 1);
           opacity: 0.5;
           border-radius: 50%;
           transition: all 0.3s ease;
+          cursor: pointer;
+          display: inline-block;
         }
         .swiper-pagination-bullet-active {
-          background-color: rgb(179, 79, 104);
+         width: 10px;
+          height: 10px;
+          background-color:rgba(176, 166, 189, 1);
           opacity: 1;
           transform: scale(1.2);
-        }
-        /* Hide default navigation arrows */
-        .swiper-button-next,
-        .swiper-button-prev {
-          display: none !important;
         }
       `}</style>
     </Wrapper>

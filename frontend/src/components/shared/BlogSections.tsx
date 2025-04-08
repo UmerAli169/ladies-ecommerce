@@ -1,16 +1,13 @@
 "use client";
-
 import React, { useRef, useEffect } from "react";
 import Wrapper from "@/app/wrapper";
-import ProductCard from "../shared/ProductCard";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules";
-
+import BlogCards from "./BlogCards";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import BlogCards from "./BlogCards";
 
 interface Product {
   title: string;
@@ -25,7 +22,7 @@ interface Product {
 }
 
 interface ProductSectionProps {
-  products: any;
+  products: Product[];
   cardWidth: number;
 }
 
@@ -39,18 +36,34 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   const paginationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (swiperRef.current && paginationRef.current) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
-      swiperRef.current.params.pagination.el = paginationRef.current;
+    // Initialize swiper after component mounts
+    const initSwiper = () => {
+      if (swiperRef.current && prevRef.current && nextRef.current && paginationRef.current) {
+        // Update swiper parameters
+        swiperRef.current.params.navigation.prevEl = prevRef.current;
+        swiperRef.current.params.navigation.nextEl = nextRef.current;
+        swiperRef.current.params.pagination.el = paginationRef.current;
 
-      swiperRef.current.navigation.init();
-      swiperRef.current.navigation.update();
-      swiperRef.current.pagination.init();
-      swiperRef.current.pagination.render();
-      swiperRef.current.pagination.update();
-    }
-  }, []);
+        // Reinitialize components if they exist
+        if (swiperRef.current.navigation) {
+          swiperRef.current.navigation.init();
+          swiperRef.current.navigation.update();
+        }
+        
+        if (swiperRef.current.pagination) {
+          swiperRef.current.pagination.init();
+          swiperRef.current.pagination.render();
+          swiperRef.current.pagination.update();
+        }
+      }
+    };
+
+    // Initialize immediately and after a short delay
+    initSwiper();
+    const timeoutId = setTimeout(initSwiper, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [products]); // Re-run when products change
 
   return (
     <Wrapper>
@@ -62,8 +75,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               alt="Left Flower"
             />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {[...new Set(products?.map((item: any) => item.tittle))].map(
-                (title: any, index) => (
+              {[...new Set(products?.map((item) => item.title))].map(
+                (title, index) => (
                   <p key={`${title}-${index}`}>{title}</p>
                 )
               )}
@@ -100,11 +113,13 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 onSwiper={(swiper) => {
                   swiperRef.current = swiper;
                 }}
-                // pagination={{
-                //   clickable: true,
-                //   bulletClass: "swiper-pagination-bullet",
-                //   bulletActiveClass: "swiper-pagination-bullet-active",
-                // }}
+                pagination={{
+                  el: paginationRef.current,
+                  clickable: true,
+                  type: 'bullets',
+                  bulletClass: "swiper-pagination-bullet",
+                  bulletActiveClass: "swiper-pagination-bullet-active",
+                }}
                 cssMode={true}
                 mousewheel={true}
                 keyboard={true}
@@ -112,19 +127,18 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 spaceBetween={20}
                 slidesPerView="auto"
                 className="mySwiper"
-                // Remove default navigation arrows
                 navigation={{
                   prevEl: prevRef.current,
                   nextEl: nextRef.current,
-                  disabledClass: "swiper-button-disabled", // Optional: style for disabled state
+                  disabledClass: "swiper-button-disabled",
                 }}
               >
-                {products.map((product: any, index: any) => (
+                {products.map((product, index) => (
                   <SwiperSlide
                     key={`${product._id}-${index}`}
                     style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
                   >
-                    <BlogCards product={product as any} />
+                    <BlogCards product={product} />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -142,35 +156,28 @@ const ProductSection: React.FC<ProductSectionProps> = ({
 
             <div
               ref={paginationRef}
-              className="swiper-pagination absolute  left-0 right-0"
+              className="swiper-pagination !relative !mt-4 !h-4 !flex !justify-center !gap-2"
             />
           </>
         )}
       </div>
 
-      <style jsx>{`
-        .swiper-pagination {
-          position: absolute;
-          display: flex;
-          justify-content: center;
-          gap: 3px;
-          left: 0;
-          right: 0;
-        }
+      <style jsx global>{`
         .swiper-pagination-bullet {
           width: 10px;
           height: 10px;
-          background-color: rgb(209, 219, 15);
+          background-color:rgba(223, 225, 227, 1);
           opacity: 0.5;
           border-radius: 50%;
           transition: all 0.3s ease;
+          cursor: pointer;
+          display: inline-block;
         }
         .swiper-pagination-bullet-active {
-          background-color: rgb(179, 79, 104);
+          background-color:rgba(176, 166, 189, 1);
           opacity: 1;
           transform: scale(1.2);
         }
-        /* Hide default navigation arrows */
         .swiper-button-next,
         .swiper-button-prev {
           display: none !important;

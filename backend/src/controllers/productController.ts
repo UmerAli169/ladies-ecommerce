@@ -139,37 +139,52 @@ export const getAllProducts = async (req: any, res: any) => {
   }
 };
 
-export const toggleWishlist = async (req: any, res: any) => {
+// Add to Wishlist
+export const addToWishlist = async (req: any, res: any) => {
   try {
     const productId = req.params.id;
     const userId = req.userId;
+
     let wishlist = await Wishlist.findOne({ userId });
 
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [productId] });
-      await wishlist.save();
-      return res
-        .status(200)
-        .json({ message: "Product added to wishlist", wishlist });
+    } else if (!wishlist.products.includes(productId)) {
+      wishlist.products.push(productId);
+    } else {
+      return res.status(400).json({ message: "Product already in wishlist" });
     }
 
-    if (wishlist.products.includes(productId)) {
-      wishlist.products = wishlist.products.filter(
-        (id) => id && id !== productId
-      );
-      await wishlist.save();
-      return res
-        .status(200)
-        .json({ message: "Product removed from wishlist", wishlist });
-    }
-
-    wishlist.products.push(productId);
     await wishlist.save();
     res.status(200).json({ message: "Product added to wishlist", wishlist });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+// Remove from Wishlist
+export const removeFromWishlist = async (req: any, res: any) => {
+  try {
+    const productId = req.params.id;
+    const userId = req.userId;
+
+    const wishlist = await Wishlist.findOne({ userId });
+
+    if (!wishlist || !wishlist.products.includes(productId)) {
+      return res.status(404).json({ message: "Product not in wishlist" });
+    }
+
+    wishlist.products = wishlist.products.filter(
+      (id: any) => !id.equals(productId)
+    );
+        await wishlist.save();
+
+    res.status(200).json({ message: "Product removed from wishlist", wishlist });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 
 export const getWishlist = async (req: any, res: any) => {
   try {
@@ -367,3 +382,4 @@ export const getProductById = async (req: any, res: any) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+  

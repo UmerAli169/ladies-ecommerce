@@ -61,23 +61,19 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
 
   const handleImageChange = (direction: "left" | "right") => {
     if (direction === "left") {
-      setCurrentImageIndex(
-        (prevIndex) =>
-          prevIndex === 0 ? product.thumbnailImages.length - 1 : prevIndex - 1
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 0 ? product.thumbnailImages.length - 1 : prevIndex - 1
       );
     } else {
-      setCurrentImageIndex(
-        (prevIndex) =>
-          prevIndex === product.thumbnailImages.length - 1
-            ? 0
-            : prevIndex + 1
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === product.thumbnailImages.length - 1 ? 0 : prevIndex + 1
       );
     }
   };
 
   return (
     <Wrapper>
-      <div className="flex flex-col md:flex-row justify-between">
+      <div className="flex flex-col md:flex-row justify-between lg:gap-[0px] gap-[80px]">
         <div className="flex flex-col items-center w-full md:w-1/3 relative">
           <button
             className="absolute left-[-20px] top-1/3 -translate-y-1/2 rounded-full hidden lg:flex z-[10]"
@@ -116,7 +112,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
         </div>
 
         <div className="w-full flex flex-col gap-[10px] md:w-1/2 ">
-          <p className="lg:text-[22px] text-[20px] font-medium text-[#383838] lg:leading-[33px] leading-[30px]">
+          <p className="lg:text-[22px]  text-[20px] font-medium text-[#383838]  ">
             {product.name}
           </p>
           <div className="flex items-center">

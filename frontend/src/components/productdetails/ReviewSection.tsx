@@ -28,8 +28,8 @@ const ReviewSection = ({ productId }: { productId: string }) => {
       ? (
           reviews.reduce((sum, review: any) => sum + review.rating, 0) /
           reviews.length
-        ).toFixed(1)
-      : "0.0";
+        ).toFixed(0)
+      : "0";
 
   return (
     <Wrapper>
@@ -71,7 +71,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   />
                 ))}
               </div>
-              <p className="text-sm text-gray-500">{averageRating}</p>
+              <p className="text-sm text-gray-500">{averageRating} reviews</p>
             </div>
 
             <div>

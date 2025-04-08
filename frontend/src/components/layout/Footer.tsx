@@ -25,7 +25,7 @@ const Footer = () => {
     <footer className=" bg-custom-gradient ">
       <Wrapper>
         <div className="mx-auto ">
-          <div className="flex justify-center gap-[60px]  py-[40px]">
+          <div className="flex justify-center md:gap-[60px] gap-[41.25px]  py-[40px]">
             {socialLinks.map((social, index) => (
               <Link
                 key={index}
@@ -115,7 +115,7 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  className="px-4 py-2  rounded-[4px] w-full max-w-[289px] focus:outline-none focus:ring-2 focus:ring-gray-200 text-[#FFFFFF] text-[14px] "
+                  className="px-4 py-2  rounded-[4px] w-full max-w-[289px] focus:outline-none focus:ring-2 focus:ring-gray-200 text-[#000000]  text-[14px] "
                 />
               </div>
               <button className=" text-[#FFFFFF] rounded-r font-medium text-[16px] ">

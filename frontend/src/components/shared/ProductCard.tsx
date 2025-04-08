@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               toggleWishlist(product._id);
-            }}
+            }}  
           >
             <img
               src={
@@ -109,7 +109,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
           <div className=" h-full  min-h-[40px] max-h-[20px]">
             <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px] ">
-              {product.description.slice(0, 80)}...
+              {product.description.slice(0, 60)}...
             </p>
           </div>
           <div className="font-[Montserrat] text-[16px] text-[#383838] font-normal">
