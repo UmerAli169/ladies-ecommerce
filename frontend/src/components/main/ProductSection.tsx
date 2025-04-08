@@ -100,7 +100,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               </Link>
             </div>
 
-            {/* Swiper Section */}
             <div className="w-full relative lg:py-[30px] py-[20px]">
               <div
                 ref={prevRef}
@@ -164,7 +163,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               </div>
             </div>
 
-            {/* Pagination Dots */}
             <div
               ref={paginationRef}
               className="swiper-pagination !relative !mt-4 !h-4 !flex !justify-center !gap-2"
@@ -173,7 +171,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
         )}
       </div>
 
-      {/* Custom Swiper Pagination Styles */}
       <style jsx global>{`
         .swiper-pagination-bullet {
           width: 9px;

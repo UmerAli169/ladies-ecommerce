@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import NavbarShowAllDropDown from "../overlaymenu/NavbarShowAllDropDown";
 import NavbarBestSellerDropdown from "../overlaymenu/NavbarBestSellerDropdown";
+import { useRouter } from "next/navigation";
 
 interface MenuItemProps {
   label: string;
   enabled: boolean;
   hasSubmenu?: boolean;
   disableHover?: boolean;
+  onClick?: () => void; 
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -15,25 +17,33 @@ const MenuItem: React.FC<MenuItemProps> = ({
   enabled,
   hasSubmenu,
   disableHover,
+  onClick,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const router = useRouter(); // 👈 Add router here
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    if (onClick) onClick();
+    router.push(
+      // 👈 Handle routing manually
+      label.toLowerCase() === "shop all"
+        ? "/Catalog"
+        : label.toLowerCase() === "about us"
+        ? "/AboutUs"
+        : label.toLowerCase() === "blog"
+        ? "/Blogs"
+        : "/"
+    );
+  };
   return (
-    <li
+    <div
       className="  flex justify-between items-center w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link
-        href={
-          label.toLowerCase() === "shop all"
-            ? "/Catalog"
-            : label.toLowerCase() === "about us"
-            ? "/AboutUs"
-            : label.toLowerCase() === "blog"
-            ? "/Blogs"
-            : "/"
-        }
+        href="#"
+        onClick={handleClick} 
         className={`flex w-full items-center ${
           enabled ? "text-black" : "text-gray-400"
         }`}
@@ -60,7 +70,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
       {isHovered && label === "SHOP ALL" && <NavbarShowAllDropDown />}
       {isHovered && label === "BESTSELLERS" && <NavbarBestSellerDropdown />}
-    </li>
+    </div>
   );
 };
 

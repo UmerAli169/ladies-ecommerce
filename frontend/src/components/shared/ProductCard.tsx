@@ -31,7 +31,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
-
   const handleRedirect = () => {
     router.push(`/ProductDetails?id=${product._id}`);
   };
@@ -39,6 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
     : 0;
+    console.log(isInWishlist,'isInWishlist')
   return (
     <CustomCard
       className="w-full rounded-[6px] cursor-pointer relative"

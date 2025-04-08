@@ -17,14 +17,10 @@ interface CartModalProps {
   }[];
 }
 
-export const CartModal: React.FC<any> = ({
-  isOpen,
-  onClose, 
-  cartItems,
-}) => { 
+export const CartModal: React.FC<any> = ({ isOpen, onClose, cartItems }) => {
   const router = useRouter();
   const total = cartItems?.reduce(
-    (acc:any, item:any) => acc + item.price * item.quantity,
+    (acc: any, item: any) => acc + item.price * item.quantity,
     0
   );
 
@@ -46,7 +42,7 @@ export const CartModal: React.FC<any> = ({
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ type: "tween", duration: 0.3 }}
-        className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg p-6 z-50 flex flex-col"
+        className="fixed top-0 right-0 w-full max-w-[360px] h-full bg-white shadow-lg p-6 z-50 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
@@ -63,10 +59,10 @@ export const CartModal: React.FC<any> = ({
         <div className="flex-1 overflow-y-auto scrollbar-hidden">
           {cartItems?.length > 0 ? (
             <>
-              {cartItems.map((item:any, index:any) => (
+              {cartItems.map((item: any, index: any) => (
                 <CartItem key={item.id || index} item={item as any} />
               ))}
-              <SampleSelection /> 
+              <SampleSelection />
             </>
           ) : (
             <p className="text-[#B0A6BD]">Your cart is empty.</p>

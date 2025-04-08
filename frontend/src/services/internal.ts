@@ -14,7 +14,7 @@ api.interceptors.response.use(
       toast.error("Unauthorized. Please login again");
     }
     toast.error(error.response?.data?.message || "Something went wrong!");
-    throw error;
+    console.log(error);
   }
 );
 
@@ -24,7 +24,7 @@ export const register = async (data: any) => {
     toast.success("Registration successful!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -34,7 +34,7 @@ export const login = async (data: any) => {
     toast.success("Login successful!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -44,7 +44,7 @@ export const recoverPassword = async (email: any) => {
     toast.success("Password recovery email sent!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -56,7 +56,7 @@ export const resetPassword = async (token: any, password: any) => {
     toast.success("Password reset successful!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -73,7 +73,7 @@ export const getUser = async () => {
     const response = await api.get("/api/auth/me");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -82,7 +82,7 @@ export const getAllProducts = async () => {
     const response = await api.get("/api/products/getAllProducts");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -91,7 +91,7 @@ export const getWishlist = async () => {
     const response = await api.get(`/api/products/getWishlist`);
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -102,7 +102,7 @@ export const addToWishlist = async (id: string) => {
 
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -113,8 +113,10 @@ export const removeFromWishlist = async (id: string) => {
 
     return response.data;
   } catch (error) {
-    throw error;
-  }
+    console.log(error);
+
+    console.log(error)
+throw error;  }
 };
 
 export const getProductById = async (productId: any) => {
@@ -124,7 +126,7 @@ export const getProductById = async (productId: any) => {
 
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -136,7 +138,7 @@ export const createReview = async (formData: any) => {
     toast.success("Review submitted successfully!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -145,7 +147,7 @@ export const getReviewsByProduct = async (productId: any) => {
     const response = await api.get(`/api/reviews/${productId}`);
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -154,7 +156,7 @@ export const getReviewsByUser = async (userId: any) => {
     const response = await api.get(`/api/reviews/user/${userId}`);
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -168,7 +170,7 @@ export const addToCart = async (productId: string, quantity: number) => {
     return response.data;
   } catch (error) {
     console.error("Error adding to cart:", error);
-    throw error;
+    console.log(error);
   }
 };
 
@@ -178,7 +180,7 @@ export const fetchCart = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching cart:", error);
-    throw error;
+    console.log(error);
   }
 };
 
@@ -194,7 +196,7 @@ export const updateCartItemQuantity = async (
     return response.data;
   } catch (error) {
     console.error("Error updating cart item:", error);
-    throw error;
+    console.log(error);
   }
 };
 
@@ -207,7 +209,7 @@ export const removeCartItem = async (cartItemId: string) => {
     return response.data;
   } catch (error) {
     console.error("Error removing cart item:", error);
-    throw error;
+    console.log(error);
   }
 };
 
@@ -220,7 +222,7 @@ export const changePassword = async (data: {
     toast.success("Password updated successfully!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -234,7 +236,7 @@ export const updateContactInfo = async (data: {
     toast.success("Contact information updated successfully!");
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
