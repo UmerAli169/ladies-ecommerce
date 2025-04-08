@@ -7,7 +7,7 @@ import Wrapper from "@/app/wrapper";
 import Shipping from "../../components/checkout/Shipping";
 import Payment from "../../components/checkout/Payment";
 import OrderSummary from "@/components/shared/OrderSummary";
-import { useAuthStore } from "@/store/authStore"; // Import Zustand auth store
+import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 
 const Checkout = () => {

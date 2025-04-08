@@ -7,7 +7,7 @@ export default function AboutPage() {
   return (
     <Wrapper>
       <div className="flex py-[40px] gap-[20px] lg:flex-row flex-col">
-        <div className="w-[250px] max-h-[80vh] overflow-y-auto">
+        <div className="min-w-[250px] max-h-[80vh] overflow-y-auto">
           <Sidebar
             links={[
               { label: "About Us", href: "/AboutUs" },

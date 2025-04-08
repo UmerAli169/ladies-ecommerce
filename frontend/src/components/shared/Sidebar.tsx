@@ -35,7 +35,7 @@ const Sidebar = ({
   };
 
   return (
-    <div className="md:max-w-[250px] w-full bg-[#FFFFFF] rounded-[6px] py-[20px] px-[30px]">
+    <div className=" w-full bg-[#FFFFFF] rounded-[6px] py-[20px] px-[30px]">
       {title && (
         <h2 className="text-[24px] font-bold text-[#383838] mb-4">{title}</h2>
       )}

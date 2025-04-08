@@ -6,7 +6,7 @@ const AccountLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="py-[40px]">
       <Wrapper>
-        <div className="flex md:flex-row flex-col gap-[20px]">
+        <div className="flex lg:flex-row flex-col gap-[20px]">
           <div className="lg:w-[250px] w-full max-h-[80vh] overflow-y-auto">
             <Sidebar
               title="Account"
@@ -22,7 +22,7 @@ const AccountLayout = ({ children }: { children: ReactNode }) => {
                 {
                   key: "orders",
                   title: "Orders",
-                  href: "#",
+                  href: "/Account/orders",
                   items: [
                     { label: "All period", href: "#" },
                     {

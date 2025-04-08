@@ -19,7 +19,6 @@ function WishlistPage() {
     async function loadWishlist() {
       try {
         const data = await fetchWishlist();
-console.log(data,'omer')
         setWishlistProducts(Array.isArray(data?.products) ? data.products : []);
       } catch (error) {
         console.error("Error fetching wishlist:", error);

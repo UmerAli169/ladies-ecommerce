@@ -76,6 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
+ 
         <img
           src={product.image}
           alt={product.name}

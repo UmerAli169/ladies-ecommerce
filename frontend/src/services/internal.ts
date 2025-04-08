@@ -120,6 +120,7 @@ export const removeFromWishlist = async (id: string) => {
 export const getProductById = async (productId: any) => {
   try {
     const response = await api.put(`/api/products/getProductById/${productId}`);
+    toast.success(response.data.message);
 
     return response.data;
   } catch (error) {
@@ -239,5 +240,5 @@ export const updateContactInfo = async (data: {
 
 export const getAllCategories = async () => {
   const response = await api.get("/api/products/categories");
-  return response.data; // Ensure backend sends data in correct format
+  return response.data;
 };

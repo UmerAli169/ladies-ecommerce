@@ -19,9 +19,9 @@ interface CartModalProps {
 
 export const CartModal: React.FC<any> = ({
   isOpen,
-  onClose,
+  onClose, 
   cartItems,
-}) => {
+}) => { 
   const router = useRouter();
   const total = cartItems?.reduce(
     (acc:any, item:any) => acc + item.price * item.quantity,

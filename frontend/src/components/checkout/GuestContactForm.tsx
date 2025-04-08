@@ -49,7 +49,7 @@ const GuestContactForm: React.FC<GuestContactFormProps> = ({
 
       <div className="mt-2">
         <label className="flex items-center gap-2 text-[14px] font-normal text-[#697586]">
-          <input type="checkbox" className="w-4 h-4" />
+          <input type="checkbox" className="w-4 h-4  " />
           Yes, I want to subscribe to the newsletter.
         </label>
       </div>
