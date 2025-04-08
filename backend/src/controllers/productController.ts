@@ -7,6 +7,51 @@ import Subcategory from "../models/Subcategory";
 const mongoose = require("mongoose");
 
 
+// Update user's address
+export const updateAddress = async (req: any, res: any) => {
+  try {
+    const userId = req.userId;
+    const { address, city, country, postalCode, phone } = req.body;
+
+    // Find the user and update their address
+    const user:any = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.address = address;
+    user.city = city;
+    user.country = country;
+    user.postalCode = postalCode;
+    user.phone = phone;
+
+    await user.save();
+
+    res.status(200).json({ message: "Address updated successfully", address: user.address });
+  } catch (error:any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get the user's address
+export const getAddress = async (req: any, res: any) => {
+  try {
+    const userId = req.userId;
+
+    const user:any = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const { address, city, country, postalCode, phone } = user;
+    res.status(200).json({
+      address,
+      city,
+      country,
+      postalCode,
+      phone,
+    });
+  } catch (error:any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const createProduct = async (req: any, res: any) => {
   try {
     const {

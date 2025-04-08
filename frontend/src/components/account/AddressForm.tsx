@@ -6,6 +6,7 @@ import { AuthInput } from "../shared/Input";
 import { useAuthStore } from "@/store/authStore";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { updateAddress } from "../../services/internal";
 
 const AddressForm = () => {
   const [showForm, setShowForm] = useState(false);
@@ -57,10 +58,10 @@ const AddressForm = () => {
             recipientNotMe: false,
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             try {
-              setUser({ ...user, address: values });
-              toast.success("Address saved successfully!");
+              await updateAddress(values); 
+              setUser({ ...user, address: values }); 
               setShowForm(false);
             } catch (error) {
               toast.error("Failed to save address!");

@@ -244,3 +244,22 @@ export const getAllCategories = async () => {
   const response = await api.get("/api/products/categories");
   return response.data;
 };
+
+
+export const updateAddress = async (data: {
+  address: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  phone: string;
+}) => {
+  try {
+    const response = await api.put("/api/products/updateAddress", data); // Call to update the address
+    toast.success("Address updated successfully!");
+    return response.data; // Return the updated data
+  } catch (error) {
+    console.error("Error updating address:", error);
+    toast.error("Failed to update address.");
+  }
+};
+

@@ -12,6 +12,8 @@ import {
   getAllCategories,
   addToWishlist,
   removeFromWishlist,
+  updateAddress,
+  getAddress,
 } from "../controllers/productController";
 import authenticateUser from "../utils/authMiddleware";
 import { upload } from "../middlewares/upload";
@@ -47,5 +49,10 @@ router.delete("/removeFromCart/:cartItemId", authenticateUser, removeFromCart);
 router.post("/category", authenticateUser, createCategory);
 
 router.get("/categories", getAllCategories);
+
+router.put("/updateAddress", authenticateUser, updateAddress);
+
+// Route to get user's address
+router.get("/getAddress", authenticateUser, getAddress);
 
 export default router;
