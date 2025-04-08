@@ -31,6 +31,14 @@ const ReviewSection = ({ productId }: { productId: string }) => {
         ).toFixed(0)
       : "0";
 
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <Wrapper>
       <div className="rounded-lg py-[40px] w-full mx-auto">
@@ -50,9 +58,9 @@ const ReviewSection = ({ productId }: { productId: string }) => {
           </div>
 
           <Link href="/Catalog">
-          <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
-            See All
-          </p>
+            <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
+              See All
+            </p>
           </Link>
 
           <div className="flex flex-col gap-[20px] text-center mt-2">
@@ -84,7 +92,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
             </div>
           </div>
         </div>
-        <div className="mt-[40px] space-y-[30px]">
+        <div className="mt-[40px] space-y-[30px] ">
           {reviews.slice(0, 3).map((review: any, index, array) => (
             <div key={review._id || index} className="rounded-lg">
               <div className="flex items-center gap-3">
@@ -95,7 +103,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <p className="font-medium font-[14px] leading-[20px]">
                       {review.userId.firstName}
                     </p>
@@ -122,23 +130,19 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                   </div>
                 </div>
                 <span className="ml-auto font-normal text-[#B0A6BD] font-[14px] leading-[20px]">
-                  {new Date(review.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {formatDate(review.date)}
                 </span>
               </div>
 
-              <div className="mt-[20px]">
-                <p className="font-medium font-[16px] leading-[20px] ml-[50px]">
+              <div className="mt-[20px] lg:ml-[50px] ">
+                <p className="font-medium font-[16px] leading-[20px] ">
                   {review.title}
                 </p>
-                <p className="font-normal font-[14px] leading-[22px] text-[#697586] ml-[50px]">
+                <p className="font-normal font-[14px] leading-[22px] text-[#697586] ">
                   {review.text}
                 </p>
                 {review.images?.length > 0 && (
-                  <div className="flex gap-2 mt-2 ml-[50px]">
+                  <div className="flex gap-2 mt-2 ">
                     {review.images.map((img: string, i: number) => (
                       <img
                         key={i}
@@ -155,7 +159,7 @@ const ReviewSection = ({ productId }: { productId: string }) => {
                 <img
                   src="/svgs/Review/flowerin.svg"
                   alt=""
-                  className=" w-full max-w-[2500px]"
+                  className=" w-full max-w-[2500px] lg:pt-[30px] pt-[20px]"
                 />
               )}
             </div>

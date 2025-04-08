@@ -55,32 +55,52 @@ const ProductSection: React.FC<ProductSectionProps> = ({
       swiperRef.current.params.navigation.nextEl = nextRef.current;
       swiperRef.current.params.pagination.el = paginationRef.current;
 
-      if (swiperRef.current.navigation) {
-        swiperRef.current.navigation.init();
-        swiperRef.current.navigation.update();
-      }
+      swiperRef.current.navigation?.init();
+      swiperRef.current.navigation?.update();
 
-      if (swiperRef.current.pagination) {
-        swiperRef.current.pagination.init();
-        swiperRef.current.pagination.render();
-        swiperRef.current.pagination.update();
-      }
+      swiperRef.current.pagination?.init();
+      swiperRef.current.pagination?.render();
+      swiperRef.current.pagination?.update();
     }
   };
 
   useEffect(() => {
-    if (!isMounted) return;
-    initializeSwiper();
+    if (isMounted) initializeSwiper();
   }, [isMounted, products]);
 
   return (
     <Wrapper>
       <div className="flex flex-col items-center justify-center w-full lg:pt-[80px] pt-[71px] pb-[30px] relative">
-
         {products.length === 0 ? (
           <p className="text-gray-500 mt-4">No products available.</p>
         ) : (
           <>
+            <div className="text-center">
+              <div className="flex gap-[10px] items-center">
+                <img
+                  src="/svgs/Shared/ProductSection/leftflower.svg"
+                  alt="Left Flower"
+                />
+                <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
+                  {[...new Set(products.map((item:any) => item.tittle))].map(
+                    (title, index) => (
+                      <p key={`${title}-${index}`}>{title}</p>
+                    )
+                  )}
+                </div>
+                <img
+                  src="/svgs/Shared/ProductSection/rightflower.svg"
+                  alt="Right Flower"
+                />
+              </div>
+              <Link href="/Catalog">
+                <p className="text-[18px] text-[#697586] font-normal hover:text-[#F5A3B7] cursor-pointer">
+                  See All
+                </p>
+              </Link>
+            </div>
+
+            {/* Swiper Section */}
             <div className="w-full relative lg:py-[30px] py-[20px]">
               <div
                 ref={prevRef}
@@ -101,7 +121,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                 pagination={{
                   el: paginationRef.current,
                   clickable: true,
-                  type: 'bullets',
+                  type: "bullets",
                   bulletClass: "swiper-pagination-bullet",
                   bulletActiveClass: "swiper-pagination-bullet-active",
                 }}
@@ -144,6 +164,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               </div>
             </div>
 
+            {/* Pagination Dots */}
             <div
               ref={paginationRef}
               className="swiper-pagination !relative !mt-4 !h-4 !flex !justify-center !gap-2"
@@ -152,11 +173,12 @@ const ProductSection: React.FC<ProductSectionProps> = ({
         )}
       </div>
 
+      {/* Custom Swiper Pagination Styles */}
       <style jsx global>{`
         .swiper-pagination-bullet {
           width: 9px;
           height: 9px;
-          background-color:rgba(223, 225, 227, 1);
+          background-color: rgba(223, 225, 227, 1);
           opacity: 0.5;
           border-radius: 50%;
           transition: all 0.3s ease;
@@ -164,9 +186,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           display: inline-block;
         }
         .swiper-pagination-bullet-active {
-         width: 10px;
+          width: 10px;
           height: 10px;
-          background-color:rgba(176, 166, 189, 1);
+          background-color: rgba(176, 166, 189, 1);
           opacity: 1;
           transform: scale(1.2);
         }

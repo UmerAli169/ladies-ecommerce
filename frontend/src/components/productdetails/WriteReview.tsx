@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { Field, Formik, FormikHelpers } from "formik";
 import { Modal } from "../model/Modal";
@@ -30,6 +30,8 @@ export const ReviewModal = ({
   userId,
   productId,
 }: ReviewModalProps) => {
+  const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
+
   const handleReviewSubmit = async (
     values: ReviewFormValues,
     actions: FormikHelpers<ReviewFormValues>
@@ -42,11 +44,10 @@ export const ReviewModal = ({
       formData.append("title", values.title);
       formData.append("text", values.text);
 
-      if (values.photos && values.photos.length > 0) {
-        Array.from(values.photos).forEach((file) => {
-          formData.append("images", file);
-        });
-      }
+      // Only send the first 5 selected photos
+      selectedPhotos.slice(0, 5).forEach((file) => {
+        formData.append("images", file);
+      });
 
       await createReview(formData);
 
@@ -57,9 +58,22 @@ export const ReviewModal = ({
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.currentTarget.files;
+    if (files) {
+      const newFiles = Array.from(files);
+      // Take only the first 5 files if more than 5 are selected
+      const updatedFiles = selectedPhotos.length + newFiles.length <= 5
+        ? [...selectedPhotos, ...newFiles]
+        : [...selectedPhotos, ...newFiles.slice(0, 5 - selectedPhotos.length)];
+
+      setSelectedPhotos(updatedFiles);
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-[26px] font-normal  text-[#383838] mb-4 text-center">
+      <h2 className="text-[26px] font-normal text-[#383838] mb-4 text-center">
         Write a Review
       </h2>
 
@@ -88,7 +102,7 @@ export const ReviewModal = ({
         {({ setFieldValue, handleSubmit, values }) => (
           <form
             onSubmit={handleSubmit}
-            className="space-y-4 w-full max-w-[500px] "
+            className="space-y-4 w-full max-w-[500px]"
           >
             <div className="max-w-[80px] w-full rounded-full flex gap-[10px] items-center">
               <img src="/reviews/reviewsection.png" alt="Reviewer" />
@@ -99,7 +113,7 @@ export const ReviewModal = ({
                     src={
                       values.rating > i
                         ? "/svgs/Shared/reviews/starts.svg"
-                        : "/svgs/Review/emptyStar.svg"
+                        : "/svgs/Shared/ProductSection/cardStar.svg"
                     }
                     alt="star"
                     className="w-[40px] cursor-pointer"
@@ -128,12 +142,7 @@ export const ReviewModal = ({
                 type="file"
                 name="photos"
                 className="hidden"
-                onChange={(event) => {
-                  const files = event.currentTarget.files;
-                  if (files && files.length > 0) {
-                    setFieldValue("photos", files);
-                  }
-                }}
+                onChange={handleFileChange}
                 multiple
               />
               <img
@@ -141,8 +150,33 @@ export const ReviewModal = ({
                 alt="Upload"
                 className="w-5 h-5"
               />
-              Add Photos
+              Add Photos (Max 5)
             </label>
+
+            {selectedPhotos.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {selectedPhotos.map((file, index) => (
+                  <div key={index} className="w-[80px] h-[80px] relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt="Selected"
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedPhotos((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        )
+                      }
+                      className="absolute top-0 right-0 text-white text-[16px] p-1 bg-red-600 rounded-full"
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="mt-4 flex flex-col gap-[20px] items-center">
               <div className="w-full">
@@ -154,7 +188,7 @@ export const ReviewModal = ({
                 type="email"
                 name="email"
                 placeholder="Email Address"
-                required  
+                required
               />
               <div className="max-w-[392px] flex flex-col gap-[20px] items-center">
                 <OrDivider />
@@ -175,7 +209,7 @@ export const ReviewModal = ({
               </a>
             </p>
 
-            <AuthButton type="submit" className="w-full  ">
+            <AuthButton type="submit" className="w-full">
               Agree & Submit
             </AuthButton>
           </form>

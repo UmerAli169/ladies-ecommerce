@@ -16,6 +16,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
   fetchWishlist: async () => {
     try {
       const wishlist = await getWishlist();
+      console.log(wishlist,'wishlistwishlistwishlist')
       set({ wishlist });
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -52,7 +53,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
   },
 
   isInWishlist: (id: string) => {
-    const { wishlist } = get();
+    const { wishlist } = get();  
     return wishlist.includes(id);
   },
 }));

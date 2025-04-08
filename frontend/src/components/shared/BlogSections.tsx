@@ -75,7 +75,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
               alt="Left Flower"
             />
             <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-              {[...new Set(products?.map((item) => item.title))].map(
+              {[...new Set(products?.map((item:any) => item.tittle))].map(
                 (title, index) => (
                   <p key={`${title}-${index}`}>{title}</p>
                 )
@@ -138,7 +138,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                     key={`${product._id}-${index}`}
                     style={{ maxWidth: `${cardWidth}px`, width: "100%" }}
                   >
-                    <BlogCards product={product} />
+                    <BlogCards product={product as any} />
                   </SwiperSlide>
                 ))}
               </Swiper>
