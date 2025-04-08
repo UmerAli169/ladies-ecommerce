@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "@/components/shared/ProductCard";
 import { CartModal } from "@/components/model/RightModal";
 import { useWishlistStore } from "@/store/useWishlistStore";
+import { useCartStore } from "@/store/cartStore";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -14,7 +15,8 @@ function WishlistPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { addToCart } = useCartStore();
   useEffect(() => {
     async function loadWishlist() {
       try {
@@ -26,10 +28,6 @@ function WishlistPage() {
     }
     loadWishlist();
   }, []);
-  const addToCart = (product: any) => {
-    setCartItems((prev) => [...prev, product]);
-    setIsCartOpen(true);
-  };
 
   const totalPages = Math.max(
     1,
@@ -53,12 +51,10 @@ function WishlistPage() {
             {paginatedProducts.map((product) => (
               <div key={product._id} className="w-full">
                 <ProductCard
-                  product={product}
-                  addToCart={addToCart}
-                  toggleWishlist={function (productId: number): void {
-                    false;
-                  }}
-                  isInWishlist={false}
+                  product={product as any}
+                  addToCart={() => addToCart(product._id)}
+                  toggleWishlist={() => toggleWishlist(product._id)}
+                  isInWishlist={isInWishlist(product._id)}
                 />
               </div>
             ))}
