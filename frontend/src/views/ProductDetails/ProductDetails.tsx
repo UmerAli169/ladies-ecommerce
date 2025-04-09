@@ -5,12 +5,15 @@ import ProductSection from "@/components/main/ProductSection";
 import ProductDetails from "@/components/productdetails/ProductDetails";
 import ReviewSection from "@/components/productdetails/ReviewSection";
 import { useProductStore } from "@/store/productStore";
-import useWishlistStore from "@/store/useWishlistStore";
+import {useWishlistStore} from "@/store/useWishlistStore";
 import useCartStore from "@/store/cartStore";
+import { useParams } from "react-router-dom";
 
 function Page() {
   const searchParams = useSearchParams();
-  const productId = searchParams.get("id");
+  const productId = searchParams.get("id");   
+//   const { productId } = useParams();
+// console.log(productId,'productIdproductId')
   const { product, fetchProduct, likeproduct, productdetails }: any =
     useProductStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();

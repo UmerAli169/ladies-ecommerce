@@ -45,7 +45,7 @@ export default function Filters({ onFilterChange, onPriceInput }: FiltersProps) 
             <div className="text-[#383838] text-[14px] leading-[21px] font-normal">
               Product Type
             </div>
-            {openSections.productType ? (
+            {openSections.productType ? (  
               <ChevronUp size={18} />
             ) : (
               <ChevronDown size={18} />
@@ -92,7 +92,7 @@ export default function Filters({ onFilterChange, onPriceInput }: FiltersProps) 
                     className="flex items-center gap-2 text-gray-700"
                   >
                     <input 
-                      type="radio" 
+                      type="checkbox" 
                       name="skinType" 
                       className="w-4 h-4" 
                       onChange={() => handleSkinTypeChange(type)}

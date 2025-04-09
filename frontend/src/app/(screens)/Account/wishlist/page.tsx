@@ -38,7 +38,7 @@ function WishlistPage() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
+console.log(wishlistProducts,'wishlistProducts')
   return (
     <AccountLayout>
       <h2 className="text-2xl font-bold text-[#383838] mb-6">My Wishlist</h2>

@@ -122,8 +122,6 @@ throw error;  }
 export const getProductById = async (productId: any) => {
   try {
     const response = await api.put(`/api/products/getProductById/${productId}`);
-    toast.success(response.data.message);
-
     return response.data;
   } catch (error) {
     console.log(error);

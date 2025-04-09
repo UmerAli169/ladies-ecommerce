@@ -7,7 +7,7 @@ import BlogSection from "../../components/shared/BlogSections";
 import SkinQuiz from "@/components/main/SkinQuiz";
 import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
-import useWishlistStore from "@/store/useWishlistStore";
+import {useWishlistStore} from "@/store/useWishlistStore";
 import useCartStore from "@/store/cartStore";
 
 function MainPage() {

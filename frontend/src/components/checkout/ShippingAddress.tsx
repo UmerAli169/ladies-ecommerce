@@ -13,16 +13,15 @@ const ShippingAddress = ({
   user: any;
   setUser: (user: any) => void;
 }): any => {
-
   const [isLoggedIn] = useState(!!user);
   const [formData, setFormData] = useState({
-    firstName: user?.address?.firstName || "",
-    lastName: user?.address?.lastName || "",
-    address: user?.address?.address || "",
-    country: user?.address?.country || "",
-    city: user?.address?.city || "",
-    postalCode: user?.address?.postalCode || "",
-    phone: user?.address?.phone || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    address: user?.address || "",
+    country: user?.country || "",
+    city: user?.city || "",
+    postalCode: user?.postalCode || "",
+    phone: user?.phone || "",
     recipientNotMe: false,
   });
 
@@ -56,17 +55,23 @@ const ShippingAddress = ({
         <div className="space-y-[20px]">
           <InputField
             label="Saved Address"
-            value={user?.address || ""}
+            name="address"
+            value={user.address}
+            onChange={handleChange}
             readOnly
           />
-          <InputField label="Country" value={user?.country || "pakistan"} readOnly />
+          <InputField
+            label="Country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+          />
           <InputField
             label="Address"
             name="address"
             value={formData.address}
             onChange={handleChange}
           />
-
           <div className="flex gap-3">
             <InputField
               label="City"
@@ -83,16 +88,22 @@ const ShippingAddress = ({
               className="w-1/2"
             />
           </div>
-
           <InputField
             label="Phone"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
           />
-
           <label className="flex items-center gap-2 text-[#383838] text-[14px]">
-            <input type="checkbox" className="w-4 h-4 border-[#D9D9D9]" />
+            <input
+              type="checkbox"
+              name="recipientNotMe"
+              className="w-4 h-4 border-[#D9D9D9]"
+              checked={formData.recipientNotMe}
+              onChange={(e) =>
+                setFormData({ ...formData, recipientNotMe: e.target.checked })
+              }
+            />
             The recipient is not me
           </label>
         </div>

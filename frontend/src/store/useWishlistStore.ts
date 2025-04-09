@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { getWishlist, addToWishlist, removeFromWishlist } from "../services/internal";
+import {
+  getWishlist,
+  addToWishlist as apiAddToWishlist,
+  removeFromWishlist as apiRemoveFromWishlist,
+} from "../services/internal";
 
 interface WishlistState {
   wishlist: string[];
@@ -15,9 +19,8 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
 
   fetchWishlist: async () => {
     try {
-      const wishlist = await getWishlist();
-      set({ wishlist });
-      return wishlist;
+      const fetchedWishlist = await getWishlist();
+      set({ wishlist: Array.isArray(fetchedWishlist) ? fetchedWishlist : [] });
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
@@ -25,9 +28,11 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
 
   addToWishlist: async (id: string) => {
     try {
-      await addToWishlist(id);
+      await apiAddToWishlist(id);
       const { wishlist } = get();
-      set({ wishlist: [...wishlist, id] });
+      if (!wishlist.includes(id)) {
+        set({ wishlist: [...wishlist, id] });
+      }
     } catch (error) {
       console.error("Error adding to wishlist:", error);
     }
@@ -35,7 +40,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
 
   removeFromWishlist: async (id: string) => {
     try {
-      await removeFromWishlist(id);
+      await apiRemoveFromWishlist(id);
       const { wishlist } = get();
       set({ wishlist: wishlist.filter((item) => item !== id) });
     } catch (error) {
@@ -51,11 +56,9 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
       await addToWishlist(id);
     }
   },
-  isInWishlist: (id: string) => {
-    const wishlist = get().wishlist;
-    return Array.isArray(wishlist) && wishlist.includes(id);
-  }  
-  
-}));
 
-export default useWishlistStore;
+  isInWishlist: (id: string) => {
+    const { wishlist } = get();
+    return Array.isArray(wishlist) && wishlist.includes(id);
+  },
+}));

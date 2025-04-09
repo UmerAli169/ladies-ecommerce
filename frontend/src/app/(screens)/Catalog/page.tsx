@@ -6,7 +6,7 @@ import Sidebar from "../../../components/catalog/Sliderbar";
 import Wrapper from "@/app/wrapper";
 import Filters from "@/components/shared/Filters";
 import ProductSection from "@/components/main/ProductSection";
-import useWishlistStore from "@/store/useWishlistStore";
+import {useWishlistStore} from "@/store/useWishlistStore";
 import useProductStore from "@/store/productStore";
 import useCategoryStore from "@/store/categoryStore";
 import useCartStore from "@/store/cartStore";

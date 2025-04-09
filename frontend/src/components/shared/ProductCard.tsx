@@ -107,7 +107,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               ({averageRating.toFixed(0)})
             </span>
           </div>
-          <div className=" h-full  min-h-[40px] max-h-[20px]">
+          <div className=" h-full  py-[1px]">
             <p className="font-[Montserrat] text-[14px] text-[#697586] font-normal leading-[22px] ">
               {product.description.slice(0, 60)}...
             </p>
