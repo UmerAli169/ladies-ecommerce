@@ -1,9 +1,5 @@
 import { create } from "zustand";
-import {
-  getWishlist,
-  addToWishlist,
-  removeFromWishlist,
-} from "../services/internal";
+import { getWishlist, addToWishlist, removeFromWishlist } from "../services/internal";
 
 interface WishlistState {
   wishlist: string[];
@@ -15,14 +11,12 @@ interface WishlistState {
 }
 
 export const useWishlistStore = create<WishlistState>((set, get) => ({
-  wishlist: JSON.parse(localStorage.getItem("wishlist") || "[]"),
+  wishlist: [],
 
   fetchWishlist: async () => {
     try {
       const wishlist = await getWishlist();
       set({ wishlist });
-
-      localStorage.setItem("wishlist", JSON.stringify(wishlist));
       return wishlist;
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -33,9 +27,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     try {
       await addToWishlist(id);
       const { wishlist } = get();
-      const updatedWishlist = [...wishlist, id];
-      set({ wishlist: updatedWishlist });
-      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+      set({ wishlist: [...wishlist, id] });
     } catch (error) {
       console.error("Error adding to wishlist:", error);
     }
@@ -45,36 +37,25 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     try {
       await removeFromWishlist(id);
       const { wishlist } = get();
-      const updatedWishlist = wishlist.filter((item) => item !== id);
-      set({ wishlist: updatedWishlist });
-      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+      set({ wishlist: wishlist.filter((item) => item !== id) });
     } catch (error) {
       console.error("Error removing from wishlist:", error);
     }
   },
 
   toggleWishlist: async (id: string) => {
-    const wishlist = get().wishlist || [];
-    try {
-      if (wishlist.includes(id)) {
-        await removeFromWishlist(id);
-        const updatedWishlist = wishlist.filter((item) => item !== id);
-        set({ wishlist: updatedWishlist });
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-      } else {
-        await addToWishlist(id);
-        const updatedWishlist = [...wishlist, id];
-        set({ wishlist: updatedWishlist });
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-      }
-    } catch (error) {
-      console.error("Error toggling wishlist:", error);
+    const { isInWishlist, addToWishlist, removeFromWishlist } = get();
+    if (isInWishlist(id)) {
+      await removeFromWishlist(id);
+    } else {
+      await addToWishlist(id);
     }
   },
   isInWishlist: (id: string) => {
     const wishlist = get().wishlist;
     return Array.isArray(wishlist) && wishlist.includes(id);
-  },
+  }  
+  
 }));
 
 export default useWishlistStore;
