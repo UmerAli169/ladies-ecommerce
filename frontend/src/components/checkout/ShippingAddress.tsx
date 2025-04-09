@@ -47,7 +47,6 @@ const ShippingAddress = ({
       toast.error("Failed to update shipping address.");
     }
   };
-  console.log(user)
   return (
     <div className="mx-auto">
       <h2 className="text-[22px] text-[#383838] font-medium pb-[20px]">

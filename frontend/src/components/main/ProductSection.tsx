@@ -41,7 +41,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   const nextRef = useRef<HTMLDivElement>(null);
   const paginationRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);

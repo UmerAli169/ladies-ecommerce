@@ -11,13 +11,11 @@ import useProductStore from "@/store/productStore";
 import useCategoryStore from "@/store/categoryStore";
 import useCartStore from "@/store/cartStore";
 import Pagination from "@/components/shared/Pagination";
-
 const CatalogPage = () => {
   const { categories, fetchCategories } = useCategoryStore();
   const { addToCart } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { products, fetchProducts, productdetails } = useProductStore();
-
   const [filteredProducts, setFilteredProducts] = useState(products || []);
   const [totalProducts, setTotalProducts] = useState(products.length || 0);
   const [sortBy, setSortBy] = useState("relevance");
@@ -31,12 +29,10 @@ const CatalogPage = () => {
     minPrice: "",
     maxPrice: "",
   });
-
   useEffect(() => {
     fetchCategories();
     fetchProducts();
   }, []);
-
   useEffect(() => {
     let filtered = [...products];
 
@@ -83,29 +79,24 @@ const CatalogPage = () => {
     setFilteredProducts(filtered);
     setTotalProducts(filtered.length);
   }, [activeCategory, activeSubCategory, filters, sortBy, products]);
-
   const handleCategoryClick = (categorySlug: string) => {
     setActiveCategory((prev) => (prev === categorySlug ? null : categorySlug));
     setActiveSubCategory(null);
   };
-
   const handleSubCategoryClick = (subCategorySlug: string) => {
     setActiveSubCategory((prev) =>
       prev === subCategorySlug ? null : subCategorySlug
     );
   };
-
   const handleFilterChange = (filterType: string, value: string | string[]) => {
     setFilters((prev) => ({
       ...prev,
       [filterType]: Array.isArray(value) ? value : [value],
     }));
   };
-
   const handlePriceInput = (type: "min" | "max", value: string) => {
     setFilters((prev) => ({ ...prev, [`${type}Price`]: value }));
   };
-
   const collapsibleSections = categories.map((category) => ({
     key: category.name,
     title: category.name,
@@ -125,7 +116,6 @@ const CatalogPage = () => {
       isActive: activeSubCategory === sub.name,
     })),
   }));
-
   return (
     <>
     <Wrapper>
@@ -179,7 +169,7 @@ const CatalogPage = () => {
       toggleWishlist={toggleWishlist}
       isInWishlist={isInWishlist}
       />
-      ß</>
+      </>
   );
 };
 

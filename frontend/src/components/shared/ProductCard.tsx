@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   product,
   addToCart,
   toggleWishlist,
-  isInWishlist,
+  isInWishlist ,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
