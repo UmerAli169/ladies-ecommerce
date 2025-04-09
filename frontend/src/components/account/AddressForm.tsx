@@ -5,12 +5,15 @@ import Button from "../shared/Button";
 import { AuthInput } from "../shared/Input";
 import { useAuthStore } from "@/store/authStore";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateAddress } from "../../services/internal";
 
 const AddressForm = () => {
   const [showForm, setShowForm] = useState(false);
   const { user, setUser } = useAuthStore();
+  const address = user?.address
+    ? `${user.address}, ${user.city}, ${user.country}, ${user.postalCode}`
+    : "No address saved";
 
   const validationSchema = Yup.object({
     country: Yup.string().required("Required"),
@@ -26,11 +29,7 @@ const AddressForm = () => {
         <div className="w-full flex justify-between p-[10px] border">
           <div>
             <span className="pr-[30px] text-[#697586]">Default</span>
-            <span>
-              {user?.address
-                ? `${user.address}, ${user.city}, ${user.country}, ${user.postalCode}`
-                : "No address saved"}
-            </span>
+            <span>{address}</span>
           </div>
           <button className="text-[#697586]" onClick={() => setShowForm(true)}>
             Change

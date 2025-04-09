@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../shared/Button";
 import InputField from "../shared/InputField";
 import toast from "react-hot-toast";
-import { updateAddress } from "../../services/internal"; 
+import { updateAddress } from "../../services/internal";
 
 const ShippingAddress = ({
   onContinue,
@@ -13,8 +13,11 @@ const ShippingAddress = ({
   user: any;
   setUser: (user: any) => void;
 }): any => {
+
   const [isLoggedIn] = useState(!!user);
   const [formData, setFormData] = useState({
+    firstName: user?.address?.firstName || "",
+    lastName: user?.address?.lastName || "",
     address: user?.address?.address || "",
     country: user?.address?.country || "",
     city: user?.address?.city || "",
@@ -35,7 +38,6 @@ const ShippingAddress = ({
     try {
       if (isLoggedIn) {
         const updatedAddress = await updateAddress(formData);
-
         setUser({ ...user.user, ...updatedAddress });
       } else {
         toast.error("Please log in to update the address.");
@@ -45,7 +47,7 @@ const ShippingAddress = ({
       toast.error("Failed to update shipping address.");
     }
   };
-
+  console.log(user)
   return (
     <div className="mx-auto">
       <h2 className="text-[22px] text-[#383838] font-medium pb-[20px]">
@@ -58,7 +60,7 @@ const ShippingAddress = ({
             value={user?.address || ""}
             readOnly
           />
-          <InputField label="Country" value={user?.country || ""} readOnly />
+          <InputField label="Country" value={user?.country || "pakistan"} readOnly />
           <InputField
             label="Address"
             name="address"
@@ -102,30 +104,53 @@ const ShippingAddress = ({
               label="First Name"
               placeholder="Enter first name"
               className="w-1/2"
+              value={formData.firstName || ""}
+              onChange={handleChange}
             />
             <InputField
               label="Last Name"
               placeholder="Enter last name"
               className="w-1/2"
+              value={formData.lastName || ""}
+              onChange={handleChange}
             />
           </div>
-          <InputField label="Country" placeholder="Enter country" />
-          <InputField label="Address" placeholder="Enter your address" />
+          <InputField
+            label="Country"
+            placeholder="Enter country"
+            value={formData.country || ""}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Address"
+            placeholder="Enter your address"
+            value={formData.address || ""}
+            onChange={handleChange}
+          />
 
           <div className="flex gap-3">
             <InputField
               label="City"
               placeholder="Enter city"
               className="w-1/2"
+              value={formData.city || ""}
+              onChange={handleChange}
             />
             <InputField
               label="Postal Code"
               placeholder="Enter postal code"
               className="w-1/2"
+              value={formData.postalCode || ""}
+              onChange={handleChange}
             />
           </div>
 
-          <InputField label="Phone" placeholder="Enter phone number" />
+          <InputField
+            label="Phone"
+            placeholder="Enter phone number"
+            value={formData.phone || ""}
+            onChange={handleChange}
+          />
         </div>
       )}
 

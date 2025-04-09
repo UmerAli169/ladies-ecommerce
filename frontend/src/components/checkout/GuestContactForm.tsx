@@ -19,7 +19,6 @@ const GuestContactForm: React.FC<GuestContactFormProps> = ({
   onLogout,
   onEmailChange,
 }) => {
-console.log(user,'op')
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px]">
@@ -34,10 +33,12 @@ console.log(user,'op')
       </div>
 
       {isLoggedIn ? (
-        <ContactInfo 
+        <ContactInfo
           email={user?.email || ""}
           isLoggedIn={isLoggedIn}
-          onLogout={onLogout} method={undefined}        />
+          onLogout={onLogout}
+          method={undefined}
+        />
       ) : (
         <InputField
           type="email"

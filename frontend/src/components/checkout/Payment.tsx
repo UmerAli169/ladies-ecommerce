@@ -7,6 +7,7 @@ import PaymentOption from "./PaymentOption";
 import ContactInfo from "../shared/ContactInfo";
 import TextInput from "../shared/InputField";
 import SuccessModal from "../shared/SuccessModal"; // Import success modal
+import { useRouter } from "next/navigation";
 
 interface PaymentProps {
   user: any;
@@ -25,13 +26,13 @@ const Payment: React.FC<PaymentProps> = ({
   setPaymentMethod,
   method,
 }) => {
+
   const [showSuccess, setShowSuccess] = useState(false);
   const orderId = "167749-0500";
 
   const handlePayment = () => {
     setShowSuccess(true);
   };
-  console.log(user, "user.address");
   return (
     <div className="mx-auto flex flex-col gap-[40px]">
       <ContactInfo
@@ -39,6 +40,7 @@ const Payment: React.FC<PaymentProps> = ({
         address={user.address}
         isLoggedIn={isLoggedIn}
         method={method}
+        onChange={() => {}}
       />
 
       <div>

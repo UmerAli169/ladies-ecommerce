@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ContactInfoProps {
   email: string;
@@ -17,6 +18,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
   onChange,
   method,
 }) => {
+  
+  const router = useRouter();
+
   return (
     <div className="  flex flex-col gap-[10px] ">
       <div className="flex justify-between p-[10px] bg-[#FCFCFF] rounded-[4px]">
@@ -31,7 +35,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
         {!isLoggedIn ? (
           <button
             className="text-[#697586] text-[16px] font-normal"
-            onClick={onChange}
+            onClick={()=>router.push("/Account/contactinformation")}
           >
             Change
           </button>
@@ -56,8 +60,8 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
           </p>
           <button
             className="text-[#697586] text-[16px] font-normal"
-            onClick={onChange}
-          >
+            onClick={() => router.push("/Account/addresses")}
+            >
             Change
           </button>
         </div>
@@ -73,7 +77,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
           </p>
           <button
             className="text-[#697586] text-[16px] font-normal"
-            onClick={onChange}
+            onClick={() => {}}
           >
             Change
           </button>

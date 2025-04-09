@@ -72,7 +72,7 @@ const Checkout = () => {
 
               <ShippingAddress
                 onContinue={() => setShowShipping(true)}
-                user={isAuthenticated ? user.user : null}
+                user={isAuthenticated ? user : null}
                 setUser={setUser}
               />
             </>
