@@ -4,7 +4,7 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../services/internal";
- 
+
 interface WishlistState {
   wishlist: string[];
   fetchWishlist: () => Promise<void>;
@@ -55,7 +55,6 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
 
   toggleWishlist: async (id: string) => {
     const wishlist = get().wishlist || [];
-    console.log(wishlist,'strewiihslist')
     try {
       if (wishlist.includes(id)) {
         await removeFromWishlist(id);
