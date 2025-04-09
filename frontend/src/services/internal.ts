@@ -254,9 +254,9 @@ export const updateAddress = async (data: {
   phone: string;
 }) => {
   try {
-    const response = await api.put("/api/products/updateAddress", data); // Call to update the address
+    const response = await api.put("/api/products/updateAddress", data); 
     toast.success("Address updated successfully!");
-    return response.data; // Return the updated data
+    return response.data;
   } catch (error) {
     console.error("Error updating address:", error);
     toast.error("Failed to update address.");

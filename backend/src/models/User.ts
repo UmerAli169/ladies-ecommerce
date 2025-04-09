@@ -33,8 +33,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: function (this: IUser) {
         return !this.googleId;
-      },
-    },
+      },},
     googleId: { type: String },
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Date, default: null },

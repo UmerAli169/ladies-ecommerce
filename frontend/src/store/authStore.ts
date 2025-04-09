@@ -23,15 +23,11 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-
       setUser: (user) => set({ user, isAuthenticated: !!user }),
-
       logout: () => set({ user: null, isAuthenticated: false }),
-
       updatePassword: async (data) => {
         await changePassword(data);
       },
-
       updateContactInfo: async (data) => {
         const updatedUser = await updateContactInfo(data);
         set({ user: updatedUser, isAuthenticated: !!updatedUser });

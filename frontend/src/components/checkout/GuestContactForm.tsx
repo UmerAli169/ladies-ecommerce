@@ -19,7 +19,7 @@ const GuestContactForm: React.FC<GuestContactFormProps> = ({
   onLogout,
   onEmailChange,
 }) => {
-
+console.log(user,'op')
   return (
     <div>
       <div className="flex justify-between items-center pb-[20px]">

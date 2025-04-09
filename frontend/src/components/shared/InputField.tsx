@@ -8,6 +8,7 @@ interface InputFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   readOnly?: boolean;
+  name?: string; // Added name prop
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -18,11 +19,13 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
   className = "",
   readOnly = false,
+  name, // Destructuring name prop
 }) => {
   return (
     <div className="w-full">
       {label && <label className="block text-[#B0A6BD] text-[12px] font-normal ">{label}</label>}
       <input
+        name={name} // Passing name prop to input
         type={type}
         placeholder={placeholder}
         value={value}

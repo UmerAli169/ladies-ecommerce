@@ -13,7 +13,7 @@ import { useCartStore } from "@/store/cartStore";
 const Checkout = () => {
   const handleBackToInfo = () => setShowShipping(false);
   const handleProceedToPayment = () => setShowPayment(true);
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, setUser, isAuthenticated, logout } = useAuthStore();
   const { cart } = useCartStore();
   const [deliveryMethod, setDeliveryMethod] = useState("ship");
   const [shippingCharge, setShippingCharge] = useState(5.0);
@@ -46,9 +46,8 @@ const Checkout = () => {
               onBack={() => setShowPayment(false)}
               paymentMethod={paymentMethod}
               setPaymentMethod={setPaymentMethod}
-              email={userEmail}
+              user={isAuthenticated ? user.user : null}
               method={paymentMethod}
-              address={"Maidan Nezalezhnosti 2, Kyiv, 01000, Ukraine"}
               isLoggedIn={false}
             />
           ) : showShipping ? (
@@ -59,7 +58,7 @@ const Checkout = () => {
           ) : (
             <>
               <GuestContactForm
-                user={isAuthenticated ? user.user : email}
+                user={isAuthenticated ? user : null}
                 isLoggedIn={isAuthenticated}
                 onLogout={handleLogout}
                 onEmailChange={(e) => setEmail(e.target.value)}
@@ -73,7 +72,8 @@ const Checkout = () => {
 
               <ShippingAddress
                 onContinue={() => setShowShipping(true)}
-                user={isAuthenticated ? user : null}
+                user={isAuthenticated ? user.user : null}
+                setUser={setUser}
               />
             </>
           )}

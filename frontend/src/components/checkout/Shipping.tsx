@@ -5,6 +5,7 @@ import Button from "../shared/Button";
 import ShippingOption from "./ShippingOption";
 import ContactInfo from "../shared/ContactInfo";
 import { useAuthStore } from "@/store/authStore"; // Import Zustand store
+import { useRouter } from "next/navigation";
 
 interface ShippingProps {
   onBack: () => void;
@@ -12,20 +13,29 @@ interface ShippingProps {
 }
 
 const Shipping: React.FC<ShippingProps> = ({ onBack, onProceedToPayment }) => {
-  const { user } = useAuthStore();
-  const email = user?.email || "guest@example.com";
-  const address = user?.address
-    ? `${user.address.address}, ${user.address.city}, ${user.address.country}, ${user.address.postalCode}`
-    : "No address available";
+  const router = useRouter();
 
+  const { user } = useAuthStore();
+  const email = user?.user?.email || "guest@example.com";
+  const address = user?.user?.address
+    ? `${user.user.address}, ${user.user.city}, ${user.user.country}, ${user.user.postalCode}`
+    : "No address available";
   const [selectedShipping, setSelectedShipping] = useState("fast");
 
   return (
     <div className="mx-auto flex flex-col gap-[40px]">
-      <ContactInfo email={email} address={address} isLoggedIn={!!user} method={null} />
+      <ContactInfo
+        email={email}
+        address={address}
+        isLoggedIn={!!user}
+        method={null}
+        onChange={() => router.push("/Account/addresses")}
+      />
 
       <div className="flex flex-col gap-[20px]">
-        <h2 className="text-[20px] text-[#383838] font-medium">Shipping Method</h2>
+        <h2 className="text-[20px] text-[#383838] font-medium">
+          Shipping Method
+        </h2>
         <ShippingOption
           value="courier"
           label="Courier at home"

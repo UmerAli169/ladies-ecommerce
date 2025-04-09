@@ -19,7 +19,6 @@ const AddressForm = () => {
     postalCode: Yup.string().required("Required"),
     phone: Yup.string().required("Required"),
   });
-
   return (
     <div className="space-y-[20px] rounded-lg w-full">
       <p className="text-xl font-semibold ">Your Addresses</p>
@@ -29,7 +28,7 @@ const AddressForm = () => {
             <span className="pr-[30px] text-[#697586]">Default</span>
             <span>
               {user?.address
-                ? `${user.address.address}, ${user.address.city}, ${user.address.country}, ${user.address.postalCode}`
+                ? `${user.address}, ${user.city}, ${user.country}, ${user.postalCode}`
                 : "No address saved"}
             </span>
           </div>
@@ -60,8 +59,8 @@ const AddressForm = () => {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              await updateAddress(values); 
-              setUser({ ...user, address: values }); 
+              await updateAddress(values);
+              setUser({ ...user.user, ...values });
               setShowForm(false);
             } catch (error) {
               toast.error("Failed to save address!");

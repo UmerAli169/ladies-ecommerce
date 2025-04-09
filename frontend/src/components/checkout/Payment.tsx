@@ -5,12 +5,11 @@ import { FaCcVisa, FaGooglePay, FaPaypal } from "react-icons/fa";
 import Button from "../shared/Button";
 import PaymentOption from "./PaymentOption";
 import ContactInfo from "../shared/ContactInfo";
-import TextInput from "../shared/InputField"; 
+import TextInput from "../shared/InputField";
 import SuccessModal from "../shared/SuccessModal"; // Import success modal
 
 interface PaymentProps {
-  email: string;
-  address: string;
+  user: any;
   method: string;
   isLoggedIn: boolean;
   onBack: () => void;
@@ -19,8 +18,7 @@ interface PaymentProps {
 }
 
 const Payment: React.FC<PaymentProps> = ({
-  email,
-  address,
+  user,
   isLoggedIn,
   onBack,
   paymentMethod,
@@ -28,17 +26,17 @@ const Payment: React.FC<PaymentProps> = ({
   method,
 }) => {
   const [showSuccess, setShowSuccess] = useState(false);
-  const orderId = "167749-0500"; // Dynamically generate this in real implementation
+  const orderId = "167749-0500";
 
   const handlePayment = () => {
     setShowSuccess(true);
   };
-
+  console.log(user, "user.address");
   return (
     <div className="mx-auto flex flex-col gap-[40px]">
       <ContactInfo
-        email={email}
-        address={address}
+        email={user.email}
+        address={user.address}
         isLoggedIn={isLoggedIn}
         method={method}
       />
@@ -77,8 +75,14 @@ const Payment: React.FC<PaymentProps> = ({
           <TextInput placeholder="Card Number" />
           <TextInput placeholder="Card Name" />
           <div className="flex flex-col sm:flex-row gap-2">
-            <TextInput placeholder="Expiration Date (MM/YY)" className="w-full sm:w-5/4" />
-            <TextInput placeholder="Security Code" className="w-full sm:w-5/4" />
+            <TextInput
+              placeholder="Expiration Date (MM/YY)"
+              className="w-full sm:w-5/4"
+            />
+            <TextInput
+              placeholder="Security Code"
+              className="w-full sm:w-5/4"
+            />
           </div>
         </div>
       )}
@@ -106,7 +110,11 @@ const Payment: React.FC<PaymentProps> = ({
         </div>
       </div>
 
-      <SuccessModal isOpen={showSuccess} onClose={() => setShowSuccess(false)} orderId={orderId} />
+      <SuccessModal
+        isOpen={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        orderId={orderId}
+      />
     </div>
   );
 };
