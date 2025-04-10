@@ -12,11 +12,13 @@ import useCartStore from "@/store/cartStore";
 
 function MainPage() {
   const { bestSellers, newArrivals, fetchProducts, blogs } = useProductStore();
-  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { toggleWishlist, isInWishlist,fetchWishlist } = useWishlistStore();
   const { addToCart } = useCartStore();
   useEffect(() => {
     fetchProducts();
+    fetchWishlist()
   }, []);
+  
   return (
     <div>
       <Dashboard />

@@ -167,7 +167,7 @@ export const addToWishlist = async (req: any, res: any) => {
     const productId = new mongoose.Types.ObjectId(req.params.id);
     const userId = req.userId;
 
-    let wishlist:any = await Wishlist.findOne({ userId });
+    let wishlist: any = await Wishlist.findOne({ userId });
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [productId] });
     } else if (!wishlist.products.some((id: any) => id.equals(productId))) {
@@ -186,7 +186,11 @@ export const addToWishlist = async (req: any, res: any) => {
 
     const productWish = await Product.findById(productId);
     if (productWish) {
-      if (!productWish.wishlistUsers.some((id: any) => id.equals(wishlist._id.toString()))) {
+      if (
+        !productWish.wishlistUsers.some((id: any) =>
+          id.equals(wishlist._id.toString())
+        )
+      ) {
         productWish.wishlistUsers.push(wishlist._id.toString());
         await productWish.save();
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CustomCard } from "./CustomCard";
 import Button from "./Button";
@@ -21,7 +21,7 @@ interface ProductCardProps {
   addToCart: (product: any) => void;
   toggleWishlist: (productId: number) => void;
   isInWishlist: boolean;
-}
+}  
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -29,6 +29,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   toggleWishlist,
   isInWishlist ,
 }) => {
+
+
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const handleRedirect = () => {
