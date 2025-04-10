@@ -15,7 +15,7 @@ function WishlistPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { wishlist,toggleWishlist, isInWishlist } = useWishlistStore();
   const { addToCart } = useCartStore();
   useEffect(() => {
     async function loadWishlist() {
@@ -38,7 +38,6 @@ function WishlistPage() {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
   return (
     <AccountLayout>
       <h2 className="text-2xl font-bold text-[#383838] mb-6">My Wishlist</h2>
@@ -53,7 +52,7 @@ function WishlistPage() {
                 <ProductCard
                   product={product as any}
                   addToCart={() => addToCart(product._id)}
-                  toggleWishlist={() => toggleWishlist(product._id)}
+                  toggleWishlist={() => toggleWishlist(product._id) as any}
                   isInWishlist={isInWishlist(product._id)}
                 />
               </div>

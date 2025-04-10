@@ -8,6 +8,7 @@ import { Keyboard, Mousewheel, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useWishlistStore } from "@/store/useWishlistStore";
 
 interface Product {
   title: string;
@@ -23,8 +24,6 @@ interface Product {
 
 interface ProductSectionProps {
   addToCart: (productId: string) => void;
-  toggleWishlist: (id: string) => void;
-  isInWishlist: (id: string) => boolean;
   products: Product[];
   cardWidth: number;
 }
@@ -32,10 +31,11 @@ interface ProductSectionProps {
 const ProductSection: React.FC<ProductSectionProps> = ({
   products,
   cardWidth,
-  toggleWishlist,
-  isInWishlist,
+
   addToCart,
 }) => {
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+
   const swiperRef = useRef<any>(null);
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
@@ -81,7 +81,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                   alt="Left Flower"
                 />
                 <div className="lg:text-[24px] text-[20px] text-[#383838] font-bold">
-                  {[...new Set(products.map((item:any) => item.tittle))].map(
+                  {[...new Set(products.map((item: any) => item.tittle))].map(
                     (title, index) => (
                       <p key={`${title}-${index}`}>{title}</p>
                     )
