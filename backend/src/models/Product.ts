@@ -16,7 +16,7 @@ interface IProduct extends Document {
   reviews: Types.ObjectId[];
 }
 
-const ProductSchema: Schema = new Schema(
+const ProductSchema: Schema = new Schema( 
   {
     tittle:{type:String,require:true},
     name: { type: String, required: true },

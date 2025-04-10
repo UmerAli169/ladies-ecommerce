@@ -6,14 +6,13 @@ import Category from "../models/Category";
 import Subcategory from "../models/Subcategory";
 const mongoose = require("mongoose");
 
-
 // Update user's address
 export const updateAddress = async (req: any, res: any) => {
   try {
     const userId = req.userId;
     const { address, city, country, postalCode, phone } = req.body;
 
-    const user:any = await User.findById(userId);
+    const user: any = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
     user.address = address;
     user.city = city;
@@ -22,13 +21,11 @@ export const updateAddress = async (req: any, res: any) => {
     user.phone = phone;
 
     await user.save();
-    res.status(200).json({ message: "Address updated successfully",  user });
-  } catch (error:any) {
+    res.status(200).json({ message: "Address updated successfully", user });
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 export const createProduct = async (req: any, res: any) => {
   try {
@@ -56,7 +53,10 @@ export const createProduct = async (req: any, res: any) => {
     // Find or create category
     let categoryExists = await Category.findOne({ name: category });
     if (!categoryExists) {
-      categoryExists = await Category.create({ name: category, subcategories: [] });
+      categoryExists = await Category.create({
+        name: category,
+        subcategories: [],
+      });
     }
 
     // Find or create subcategory
@@ -107,8 +107,6 @@ export const createProduct = async (req: any, res: any) => {
   }
 };
 
-
-
 // Get all categories with subcategories populated
 export const getAllCategories = async (req: any, res: any) => {
   try {
@@ -131,7 +129,10 @@ export const createCategory = async (req: any, res: any) => {
     // Step 2: Create Subcategories if provided
     if (subcategories && subcategories.length > 0) {
       const createdSubcategories = await Subcategory.insertMany(
-        subcategories.map((sub: string) => ({ name: sub, category: newCategory._id }))
+        subcategories.map((sub: string) => ({
+          name: sub,
+          category: newCategory._id,
+        }))
       );
 
       // Step 3: Update Category with Subcategory IDs
@@ -151,31 +152,44 @@ export const createCategory = async (req: any, res: any) => {
 export const getAllProducts = async (req: any, res: any) => {
   try {
     const products = await Product.find()
-    .populate("reviews", "rating")
-    .populate("category", "name")
-    .populate("subcategory", "name"); 
-  
+      .populate("reviews", "rating")
+      .populate("category", "name")
+      .populate("subcategory", "name");
 
-      res.json(products);
+    res.json(products);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
-// Add to Wishlist
 export const addToWishlist = async (req: any, res: any) => {
   try {
-    const productId = req.params.id;
+    const productId = new mongoose.Types.ObjectId(req.params.id);
     const userId = req.userId;
 
-    let wishlist = await Wishlist.findOne({ userId });
-
+    let wishlist:any = await Wishlist.findOne({ userId });
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [productId] });
-    } else if (!wishlist.products.includes(productId)) {
+    } else if (!wishlist.products.some((id: any) => id.equals(productId))) {
       wishlist.products.push(productId);
     } else {
       return res.status(400).json({ message: "Product already in wishlist" });
+    }
+
+    const user = await User.findById(userId);
+    if (user) {
+      if (!user.wishlist.some((id: any) => id.equals(productId))) {
+        user.wishlist.push(productId);
+        await user.save();
+      }
+    }
+
+    const productWish = await Product.findById(productId);
+    if (productWish) {
+      if (!productWish.wishlistUsers.some((id: any) => id.equals(wishlist._id.toString()))) {
+        productWish.wishlistUsers.push(wishlist._id.toString());
+        await productWish.save();
+      }
     }
 
     await wishlist.save();
@@ -185,35 +199,48 @@ export const addToWishlist = async (req: any, res: any) => {
   }
 };
 
-// Remove from Wishlist
 export const removeFromWishlist = async (req: any, res: any) => {
   try {
-    const productId = req.params.id;
+    const productId = new mongoose.Types.ObjectId(req.params.id); // ✅ convert to ObjectId
     const userId = req.userId;
 
     const wishlist = await Wishlist.findOne({ userId });
 
-    if (!wishlist || !wishlist.products.includes(productId)) {
+    if (
+      !wishlist ||
+      !wishlist.products.some((id: any) => id.equals(productId))
+    ) {
       return res.status(404).json({ message: "Product not in wishlist" });
     }
 
+    // Remove from wishlist collection
     wishlist.products = wishlist.products.filter(
       (id: any) => !id.equals(productId)
     );
-        await wishlist.save();
 
-    res.status(200).json({ message: "Product removed from wishlist", wishlist });
+    // Remove from user's wishlist field
+    const user = await User.findById(userId);
+    if (user) {
+      user.wishlist = user.wishlist.filter((id: any) => !id.equals(productId));
+      await user.save();
+    }
+
+    await wishlist.save();
+
+    res
+      .status(200)
+      .json({ message: "Product removed from wishlist", wishlist });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-
 export const getWishlist = async (req: any, res: any) => {
   try {
     const userId = req.userId;
-    const wishlist = await Wishlist.findOne({ userId }).populate("products");
-
+    const wishlist: any = await Wishlist.findOne({ userId }).populate(
+      "products"
+    );
     if (!wishlist) {
       return res.status(200).json({ products: [] });
     }
@@ -405,4 +432,3 @@ export const getProductById = async (req: any, res: any) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-  

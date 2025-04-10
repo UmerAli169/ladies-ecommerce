@@ -116,6 +116,7 @@ const CatalogPage = () => {
       isActive: activeSubCategory === sub.name,
     })),
   }));
+
   return (
     <>
     <Wrapper>

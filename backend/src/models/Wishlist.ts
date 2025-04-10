@@ -5,13 +5,19 @@ interface IWishlist extends Document {
   products: Types.ObjectId[];
 }
 
-const WishlistSchema: Schema = new Schema(
-  {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+const wishlistSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
-  { timestamps: true }
-);
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product", 
+    },
+  ],
+});
 
-const Wishlist = mongoose.model<IWishlist>("Wishlist", WishlistSchema);
+const Wishlist = mongoose.model<IWishlist>("Wishlist", wishlistSchema);
 export default Wishlist;

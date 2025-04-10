@@ -97,9 +97,8 @@ export const getWishlist = async () => {
 
 export const addToWishlist = async (id: string) => {
   try {
-    const response = await api.post(`/api/products/addToWishlist/${id}`);
+    const response: any = await api.post(`/api/products/addToWishlist/${id}`);
     toast.success(response.data.message);
-
     return response.data;
   } catch (error) {
     console.log(error);
@@ -114,9 +113,7 @@ export const removeFromWishlist = async (id: string) => {
     return response.data;
   } catch (error) {
     console.log(error);
-
-    console.log(error)
-throw error;  }
+  }
 };
 
 export const getProductById = async (productId: any) => {
@@ -243,7 +240,6 @@ export const getAllCategories = async () => {
   return response.data;
 };
 
-
 export const updateAddress = async (data: {
   address: string;
   city: string;
@@ -252,7 +248,7 @@ export const updateAddress = async (data: {
   phone: string;
 }) => {
   try {
-    const response = await api.put("/api/products/updateAddress", data); 
+    const response = await api.put("/api/products/updateAddress", data);
     toast.success("Address updated successfully!");
     return response.data;
   } catch (error) {
@@ -260,4 +256,3 @@ export const updateAddress = async (data: {
     toast.error("Failed to update address.");
   }
 };
-
