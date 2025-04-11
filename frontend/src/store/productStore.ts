@@ -88,7 +88,7 @@ export const useProductStore = create<ProductState>((set) => ({
     try {
       const response = await getProductById(id);
       set({ product: response });
-      return;
+      return response
     } catch (error) {
       console.error("Error fetching product:", error);
     }

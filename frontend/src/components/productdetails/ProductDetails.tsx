@@ -17,11 +17,12 @@ interface ProductProps {
 
 const ProductDetails = ({ productInfo }: ProductProps) => {
   const { product } = useProductStore();
-  const { wishlist, toggleWishlist, isInWishlist }:any = useWishlistStore();
+  const { wishlist, fetchWishlist, toggleWishlist, isInWishlist }: any =
+    useWishlistStore();
   const { addToCart, cart } = useCartStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
@@ -70,7 +71,10 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
       );
     }
   };
-let checkIsWishList= isInWishlist(product._id)
+  let checkIsWishList = isInWishlist(product._id);
+
+  fetchWishlist();
+
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row justify-between lg:gap-[0px] gap-[80px]">
@@ -82,7 +86,7 @@ let checkIsWishList= isInWishlist(product._id)
             <img src="/svgs/Shared/ProductSection/leftArrow.svg" alt="left" />
           </button>
           <img
-            src={product.thumbnailImages[currentImageIndex]} // Display image based on index
+            src={product.thumbnailImages[currentImageIndex]}
             alt={product.name}
             className="w-full h-full max-w-[495px] max-h-[495px] object-cover"
           />

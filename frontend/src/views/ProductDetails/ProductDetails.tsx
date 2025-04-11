@@ -18,13 +18,12 @@ function Page() {
     useProductStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { addToCart } = useCartStore();
-
   useEffect(() => {
     const getProduct = async () => {
       if (!productId) return;
 
       try {
-        await fetchProduct(productId);
+     await fetchProduct(productId);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
