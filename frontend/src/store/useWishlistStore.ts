@@ -1,53 +1,34 @@
-// src/store/wishlistStore.ts
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { getWishlist, addToWishlist, removeFromWishlist } from "../services/internal";
+import {
+  getWishlist,
+  addToWishlist as apiAddToWishlist,
+  removeFromWishlist as apiRemoveFromWishlist,
+} from "../services/internal";
 
-interface WishlistStore {
+interface WishlistState {
   wishlist: string[];
   fetchWishlist: () => Promise<void>;
-  toggleWishlist: (productId: string) => Promise<void>;
-  isInWishlist: (productId: string) => boolean;
+  addToWishlist: (id: string) => Promise<void>;
+  removeFromWishlist: (id: string) => Promise<void>;
+  toggleWishlist: (id: string) => Promise<void>;
+  isInWishlist: (id: string) => boolean;
 }
 
-export const useWishlistStore = create<WishlistStore>()(
-  persist(
-    (set, get) => ({
-      wishlist: [],
-      fetchWishlist: async () => {
-        try {
-          const wishlist = await getWishlist();
-          set({ wishlist: Array.isArray(wishlist) ? wishlist : [] });
-          return wishlist
-        } catch (error) {
-          console.error("Error fetching wishlist", error);
-          set({ wishlist: [] });
-        }
-      },
-      toggleWishlist: async (productId) => {
-        const { wishlist } = get();
-        const isInList = wishlist.includes(productId);
+export const useWishlistStore = create<WishlistState>((set, get) => ({
+  wishlist: [],
 
-        try {
-          if (isInList) {
-            await removeFromWishlist(productId);
-            set({ wishlist: wishlist.filter((id) => id !== productId) });
-          } else {
-            await addToWishlist(productId);
-            set({ wishlist: [...wishlist, productId] });
-          }
-        } catch (error) {
-          console.error("Error toggling wishlist", error);
-        }
-      },
-      isInWishlist: (productId) => {
-        return get().wishlist.includes(productId);
-      },
-    }),
-    {
-      name: "wishlist-storage",
+  fetchWishlist: async () => {
+    try {
+      const fetchedWishlist: any = await getWishlist();
+      set({
+        wishlist: Array.isArray(fetchedWishlist.products)
+          ? fetchedWishlist.products
+          : [],
+      });
+      return fetchedWishlist;
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
     }
-<<<<<<< HEAD
   },
 
   addToWishlist: async (product: any) => {
@@ -90,7 +71,3 @@ export const useWishlistStore = create<WishlistStore>()(
     );
   },
 }));
-=======
-  )
-);
->>>>>>> main

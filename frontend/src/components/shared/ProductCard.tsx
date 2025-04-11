@@ -38,7 +38,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ? product.reviews.reduce((sum, rate) => sum + rate.rating, 0) /
       product.reviews.length
     : 0;
-
   return (
     <CustomCard
       className="w-full rounded-[6px] cursor-pointer relative"
@@ -61,11 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="absolute top-[20px] right-[23px] cursor-pointer transition-opacity duration-300"
             onClick={(e) => {
               e.stopPropagation();
-<<<<<<< HEAD
               toggleWishlist(product);
-=======
-              toggleWishlist(product._id);
->>>>>>> main
             }}
           >
             <img
