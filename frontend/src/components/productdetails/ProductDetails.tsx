@@ -17,11 +17,11 @@ interface ProductProps {
 
 const ProductDetails = ({ productInfo }: ProductProps) => {
   const { product } = useProductStore();
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlistStore();
+  const { wishlist, toggleWishlist, isInWishlist }:any = useWishlistStore();
   const { addToCart, cart } = useCartStore();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); 
 
   if (!product) {
     return <p className="text-center">Loading product...</p>;
@@ -157,13 +157,13 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
             </Button>
             <img
               src={
-                isInWishlist(product._id)
+                isInWishlist
                   ? "/svgs/Shared/ProductSection/heart-filled.svg"
                   : "/svgs/Shared/ProductSection/heart.svg"
               }
               alt="wishlist"
               className="cursor-pointer"
-              onClick={() => toggleWishlist(product._id)}
+              onClick={() => toggleWishlist(product)}
             />
           </div>
           <CartModal

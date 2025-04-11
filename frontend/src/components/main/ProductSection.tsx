@@ -23,7 +23,7 @@ interface Product {
 
 interface ProductSectionProps {
   addToCart: (productId: string) => void;
-  toggleWishlist: (id: string) => void;
+  toggleWishlist: (id: any) => void;
   isInWishlist: (id: string) => boolean;
   products: Product[];
   cardWidth: number;
@@ -144,7 +144,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
                     <ProductCard
                       product={product as any}
                       addToCart={() => addToCart(product._id)}
-                      toggleWishlist={() => toggleWishlist(product._id)}
+                      toggleWishlist={() => toggleWishlist(product)}
                       isInWishlist={isInWishlist(product._id)}
                     />
                   </SwiperSlide>

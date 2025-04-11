@@ -31,39 +31,41 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     }
   },
 
-  addToWishlist: async (id: string) => {
+  addToWishlist: async (product: any) => {
     try {
-      await apiAddToWishlist(id);
+      await apiAddToWishlist(product._id);
       const { wishlist } = get();
-      if (!wishlist.includes(id)) {
-        set({ wishlist: [...wishlist, id] });
+
+      if (!wishlist.includes(product._id)) {
+        set({ wishlist: [...wishlist, product] });
       }
     } catch (error) {
       console.error("Error adding to wishlist:", error);
     }
   },
 
-  removeFromWishlist: async (id: string) => {
+  removeFromWishlist: async (product: any) => {
     try {
-      await apiRemoveFromWishlist(id);
+      await apiRemoveFromWishlist(product._id);
       const { wishlist } = get();
-      set({ wishlist: wishlist.filter((item) => item !== id) });
+      set({ wishlist: wishlist.filter((item) => item !== product) });
     } catch (error) {
       console.error("Error removing from wishlist:", error);
     }
   },
 
-  toggleWishlist: async (id: string) => {
+  toggleWishlist: async (product: any) => {
     const { isInWishlist, addToWishlist, removeFromWishlist } = get();
-    if (isInWishlist(id)) {
-      await removeFromWishlist(id);
+    if (isInWishlist(product._id)) {
+      await removeFromWishlist(product);
     } else {
-      await addToWishlist(id);
+      await addToWishlist(product);
     }
   },
 
   isInWishlist: (id: string) => {
     const { wishlist } = get();
+
     return (
       Array.isArray(wishlist) && wishlist.some((item: any) => item._id === id)
     );

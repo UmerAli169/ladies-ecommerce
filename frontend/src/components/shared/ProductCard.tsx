@@ -19,7 +19,7 @@ interface Product {
 interface ProductCardProps {
   product: Product;
   addToCart: (product: any) => void;
-  toggleWishlist: (productId: number) => void;
+  toggleWishlist: (productId: any) => void;
   isInWishlist: boolean;
 }  
 
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="absolute top-[20px] right-[23px] cursor-pointer transition-opacity duration-300"
             onClick={(e) => {
               e.stopPropagation();
-              toggleWishlist(product._id);
+              toggleWishlist(product);
             }}  
           >
             <img

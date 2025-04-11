@@ -21,6 +21,7 @@ function WishlistPage() {
     async function loadWishlist() {
       try {
         const data = await fetchWishlist();
+        console.log(first)
         setWishlistProducts(Array.isArray(data?.products) ? data.products : []);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
@@ -53,7 +54,7 @@ function WishlistPage() {
                 <ProductCard
                   product={product as any}
                   addToCart={() => addToCart(product._id)}
-                  toggleWishlist={() => toggleWishlist(product._id)}
+                  toggleWishlist={() => toggleWishlist(product)}
                   isInWishlist={isInWishlist(product._id)}
                 />
               </div>
