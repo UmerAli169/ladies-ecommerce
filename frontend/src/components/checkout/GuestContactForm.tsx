@@ -34,7 +34,7 @@ const GuestContactForm: React.FC<GuestContactFormProps> = ({
 
       {isLoggedIn ? (
         <ContactInfo
-          email={user?.email || ""}
+          email={user.user?.email || ""}
           isLoggedIn={isLoggedIn}
           onLogout={onLogout}
           method={undefined}

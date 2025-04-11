@@ -4,7 +4,7 @@ import Dashboard from "../../components/main/Dashboard";
 import ProductSection from "../../components/main/ProductSection";
 import Frame from "../../components/main/Frame";
 import BlogSection from "../../components/shared/BlogSections";
-import SkinQuiz from "@/components/main/SkinQuiz";
+import SkinQuiz from "@/components/main/SkinQuiz"; 
 import InstagramGallery from "../../components/main/InstagramGallery";
 import { useProductStore } from "@/store/productStore";
 import {useWishlistStore} from "@/store/useWishlistStore";

@@ -21,7 +21,7 @@ api.interceptors.response.use(
 export const register = async (data: any) => {
   try {
     const response = await api.post("/api/auth/register", data);
-    toast.success("Registration successful!");
+    toast.success(response.data.message ||"Registration successful!");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -31,7 +31,7 @@ export const register = async (data: any) => {
 export const login = async (data: any) => {
   try {
     const response = await api.post("/api/auth/login", data);
-    toast.success("Login successful!");
+    toast.success(response.data.message || "Login successful!");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -41,7 +41,7 @@ export const login = async (data: any) => {
 export const recoverPassword = async (email: any) => {
   try {
     const response = await api.post("/api/auth/recover-password", { email });
-    toast.success("Password recovery email sent!");
+    toast.success(response.data.message || "Password recovery email sent!");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -53,7 +53,7 @@ export const resetPassword = async (token: any, password: any) => {
     const response = await api.post(`/api/auth/reset-password/${token}`, {
       password,
     });
-    toast.success("Password reset successful!");
+    toast.success(response.data.message || "Password reset successful!");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -130,7 +130,7 @@ export const createReview = async (formData: any) => {
     const response = await api.post("/api/reviews", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    toast.success("Review submitted successfully!");
+    toast.success(response.data.message ||"Review submitted successfully!");
     return response.data;
   } catch (error) {
     console.log(error);
@@ -161,7 +161,7 @@ export const addToCart = async (productId: string, quantity: number) => {
       productId,
       quantity,
     });
-    toast.success("Product added to cart!");
+    toast.success(response.data.message || "Product added to cart!");
     return response.data;
   } catch (error) {
     console.error("Error adding to cart:", error);

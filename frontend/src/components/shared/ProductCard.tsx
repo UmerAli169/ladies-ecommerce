@@ -21,16 +21,14 @@ interface ProductCardProps {
   addToCart: (product: any) => void;
   toggleWishlist: (productId: any) => void;
   isInWishlist: boolean;
-}  
+}
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   addToCart,
   toggleWishlist,
-  isInWishlist ,
+  isInWishlist,
 }) => {
-
-
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const handleRedirect = () => {
@@ -63,7 +61,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               toggleWishlist(product);
-            }}  
+            }}
           >
             <img
               src={
@@ -77,7 +75,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
- 
         <img
           src={product.image}
           alt={product.name}

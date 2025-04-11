@@ -42,7 +42,7 @@ export const useProductStore = create<ProductState>((set) => ({
   product: null,
 
   fetchProducts: async () => {
-    try {
+    try { 
       const response = await getAllProducts();
       const formattedProducts: Product[] = response.map((product: any) => ({
         _id: product._id,

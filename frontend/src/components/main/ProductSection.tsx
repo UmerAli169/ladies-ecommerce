@@ -17,9 +17,9 @@ interface Product {
   price: number;
   image: string;
   rating: number;
-  description: string;
+  description: string; 
   reviews: string;
-}
+} 
 
 interface ProductSectionProps {
   addToCart: (productId: string) => void;

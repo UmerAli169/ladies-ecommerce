@@ -70,7 +70,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
       );
     }
   };
-
+let checkIsWishList= isInWishlist(product._id)
   return (
     <Wrapper>
       <div className="flex flex-col md:flex-row justify-between lg:gap-[0px] gap-[80px]">
@@ -157,7 +157,7 @@ const ProductDetails = ({ productInfo }: ProductProps) => {
             </Button>
             <img
               src={
-                isInWishlist
+                checkIsWishList
                   ? "/svgs/Shared/ProductSection/heart-filled.svg"
                   : "/svgs/Shared/ProductSection/heart.svg"
               }

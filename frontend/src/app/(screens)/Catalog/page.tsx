@@ -124,7 +124,7 @@ const CatalogPage = () => {
         <div className="md:max-w-[250px] w-full max-h-[80vh] overflow-y-auto">
           <Sidebar
             tittle="Shop All"
-            collapsibleSections={collapsibleSections as any}
+            collapsibleSections={collapsibleSections as any} 
             />
           <Filters
             onFilterChange={handleFilterChange}
@@ -148,12 +148,12 @@ const CatalogPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative pt-[30px]">
-            {filteredProducts.slice(0, 9).map((product) => (
+            {filteredProducts.slice(0, 9).map((product:any) => (
               <ProductCard
               key={product._id}
               product={product as any}
               addToCart={() => addToCart(product._id)}
-              toggleWishlist={() => toggleWishlist(product._id)}
+              toggleWishlist={() => toggleWishlist(product)}
               isInWishlist={isInWishlist(product._id)}
               />
             ))}

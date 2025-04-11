@@ -10,32 +10,28 @@ import { useCartStore } from "@/store/cartStore";
 const ITEMS_PER_PAGE = 6;
 
 function WishlistPage() {
-  const { fetchWishlist }: any = useWishlistStore();
+  const {
+    fetchWishlist,
+    wishlist,
+    toggleWishlist,
+    isInWishlist,
+  } = useWishlistStore();
+
+  const { addToCart } = useCartStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<any[]>([]);
-  const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { toggleWishlist, isInWishlist } = useWishlistStore();
-  const { addToCart } = useCartStore();
+
   useEffect(() => {
-    async function loadWishlist() {
-      try {
-        const data = await fetchWishlist();
-        console.log(first)
-        setWishlistProducts(Array.isArray(data?.products) ? data.products : []);
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
-    }
-    loadWishlist();
+    fetchWishlist();
   }, []);
 
   const totalPages = Math.max(
     1,
-    Math.ceil(wishlistProducts.length / ITEMS_PER_PAGE)
+    Math.ceil(wishlist.length / ITEMS_PER_PAGE)
   );
 
-  const paginatedProducts = wishlistProducts?.slice(
+  const paginatedProducts = wishlist.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
@@ -44,12 +40,12 @@ function WishlistPage() {
     <AccountLayout>
       <h2 className="text-2xl font-bold text-[#383838] mb-6">My Wishlist</h2>
 
-      {wishlistProducts.length === 0 ? (
+      {wishlist.length === 0 ? (
         <p className="text-lg text-gray-500">Your wishlist is empty.</p>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginatedProducts.map((product) => (
+            {paginatedProducts.map((product:any) => (
               <div key={product._id} className="w-full">
                 <ProductCard
                   product={product as any}
